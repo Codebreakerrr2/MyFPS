@@ -26,7 +26,14 @@ add_library(game SHARED
 
 target_include_directories(game PRIVATE include)
 
+# World as DLL
+add_library(world SHARED 
+src/world/Map.cpp
+)
+target_include_directories(world PRIVATE include)
+
+
 # Main executable
 add_executable(MyFPS src/main.cpp)
-target_link_libraries(MyFPS PRIVATE engine game)
+target_link_libraries(MyFPS PRIVATE engine game world)
 target_include_directories(MyFPS PRIVATE include)

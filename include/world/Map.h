@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace Game {
+namespace World {
 
 
     bool LoadMap(const std::string& path);
