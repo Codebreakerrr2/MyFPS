@@ -3,6 +3,14 @@
 
 namespace Game {
 
+
+    struct Player {
+        float x,y,z;
+        int meshID;
+    }
+
+    extern Player player;
+
  
     void InitPlayer();                 
   
