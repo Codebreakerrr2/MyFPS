@@ -3,37 +3,47 @@ project(FPS)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# -----------------------------
+# GLFW
+# -----------------------------
+set(GLFW_ROOT "${CMAKE_SOURCE_DIR}/glfw")
+set(GLFW_INCLUDE_DIR "${GLFW_ROOT}/include")
+set(GLFW_LIB_FILE "${GLFW_ROOT}/lib-mingw-w64/libglfw3.a")
 
-
-# Engine DLL
-add_library(engine SHARED
-
-    src/engine/Renderer.cpp
-    src/engine/Input.cpp
-    src/engine/Physics.cpp
+# -----------------------------
+# GLAD
+# -----------------------------
+add_library(glad STATIC
+        src/glad.c
 )
 
-target_include_directories(engine PRIVATE include)
-
-
-# Game DLL
-add_library(game SHARED
-    src/game/Player.cpp
-    src/game/Enemy.cpp
+target_include_directories(glad PUBLIC
+        ${CMAKE_SOURCE_DIR}/include
 )
 
-target_include_directories(game PRIVATE include)
-
-# World as DLL
-add_library(world SHARED 
-src/world/Map.cpp
+# -----------------------------
+# Executable
+# -----------------------------
+add_executable(MyFPS
+        src/main.cpp
+        src/engine/Renderer.cpp
+        src/engine/Input.cpp
+        src/engine/Physics.cpp
+        src/game/Player.cpp
+        src/game/Enemy.cpp
+        src/world/Map.cpp
 )
-target_include_directories(world PRIVATE include)
 
+target_include_directories(MyFPS PRIVATE
+        include
+        ${GLFW_INCLUDE_DIR}
+)
 
-# Main executable
-add_executable(MyFPS src/main.cpp)
-target_link_libraries(MyFPS PRIVATE engine game world)
-target_include_directories(MyFPS PRIVATE include)
+target_link_libraries(MyFPS PRIVATE
+        glad
+        ${GLFW_LIB_FILE}
+        opengl32
+        user32
+        gdi32
+)

@@ -1,0 +1,18 @@
+@startuml
+start
+:Engine::InitRenderer();
+:Engine::InitInput();
+:World::LoadMap();
+:Game::InitPlayer();
+
+while (running)
+    :Game::UpdatePlayer(dt);
+    :World::UpdateMap(dt);
+    :Engine::ClearScreen();
+    :World::RenderMap();
+    :Game::RenderPlayer();
+    :Engine::SwapBuffers();
+endwhile
+
+stop
+@enduml

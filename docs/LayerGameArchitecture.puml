@@ -1,0 +1,83 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+' ================= ENGINE =================
+package "Engine" {
+
+    class Input {
+        +InitInput()
+        +IsKeyPressed(key)
+        +GetMouseDelta(dx, dy)
+    }
+
+    class Physics {
+        +InitPhysics()
+        +UpdatePhysics(dt)
+    }
+
+    class Renderer {
+        +InitRenderer()
+        +ClearScreen()
+        +RenderMesh(meshID, x, y, z)
+        +SwapBuffers()
+    }
+}
+
+' ================= WORLD ==================
+package "World" {
+
+    class Map {
+        +LoadMap(path)
+        +UpdateMap(dt)
+        +RenderMap()
+        +IsSolid(x, y, z)
+    }
+}
+
+' ================= GAME ===================
+package "Game" {
+
+    class Player {
+        x : float
+        y : float
+        z : float
+        health : int
+        meshID : int
+
+        +InitPlayer()
+        +UpdatePlayer(dt)
+        +RenderPlayer()
+        +TakeDamage(amount)
+        +FireWeapon()
+        +ReloadWeapon()
+    }
+
+    class Enemy {
+        x : float
+        y : float
+        z : float
+        health : int
+        meshID : int
+
+        +InitEnemy()
+        +UpdateEnemy(dt)
+        +RenderEnemy()
+        +TakeDamage(amount)
+        +FireWeapon()
+    }
+}
+
+' ================= RELATIONS ==============
+Player --> Input     : reads
+Player --> Physics   : uses
+Player --> Renderer  : renders
+Player --> Map       : collision
+
+Enemy --> Physics    : uses
+Enemy --> Renderer   : renders
+Enemy --> Map        : collision
+
+Map --> Renderer : renders
+
+@enduml

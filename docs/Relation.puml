@@ -1,0 +1,11 @@
+@startuml
+
+Game --> Engine : uses
+Game --> World : queries
+
+World --> Engine : renders
+
+Engine --> Game : ❌
+Engine --> World : ❌
+
+@enduml
