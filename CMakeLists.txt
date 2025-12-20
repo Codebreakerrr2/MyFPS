@@ -33,6 +33,7 @@ add_executable(MyFPS
         src/game/Player.cpp
         src/game/Enemy.cpp
         src/world/Map.cpp
+        src/engine/Mesh.cpp
 )
 
 target_include_directories(MyFPS PRIVATE
