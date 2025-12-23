@@ -17,9 +17,12 @@ namespace Engine {
 
 
     void CloseWindow();
+
+
     GLFWwindow* GetWindow();
 
 
-    //TEST METHODES
+    //_______________________TEST__AND___FUN____METHODS______________________________________
     void WindowBackgroundColor(float r, float g, float b, float a);
+    void WireFrame(bool wireframe);
 }
