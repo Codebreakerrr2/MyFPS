@@ -32,7 +32,7 @@ namespace Game {
 
     // Render Player
     void RenderPlayer() {
-        Engine::RenderMesh(player.meshID, player.x, player.y, player.z);
+
     }
 
     // Health

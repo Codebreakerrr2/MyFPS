@@ -1,40 +1,28 @@
 #pragma once
 
-#include <cstdint>
-#include "engine/Mesh.h"
+#include "Math/Vec.h"
+#include "Math/Mat4.h"
+#include "Engine/Shader.h"
 
 namespace Engine {
 
-    using EntityID = uint32_t;
-
-    // ---------------- Transform ----------------
     struct Transform {
-        float x = 0.0f;
-        float y = 0.0f;
-        float z = 0.0f;
+        Math::Vec3 position {0.0f};
+        Math::Vec3 rotation {0.0f};   // Euler (radians)
+        Math::Vec3 scale    {1.0f};
 
-        float rotX = 0.0f;
-        float rotY = 0.0f;
-        float rotZ = 0.0f;
-
-        float scaleX = 1.0f;
-        float scaleY = 1.0f;
-        float scaleZ = 1.0f;
+        // Model-Matrix aus Position / Rotation / Scale
+        Math::Mat4 GetModelMatrix() const;
     };
 
-    // ---------------- Material ----------------
+
     struct Material {
-        float r = 1.0f;
-        float g = 1.0f;
-        float b = 1.0f;
-        float a = 1.0f;
+        Shader* shader = nullptr;
+        Math::Vec3 color {1.0f};
     };
 
-    // ---------------- Entity ----------------
     struct Entity {
-        EntityID id = 0;
-
-        MeshID mesh = 0;
+        int meshID = -1;
         Transform transform;
         Material material;
     };

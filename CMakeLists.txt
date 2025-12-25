@@ -30,11 +30,18 @@ add_executable(MyFPS
         src/engine/Renderer.cpp
         src/engine/Input.cpp
         src/engine/Physics.cpp
+        src/engine/Shader.cpp
+        src/engine/Mesh.cpp
+        src/engine/Camera.cpp
+        src/engine/Entity.cpp
+        src/engine/parser.cpp
         src/game/Player.cpp
         src/game/Enemy.cpp
         src/world/Map.cpp
-        src/engine/Mesh.cpp
         src/Math/Vec.cpp
+        src/Math/Mat4.cpp
+
+
 )
 
 target_include_directories(MyFPS PRIVATE

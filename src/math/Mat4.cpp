@@ -19,6 +19,7 @@ namespace Math {
         r.m[12]=t.x;
         r.m[13]=t.y;
         r.m[14]=t.z;
+        return r;
     }
 
     Mat4 Mat4::Scale(const Vec3 &s) {

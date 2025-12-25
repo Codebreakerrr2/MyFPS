@@ -7,7 +7,8 @@ namespace Engine {
     class Shader {
 
     public:
-        Shader(const char * vertexPath, const char * fragmentPath);
+        unsigned int ID;
+        Shader(const char* vertexPath, const char* fragmentPath);
         ~Shader();
 
         void use() const;

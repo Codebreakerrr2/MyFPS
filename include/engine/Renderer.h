@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+
+#include "Camera.h"
+#include "Entity.h"
 struct GLFWwindow;
 
 
@@ -11,6 +14,7 @@ namespace Engine {
     void SwapBuffers();
 
     void RenderMesh(int meshID, float x, float y, float z);
+    void RenderEntity(const Entity& entity, const Camera& camera);
     void Shutdown();
 
     bool WindowIsOpen();
