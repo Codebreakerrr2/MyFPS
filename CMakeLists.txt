@@ -35,6 +35,7 @@ add_executable(MyFPS
         src/engine/Camera.cpp
         src/engine/Entity.cpp
         src/engine/parser.cpp
+        src/engine/CameraController.cpp
         src/game/Player.cpp
         src/game/Enemy.cpp
         src/world/Map.cpp

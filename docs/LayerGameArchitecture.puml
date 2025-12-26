@@ -5,6 +5,23 @@ skinparam classAttributeIconSize 0
 ' ================= ENGINE =================
 package "Engine" {
 
+    class Camera{
+        position : Vec3
+        up :Vec3
+        front :Vec3
+        aspect ratio : float
+        fov : radian
+        near Plane : float
+        far Plane : float
+
+        +Camera(Vec3& pos, Vec3& target,Vec3& upVector)
+        +GetViewMatrix() : Mat4 4x4
+        +GetPrespectiveMatrix(): Mat4 4x4
+        + Move(Vec3& delta);
+        +Rotate(float pitchRadians, float yawRadians);
+    }
+
+
     class Input {
         +InitInput()
         +IsKeyPressed(key)
@@ -12,6 +29,7 @@ package "Engine" {
     }
 
     class Physics {
+        TODO
         +InitPhysics()
         +UpdatePhysics(dt)
     }
@@ -19,7 +37,8 @@ package "Engine" {
     class Renderer {
         +InitRenderer()
         +ClearScreen()
-        +RenderMesh(meshID, x, y, z)
+        +RenderMesh(meshID, x, y, z)//to Remove
+        +RenderEntity(Entity, Camera)
         +SwapBuffers()
     }
 }
@@ -28,6 +47,7 @@ package "Engine" {
 package "World" {
 
     class Map {
+    TODO
         +LoadMap(path)
         +UpdateMap(dt)
         +RenderMap()
@@ -36,7 +56,7 @@ package "World" {
 }
 
 ' ================= GAME ===================
-package "Game" {
+package "Game TODO" {
 
     class Player {
         x : float

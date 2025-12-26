@@ -46,6 +46,7 @@ namespace Engine {
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
         glEnable(GL_DEPTH_TEST);
 
+
         return true;
     }
 

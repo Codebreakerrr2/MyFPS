@@ -10,20 +10,20 @@ public:
     Math::Vec3 up       {0.0f, 1.0f, 0.0f};
 
     // Perspektive
-    float fov = 60.0f;          // Field of View in Grad
+    float fov = 100.0f;          // Field of View in Grad
     float aspect = 16.0f / 9.0f;
     float nearPlane = 0.1f;
-    float farPlane  = 100.0f;
+    float farPlane  = 30.0f;
 
-public:
+
     Camera() = default;
     Camera(const Math::Vec3& pos, const Math::Vec3& target, const Math::Vec3& upVector);
 
-    // Matrizen
+
     Math::Mat4 GetViewMatrix() const;
     Math::Mat4 GetProjectionMatrix() const;
 
-    // FPS-Methoden (optional später)
+
     void Move(const Math::Vec3& delta);
     void Rotate(float pitchRadians, float yawRadians);
 };

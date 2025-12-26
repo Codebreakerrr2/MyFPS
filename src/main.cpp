@@ -6,12 +6,15 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
+#include "engine/CameraController.h"
 #include "engine/parser.h"
 
 int main() {
     // ---------------- Init ----------------
     Engine::InitRenderer(800, 600, "Cube + Floor");
     Engine::InitInput(Engine::GetWindow());
+    Engine::CameraController cameraController;
+    Engine::WireFrame(false);
 
     // ---------------- Boden ----------------
     std::vector<float> floorVertices = {
@@ -46,16 +49,30 @@ int main() {
     };
     std::vector<float> vertices;
     std::vector<uint32_t> indices;
+    std::vector<float> vertices1;
+    std::vector<uint32_t> indices1;
 
-    if (!Engine::LoadOBJ("C:/Users/usman/Documents/Figur.obj", vertices, indices)) {
+    if (!Engine::LoadOBJ("C:/Users/usman/Documents/Anime_charcter.obj", vertices, indices)) {
         std::cerr << "OBJ konnte nicht geladen werden!\n";
     }
 
-    Engine::Entity objEntity;
-    objEntity.meshID = Engine::LoadMeshIndexed(vertices, 3, indices);
-    objEntity.material.shader = &shader;
-    objEntity.material.color = Math::Vec3(0.8f, 0.5f, 0.2f);
-    objEntity.transform.position = Math::Vec3(5.0f, 1.0f, 0.0f);
+    if (!Engine::LoadOBJ("C:/Users/usman/Documents/building.obj", vertices1, indices1)) {
+        std::cerr << "OBJ konnte nicht geladen werden!\n";
+    }
+
+    Engine::Entity animeGirl;
+    animeGirl.meshID = Engine::LoadMeshIndexed(vertices, 3, indices);
+    animeGirl.material.shader = &shader;
+    animeGirl.material.color = Math::Vec3(0.8f, 0.5f, 0.2f);
+    animeGirl.transform.position = Math::Vec3(5.0f, 0.0f, 0.0f);
+    animeGirl.transform.scale = Math::Vec3(0.2f, 0.2f, 0.2f);
+
+    Engine::Entity house;
+    house.meshID = Engine::LoadMeshIndexed(vertices1, 3, indices1);
+    house.material.shader = &shader;
+
+    house.transform.position = Math::Vec3(-4.0f, 0.0f, 0.0f);
+    house.transform.scale = Math::Vec3(0.2f, 0.2f, 0.2f);
 
     Engine::Entity cube1, cube2;
     cube1.meshID = cube2.meshID = Engine::LoadMeshIndexed(cubeVertices, 3, cubeIndices);
@@ -63,7 +80,8 @@ int main() {
 
     cube1.material.color = Math::Vec3(1.0f, 0.0f, 0.0f); // rot
     cube2.material.color = Math::Vec3(0.0f, 0.0f, 1.0f); // blau
-
+    cube1.transform.scale = Math::Vec3(1.0f, 4.0f, 1.0f);
+    cube2.transform.scale = Math::Vec3(1.0f, 4.0f, 1.0f);
     // Cubes auf dem Boden platzieren (Y = 0.5f, da Cube Höhe = 1)
     cube1.transform.position = Math::Vec3(-1.0f, 0.5f, -1.0f);
     cube2.transform.position = Math::Vec3(1.0f, 0.5f, 1.0f);
@@ -73,12 +91,6 @@ int main() {
                           Math::Vec3(0.0f, 0.0f, 0.0f),
                           Math::Vec3(0.0f, 1.0f, 0.0f));
     camera.aspect = 800.0f / 600.0f;
-
-    // ---------------- Bewegung ----------------
-    float pitch = 0.0f;
-    float yaw = -3.14f / 2.0f; // Blick nach -Z
-    float sensitivity = 0.002f;
-    float speed = 5.5f;
 
     double lastTime = glfwGetTime();
 
@@ -94,27 +106,17 @@ int main() {
             Engine::CloseWindow();
 
         // --- Maus Rotation ---
-        int dx, dy;
-        Engine::GetMouseDelta(dx, dy);
-        yaw   += dx * sensitivity;
-        pitch -= dy * sensitivity;
-        pitch = std::clamp(pitch, -1.5f, 1.5f);
-        camera.Rotate(pitch, yaw);
+
+        cameraController.Update(camera, deltaTime,Engine::MoveMode::Flying);
 
         // --- WASD Bewegung ---
-        Math::Vec3 forward = camera.front * speed * deltaTime;
-        Math::Vec3 right = Math::Normalize(Math::Cross(camera.front, camera.up)) * speed * deltaTime;
-
-        if (Engine::IsKeyPressed(GLFW_KEY_W)) camera.position = camera.position + forward;
-        if (Engine::IsKeyPressed(GLFW_KEY_S)) camera.position = camera.position - forward;
-        if (Engine::IsKeyPressed(GLFW_KEY_A)) camera.position = camera.position - right;
-        if (Engine::IsKeyPressed(GLFW_KEY_D)) camera.position = camera.position + right;
 
         // --- Render ---
         Engine::WindowBackgroundColor(0.1f, 0.23f, 0.3f, 1.0f);
         Engine::ClearScreen();
         Engine::RenderEntity(floor,camera);
-        Engine::RenderEntity(objEntity, camera);
+        Engine::RenderEntity(house, camera);
+        Engine::RenderEntity(animeGirl, camera);
         Engine::RenderEntity(cube1, camera);
         Engine::RenderEntity(cube2, camera);
 
