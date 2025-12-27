@@ -8,12 +8,12 @@
 
 #include "engine/CameraController.h"
 #include "engine/parser.h"
+#include "game/Player.h"
 
 int main() {
     // ---------------- Init ----------------
     Engine::InitRenderer(800, 600, "Cube + Floor");
     Engine::InitInput(Engine::GetWindow());
-    Engine::CameraController cameraController;
     Engine::WireFrame(false);
 
     // ---------------- Boden ----------------
@@ -91,7 +91,8 @@ int main() {
                           Math::Vec3(0.0f, 0.0f, 0.0f),
                           Math::Vec3(0.0f, 1.0f, 0.0f));
     camera.aspect = 800.0f / 600.0f;
-
+    Game::Player player;
+    player.Init(Math::Vec3(0.0f, 0.0f, 0.0f), &cube1);
     double lastTime = glfwGetTime();
 
     ; // Z-Buffer aktivieren
@@ -106,19 +107,20 @@ int main() {
             Engine::CloseWindow();
 
         // --- Maus Rotation ---
+        player.Update(deltaTime);
 
-        cameraController.Update(camera, deltaTime,Engine::MoveMode::Flying);
 
         // --- WASD Bewegung ---
 
         // --- Render ---
         Engine::WindowBackgroundColor(0.1f, 0.23f, 0.3f, 1.0f);
         Engine::ClearScreen();
-        Engine::RenderEntity(floor,camera);
-        Engine::RenderEntity(house, camera);
-        Engine::RenderEntity(animeGirl, camera);
-        Engine::RenderEntity(cube1, camera);
-        Engine::RenderEntity(cube2, camera);
+        Engine::RenderEntity(floor,player.GetCamera());
+        Engine::RenderEntity(house, player.GetCamera());
+
+        Engine::RenderEntity(cube1, player.GetCamera());
+        Engine::RenderEntity(cube2, player.GetCamera());
+        Engine::RenderEntity(animeGirl, player.GetCamera());
 
         Engine::SwapBuffers();
     }

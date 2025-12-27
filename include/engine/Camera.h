@@ -1,16 +1,18 @@
 #pragma once
 #include "math/Mat4.h"
 #include "math/Vec.h"
+#include "world/Map.h"
+
 namespace Engine{
 class Camera {
 public:
     // Position & Orientierung
     Math::Vec3 position {0.0f, 0.0f, 3.0f};
     Math::Vec3 front    {0.0f, 0.0f, -1.0f};
-    Math::Vec3 up       {0.0f, 1.0f, 0.0f};
+    Math::Vec3 up  =    Math::Vec3(0.0f, 1.0f, 0.0f);
 
     // Perspektive
-    float fov = 100.0f;          // Field of View in Grad
+    float fov = 90.0f;          // Field of View in Grad
     float aspect = 16.0f / 9.0f;
     float nearPlane = 0.1f;
     float farPlane  = 30.0f;

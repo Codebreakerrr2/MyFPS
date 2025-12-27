@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#include "math/Vec.h"
+
 namespace World {
 
 

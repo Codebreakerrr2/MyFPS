@@ -4,9 +4,11 @@
 
 namespace Engine {
 
-
+    static float mouseSensitivity = 0.02f;
     static double lastMouseX = 0, lastMouseY = 0;
     static bool firstMouse = true;
+    void setMouseSensitivity(float sensitivity) { mouseSensitivity = sensitivity;  }
+    float getMouseSensitivity() { return mouseSensitivity; }
 
     void InitInput(GLFWwindow* win) {
         window = win;

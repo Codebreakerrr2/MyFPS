@@ -1,68 +1,70 @@
-#include "Game/Player.h"
+#include "game/Player.h"
+
+#include <algorithm>
+
 #include "engine/Input.h"
-#include "engine/Physics.h"
-#include "engine/Renderer.h"
+#include "world/Map.h"
 
 namespace Game {
 
-    Player player;
+    Player::playerID Player::nextID = 0;
 
-    // Initialisierung des Players
-    void InitPlayer() {
-        player.x = 0.0f;
-        player.y = 0.0f;
-        player.z = 0.0f;
-        player.meshID = 0;   // z.B. Default Mesh
-        player.health = 100;
+    Player::Player() {
+        id = nextID++;
     }
 
-    // Update pro Frame
-    void UpdatePlayer(float deltaTime) {
-        // Movement
-        float speed = 5.0f * deltaTime;
+    void Player::Init(const Math::Vec3& startPos, Engine::Entity* entity) {
+        playerEntity = entity;
 
-        if (Engine::IsKeyPressed('W')) player.z += speed;
-        if (Engine::IsKeyPressed('S')) player.z -= speed;
-        if (Engine::IsKeyPressed('A')) player.x -= speed;
-        if (Engine::IsKeyPressed('D')) player.x += speed;
+        // Player-Position
+        position = startPos;
+        playerEntity->transform.position = position;
 
-        // Gravity / Physics
-        //Engine::UpdatePhysics(deltaTime);
-    }
-
-    // Render Player
-    void RenderPlayer() {
+        // Camera über Spieler platzieren
+        camera.position = position;
+        camera.position.y += height;
 
     }
 
-    // Health
-    int GetHealth() {
-        return player.health;
+    void Player::UpdateLook(float dt) {
+        int dx, dy;
+        Engine::GetMouseDelta(dx, dy);
+        float sens = Engine::getMouseSensitivity();
+        yaw += dx * sens;
+        pitch -= dy * sens;
+        pitch = std::clamp(pitch, -1.5f, 1.5f);
     }
 
-    void TakeDamage(int amount) {
-        player.health -= amount;
-        if (player.health < 0) player.health = 0;
+    void Player::UpdateMovement(float dt) {
+        Math::Vec3 forwardMove = Math::Normalize(Math::Vec3(std::cos(yaw),0.0f,std::sin(yaw)));
+        Math::Vec3 rightMove = Math::Normalize(Math::Cross(forwardMove, Math::Vec3(0.0f, 1.0f, 0.0f)));
+        if (Engine::IsKeyPressed(GLFW_KEY_W))
+            position =position + forwardMove * playerSpeed * dt;
+        if (Engine::IsKeyPressed(GLFW_KEY_S))
+            position = position -forwardMove * playerSpeed * dt;
+        if (Engine::IsKeyPressed(GLFW_KEY_D))
+            position =  position +rightMove * playerSpeed * dt;
+        if (Engine::IsKeyPressed(GLFW_KEY_A))
+            position = position -rightMove * playerSpeed * dt;
     }
 
-    // Waffen
-    void FireWeapon() {
-        // TODO: Implement Fire Logic
+    void Player::UpdateTransform() {
+        playerEntity->transform.position = position;
+        playerEntity->transform.rotation.y=-yaw;
     }
 
-    void ReloadWeapon() {
-        // TODO: Implement Reload Logic
+    void Player::UpdateCamera() {
+        camera.Rotate(pitch, yaw);
+        camera.position = position;
+        camera.position.y += height;
     }
 
-    // Position / Kamera
-    float GetX() { return player.x; }
-    float GetY() { return player.y; }
-    float GetZ() { return player.z; }
+    void Player::Update(float deltaTime) {
+        Player::UpdateLook(deltaTime);
+        Player::UpdateMovement(deltaTime);
+        Player::UpdateTransform();
+        Player::UpdateCamera();
 
-    void SetPosition(float x, float y, float z) {
-        player.x = x;
-        player.y = y;
-        player.z = z;
     }
 
-} // namespace Game
+}

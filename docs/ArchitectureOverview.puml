@@ -1,0 +1,44 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+' ================= ENGINE CORE =================
+package "Engine Core (Data & Math)" {
+
+    class Vec3
+    class Mat4
+
+    class Transform
+    class Mesh
+    class Material
+    class Entity
+}
+
+' ================= ENGINE SYSTEMS ===============
+package "Engine Systems (Logic)" {
+
+    class Renderer
+    class Shader
+    class MeshLoader
+
+    class Input
+    class Physics
+
+    class Camera
+    class CameraController
+}
+
+' ================= WORLD ========================
+
+
+' ================= GAME =========================
+package "Game" {
+
+    class Player
+    class Enemy
+    class Weapons
+    class GameLogic
+}
+
+@enduml

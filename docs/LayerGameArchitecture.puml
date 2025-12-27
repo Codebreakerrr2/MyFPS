@@ -2,9 +2,105 @@
 skinparam packageStyle rectangle
 skinparam classAttributeIconSize 0
 
+package "Engine Core Systems (Global Functions)" {
+
+    rectangle "Mesh System" {
+        class "Mesh.h" << (F, #FF7700) >> {
+            + LoadMesh(vertices, stride) : MeshID
+            + LoadMeshIndexed(vertices, stride, indices) : MeshID
+            + GetMesh(id) : Mesh*
+            + ShutdownMeshes()
+
+        }
+    }
+
+    rectangle "Renderer System" {
+        class "Renderer.h" << (F, #FF7700) >> {
+            + InitRenderer()
+            + ClearScreen()
+            + RenderEntity(Entity, Camera)
+            + SwapBuffers()
+            + WireFrame(bool)
+            +WindowIsOpen(): bool
+            +CloseWindow()
+        }
+    }
+
+    rectangle "Input System" {
+        class "Input.h" << (F, #FF7700) >> {
+            + InitInput(window)
+            + IsKeyPressed(key) : bool
+            + GetMouseDelta(dx, dy)
+        }
+    }
+}
+
+
 ' ================= ENGINE =================
 package "Engine" {
 
+
+
+
+            class Shader {
+                - ID : unsigned int
+
+                + Shader(vertexPath : const char*, fragmentPath : const char*)
+                + ~Shader()
+
+                + use() : void
+                + setMat4(name : string, mat : Mat4) : void
+                + setVec3(name : string, v : Vec3) : void
+                + setFloat(name : string, v : float) : void
+            }
+
+            class MeshSystem <<Subsystem>> {
+                - meshes
+                - nextMeshID
+                + LoadMesh()
+                + LoadMeshIndexed()
+                + GetMesh()
+                + ShutdownMeshes()
+            }
+
+
+
+
+
+    rectangle "Any Object in World has"{
+
+
+           class Mesh <<struct>> {
+               - VAO : unsigned int = 0
+               - VBO : unsigned int = 0
+               - EBO : unsigned int = 0
+               - vertexCount : uint32_t = 0
+               - indexCount : int = 0
+               - indexed : bool = false
+           }
+
+
+
+
+
+    class Transform <<struct>> {
+        - position : Vec3
+        - rotation : Vec3
+        - scale : Vec3
+        + GetModelMatrix() : Mat4
+    }
+
+    class Material <<struct>> {
+        - shader : Shader*
+        - color : Vec3
+    }
+
+    class Entity <<struct>> {
+        - meshID : int
+        - transform : Transform
+        - material : Material
+    }
+}
     class Camera{
         position : Vec3
         up :Vec3
@@ -20,6 +116,17 @@ package "Engine" {
         + Move(Vec3& delta);
         +Rotate(float pitchRadians, float yawRadians);
     }
+    class CameraController{
+        speed: float
+        yaw: float
+        pitch: float
+        MousesSensitivity: float
+        +Update(Camera& camera, float deltaTime,MoveMode mode)
+        +setSpeed(float speed)
+       enum MoveMode {Flying, Player}
+
+       CameraController --> MoveMode : uses
+    }
 
 
     class Input {
@@ -34,13 +141,7 @@ package "Engine" {
         +UpdatePhysics(dt)
     }
 
-    class Renderer {
-        +InitRenderer()
-        +ClearScreen()
-        +RenderMesh(meshID, x, y, z)//to Remove
-        +RenderEntity(Entity, Camera)
-        +SwapBuffers()
-    }
+
 }
 
 ' ================= WORLD ==================
@@ -89,15 +190,6 @@ package "Game TODO" {
 }
 
 ' ================= RELATIONS ==============
-Player --> Input     : reads
-Player --> Physics   : uses
-Player --> Renderer  : renders
-Player --> Map       : collision
 
-Enemy --> Physics    : uses
-Enemy --> Renderer   : renders
-Enemy --> Map        : collision
-
-Map --> Renderer : renders
 
 @enduml
