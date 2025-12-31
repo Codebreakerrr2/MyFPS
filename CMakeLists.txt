@@ -20,7 +20,12 @@ add_library(glad STATIC
 
 target_include_directories(glad PUBLIC
         ${CMAKE_SOURCE_DIR}/include
+
 )
+#---------------
+# win32 Socket
+#----------------------
+
 
 # -----------------------------
 # Executable
@@ -36,6 +41,10 @@ add_executable(MyFPS
         src/engine/Entity.cpp
         src/engine/parser.cpp
         src/engine/CameraController.cpp
+        src/network/UDP.cpp
+        src/network/NetworkInit.cpp
+        src/network/Client.cpp
+        src/network/Server.cpp
         src/game/Player.cpp
         src/game/Enemy.cpp
         src/world/Map.cpp
@@ -56,4 +65,5 @@ target_link_libraries(MyFPS PRIVATE
         opengl32
         user32
         gdi32
+        ws2_32
 )

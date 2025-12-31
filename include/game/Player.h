@@ -3,6 +3,7 @@
 #include "engine/Camera.h"
 #include "engine/CameraController.h"
 #include "engine/Entity.h"
+#include "engine/PhysicsBody.h"
 #include "math/Vec.h"
 
 namespace Game {
@@ -13,7 +14,7 @@ namespace Game {
     public:
         Player();
 
-        void Init(const Math::Vec3& startPos, Engine::Entity* entity);
+        void Init(const Math::Vec3& startPos, Engine::Entity* entity,Physics::PhysicsBody* body);
         void Update(float deltaTime);
 
       [[nodiscard]] const Engine::Camera& GetCamera() const { return camera; }
@@ -23,7 +24,7 @@ namespace Game {
         void UpdateMovement(float dt);
         void UpdateTransform();
         void UpdateCamera();
-
+        Physics::PhysicsBody* body;
         Engine::Camera camera;
         Engine::CameraController controller;
         Engine::Entity* playerEntity = nullptr;

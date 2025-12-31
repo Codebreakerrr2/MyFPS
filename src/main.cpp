@@ -92,7 +92,9 @@ int main() {
                           Math::Vec3(0.0f, 1.0f, 0.0f));
     camera.aspect = 800.0f / 600.0f;
     Game::Player player;
-    player.Init(Math::Vec3(0.0f, 0.0f, 0.0f), &cube1);
+    Physics::PhysicsBody body;
+
+    player.Init(Math::Vec3(0.0f, 0.0f, 0.0f), &cube1, &body);
     double lastTime = glfwGetTime();
 
     ; // Z-Buffer aktivieren

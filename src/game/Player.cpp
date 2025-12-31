@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "engine/Input.h"
+#include "engine/Physics.h"
 #include "world/Map.h"
 
 namespace Game {
@@ -13,14 +14,12 @@ namespace Game {
         id = nextID++;
     }
 
-    void Player::Init(const Math::Vec3& startPos, Engine::Entity* entity) {
+    void Player::Init(const Math::Vec3& startPos, Engine::Entity* entity, Physics::PhysicsBody* bodyy) {
         playerEntity = entity;
-
-        // Player-Position
+        body =bodyy;
         position = startPos;
+        body->position = startPos;
         playerEntity->transform.position = position;
-
-        // Camera über Spieler platzieren
         camera.position = position;
         camera.position.y += height;
 
@@ -36,20 +35,43 @@ namespace Game {
     }
 
     void Player::UpdateMovement(float dt) {
-        Math::Vec3 forwardMove = Math::Normalize(Math::Vec3(std::cos(yaw),0.0f,std::sin(yaw)));
-        Math::Vec3 rightMove = Math::Normalize(Math::Cross(forwardMove, Math::Vec3(0.0f, 1.0f, 0.0f)));
-        if (Engine::IsKeyPressed(GLFW_KEY_W))
-            position =position + forwardMove * playerSpeed * dt;
-        if (Engine::IsKeyPressed(GLFW_KEY_S))
-            position = position -forwardMove * playerSpeed * dt;
-        if (Engine::IsKeyPressed(GLFW_KEY_D))
-            position =  position +rightMove * playerSpeed * dt;
-        if (Engine::IsKeyPressed(GLFW_KEY_A))
-            position = position -rightMove * playerSpeed * dt;
+        Math::Vec3 wish(0.0f);
+
+        Math::Vec3 forward(std::cos(yaw), 0, std::sin(yaw));
+        Math::Vec3 right = Math::Normalize(Math::Cross(forward, {0,1,0}));
+
+        // Bewegung basierend auf Input
+        if (Engine::IsKeyPressed(GLFW_KEY_W)) wish = wish + forward;
+        if (Engine::IsKeyPressed(GLFW_KEY_S)) wish = wish - forward;
+        if (Engine::IsKeyPressed(GLFW_KEY_D)) wish = wish + right;
+        if (Engine::IsKeyPressed(GLFW_KEY_A)) wish = wish - right;
+
+        // Normalize nur, wenn überhaupt Richtung gedrückt wird
+        if (Math::Length(wish) > 0.0f)
+            wish = Math::Normalize(wish);
+
+        // ---- Temporäre MaxSpeed für Sprint ----
+        float maxSpeed = playerSpeed;
+        if (Engine::IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
+            maxSpeed *= 2.0f;
+
+        // ---- Acceleration ----
+        float currentSpeed = Math::Dot(body->velocity, wish);
+        float addSpeed = maxSpeed - currentSpeed;
+        if (addSpeed > 0.0f && Math::Length(wish) > 0.0f) {
+            float accelSpeed = body->accelerationRate * dt;
+            if (accelSpeed > addSpeed)
+                accelSpeed = addSpeed;
+            body->velocity = body->velocity + wish * accelSpeed;
+        }
+        body->velocity = body->velocity * std::max(0.0f, 1.0f - body->friction * dt);
+        body->position = body->position + body->velocity * dt;
     }
 
+
     void Player::UpdateTransform() {
-        playerEntity->transform.position = position;
+        Physics::syncEntityToBodyPostion(body,playerEntity);
+        position =playerEntity->transform.position ;
         playerEntity->transform.rotation.y=-yaw;
     }
 
