@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "engine/CameraController.h"
+#include "engine/CameraFollower.h"
 #include "engine/parser.h"
 #include "game/Player.h"
 
@@ -96,7 +97,8 @@ int main() {
 
     player.Init(Math::Vec3(0.0f, 0.0f, 0.0f), &cube1, &body);
     double lastTime = glfwGetTime();
-
+    Camera::CameraFollower camera_follower(&player, &camera);
+    camera_follower.viewLook = Camera::THIRDPERSON
     ; // Z-Buffer aktivieren
 
     // ---------------- Main Loop ----------------
@@ -110,6 +112,7 @@ int main() {
 
         // --- Maus Rotation ---
         player.Update(deltaTime);
+        camera_follower.UpdateCamera();
 
 
         // --- WASD Bewegung ---
@@ -117,12 +120,12 @@ int main() {
         // --- Render ---
         Engine::WindowBackgroundColor(0.1f, 0.23f, 0.3f, 1.0f);
         Engine::ClearScreen();
-        Engine::RenderEntity(floor,player.GetCamera());
-        Engine::RenderEntity(house, player.GetCamera());
+        Engine::RenderEntity(floor,camera);
+        Engine::RenderEntity(house, camera);
 
-        Engine::RenderEntity(cube1, player.GetCamera());
-        Engine::RenderEntity(cube2, player.GetCamera());
-        Engine::RenderEntity(animeGirl, player.GetCamera());
+        Engine::RenderEntity(cube1, camera);
+        Engine::RenderEntity(cube2, camera);
+        Engine::RenderEntity(animeGirl, camera);
 
         Engine::SwapBuffers();
     }

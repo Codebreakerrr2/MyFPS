@@ -20,8 +20,8 @@ namespace Game {
         position = startPos;
         body->position = startPos;
         playerEntity->transform.position = position;
-        camera.position = position;
-        camera.position.y += height;
+      //  camera.position = position; CameraFollower will do it
+      //  camera.position.y += height;
 
     }
 
@@ -33,18 +33,26 @@ namespace Game {
         pitch -= dy * sens;
         pitch = std::clamp(pitch, -1.5f, 1.5f);
     }
+    Math::Vec3 Player::GetForward() const {
+        // Forward in XZ-Ebene (Y=0)
+        return Math::Normalize(Math::Vec3(
+            std::cos(GetYaw()),   // X
+            0.0f,            // Y
+           std::sin(GetYaw())    // +X = Forward)
+        ));
+    }
 
     void Player::UpdateMovement(float dt) {
         Math::Vec3 wish(0.0f);
 
-        Math::Vec3 forward(std::cos(yaw), 0, std::sin(yaw));
-        Math::Vec3 right = Math::Normalize(Math::Cross(forward, {0,1,0}));
+        Math::Vec3 forward = GetForward();
+        Math::Vec3 right = Math::Normalize(Math::Cross( {0,1,0},forward));
 
         // Bewegung basierend auf Input
         if (Engine::IsKeyPressed(GLFW_KEY_W)) wish = wish + forward;
         if (Engine::IsKeyPressed(GLFW_KEY_S)) wish = wish - forward;
-        if (Engine::IsKeyPressed(GLFW_KEY_D)) wish = wish + right;
-        if (Engine::IsKeyPressed(GLFW_KEY_A)) wish = wish - right;
+        if (Engine::IsKeyPressed(GLFW_KEY_D)) wish = wish - right;
+        if (Engine::IsKeyPressed(GLFW_KEY_A)) wish = wish + right;
 
         // Normalize nur, wenn überhaupt Richtung gedrückt wird
         if (Math::Length(wish) > 0.0f)
@@ -74,18 +82,18 @@ namespace Game {
         position =playerEntity->transform.position ;
         playerEntity->transform.rotation.y=-yaw;
     }
-
+/*/Camera Controller will do it
     void Player::UpdateCamera() {
         camera.Rotate(pitch, yaw);
         camera.position = position;
         camera.position.y += height;
     }
-
+/*/
     void Player::Update(float deltaTime) {
         Player::UpdateLook(deltaTime);
         Player::UpdateMovement(deltaTime);
         Player::UpdateTransform();
-        Player::UpdateCamera();
+      //  Player::UpdateCamera();
 
     }
 

@@ -41,6 +41,7 @@ add_executable(MyFPS
         src/engine/Entity.cpp
         src/engine/parser.cpp
         src/engine/CameraController.cpp
+        src/engine/CameraFollower.cpp
         src/network/UDP.cpp
         src/network/NetworkInit.cpp
         src/network/Client.cpp

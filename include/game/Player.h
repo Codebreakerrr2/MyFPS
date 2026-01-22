@@ -16,17 +16,36 @@ namespace Game {
 
         void Init(const Math::Vec3& startPos, Engine::Entity* entity,Physics::PhysicsBody* body);
         void Update(float deltaTime);
-
-      [[nodiscard]] const Engine::Camera& GetCamera() const { return camera; }
+        Math::Vec3 GetForward() const;
 
     private:
         void UpdateLook(float dt);
+
+
         void UpdateMovement(float dt);
         void UpdateTransform();
         void UpdateCamera();
+
+    public:
+        [[nodiscard]] Math::Vec3 GetPosition() const {
+            return position;
+        }
+
+
+        [[nodiscard]] float GetHeight() const {
+            return height;
+        }
+
+        [[nodiscard]] float GetPitch() const {
+            return pitch;
+        }
+
+        [[nodiscard]] float GetYaw() const {
+            return yaw;
+        }
+
+    private:
         Physics::PhysicsBody* body;
-        Engine::Camera camera;
-        Engine::CameraController controller;
         Engine::Entity* playerEntity = nullptr;
 
         Math::Vec3 position{0.0f};
