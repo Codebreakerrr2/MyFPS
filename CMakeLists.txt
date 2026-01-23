@@ -7,9 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # -----------------------------
 # GLFW
 # -----------------------------
-set(GLFW_ROOT "${CMAKE_SOURCE_DIR}/glfw")
-set(GLFW_INCLUDE_DIR "${GLFW_ROOT}/include")
-set(GLFW_LIB_FILE "${GLFW_ROOT}/lib-mingw-w64/libglfw3.a")
+add_subdirectory(glfw)
 
 # -----------------------------
 # GLAD
@@ -62,9 +60,19 @@ target_include_directories(MyFPS PRIVATE
 
 target_link_libraries(MyFPS PRIVATE
         glad
-        ${GLFW_LIB_FILE}
+        glfw
         opengl32
         user32
         gdi32
         ws2_32
 )
+# -----------------------------
+# Copy assets to runtime dir
+# -----------------------------
+add_custom_target(copy_assets ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+)
+
+add_dependencies(MyFPS copy_assets)

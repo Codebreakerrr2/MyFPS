@@ -29,8 +29,8 @@ int main() {
     Engine::Entity floor;
     floor.meshID = Engine::LoadMeshIndexed(floorVertices, 3, floorIndices);
 
-    Engine::Shader shader("C:/Users/usman/CLionProjects/fps/assets/shaders/basic.vert",
-                          "C:/Users/usman/CLionProjects/fps/assets/shaders/basic.frag");
+    Engine::Shader shader("assets/shaders/basic.vert",
+                          "assets/shaders/basic.frag");
     floor.material.shader = &shader;
     floor.material.color = Math::Vec3(0.5f, 0.5f, 0.5f); // Grau
 
@@ -98,7 +98,7 @@ int main() {
     player.Init(Math::Vec3(0.0f, 0.0f, 0.0f), &cube1, &body);
     double lastTime = glfwGetTime();
     Camera::CameraFollower camera_follower(&player, &camera);
-    camera_follower.viewLook = Camera::THIRDPERSON
+    camera_follower.viewLook = Camera::FPS
     ; // Z-Buffer aktivieren
 
     // ---------------- Main Loop ----------------
