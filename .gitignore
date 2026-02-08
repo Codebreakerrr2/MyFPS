@@ -1,0 +1,26 @@
+# Build-Ordner
+build/
+cmake-build-*/
+
+# IDE-Dateien
+.idea/
+*.iml
+
+# GLFW oder externe Libraries (falls du sie lokal hast)
+glfw/
+
+# OS / System-Dateien
+*.DS_Store
+Thumbs.db
+
+# Executables / Debug-Dateien
+*.exe
+*.obj
+*.log
+*.pdb
+*.ilk
+*.out
+
+# Temporäre Dateien
+*.tmp
+*.swp

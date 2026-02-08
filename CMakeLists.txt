@@ -40,6 +40,11 @@ add_executable(MyFPS
         src/engine/parser.cpp
         src/engine/CameraController.cpp
         src/engine/CameraFollower.cpp
+
+        #-------------------
+        #editor src files
+        #------------------
+        src/geometry/geometry.cpp
         src/network/UDP.cpp
         src/network/NetworkInit.cpp
         src/network/Client.cpp
