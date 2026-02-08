@@ -10,5 +10,6 @@ namespace Engine {
     void GetMouseDelta(int& deltaX, int& deltaY);
     void setMouseSensitivity(float sensitivity);
     float getMouseSensitivity();
+    void getMousePosition(GLFWwindow* wwindow,double& mouseX, double& mouseY);
 
 }

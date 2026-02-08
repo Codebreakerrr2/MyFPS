@@ -125,6 +125,11 @@ namespace Engine {
 
         return window;
     }
+
+    void GetWindowSize(int &width, int &height) {
+        glfwGetWindowSize(window, &width, &height);
+    }
+
     //_______________________TEST__AND___FUN____METHODS______________________________________
     void WindowBackgroundColor(float r, float g, float b, float a) {
         glClearColor(r, g, b, a);

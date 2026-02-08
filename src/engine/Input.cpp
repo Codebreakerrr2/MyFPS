@@ -34,5 +34,7 @@ namespace Engine {
         lastMouseY = mouseY;
     }
 
-
+    void getMousePosition(GLFWwindow* win,double &mouseX, double &mouseY) {
+        glfwGetCursorPos(win, &mouseX, &mouseY);
+    }
 }

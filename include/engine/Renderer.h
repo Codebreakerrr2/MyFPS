@@ -24,6 +24,8 @@ namespace Engine {
 
 
     GLFWwindow* GetWindow();
+    void GetWindowSize(int& width, int& height);
+
 
 
     //_______________________TEST__AND___FUN____METHODS______________________________________
