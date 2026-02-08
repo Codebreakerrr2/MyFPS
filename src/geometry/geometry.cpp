@@ -29,3 +29,16 @@ Ray GetMouseRay(Engine::Camera* camera)
 
     return Ray(camera->position, rayDir);
 }
+
+
+
+bool intersectRayAABB(AABB aabb, Ray ray) {
+
+
+}
+
+bool intersectRayRay(Ray ray, Ray ray2) {
+}
+
+bool intersect2AABB(AABB aabb, AABB aabb2) {
+}

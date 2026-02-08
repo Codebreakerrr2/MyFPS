@@ -1,10 +1,14 @@
 #pragma once
+#include "engine/Camera.h"
 #include "Math/Vec.h"
 
 
-namespace Engine {
-    class Camera;
-}
+
+struct AABB {
+    Math::Vec3 min;
+    Math::Vec3 max;
+    AABB(Math::Vec3 min, Math::Vec3 max): min(min), max(max) {};
+};
 
 struct Ray{
     Math::Vec3 origin;
@@ -12,4 +16,7 @@ struct Ray{
 
     Ray(Math::Vec3 origin, Math::Vec3 direction): origin(origin), direction(Math::Normalize(direction)) {}
 };
-    void GetMouseRay(Engine::Camera camera);
+    Ray GetMouseRay(Engine::Camera camera);
+    bool intersectRayAABB(AABB aabb, Ray ray);
+    bool intersectRayRay(Ray ray, Ray ray2);
+    bool intersect2AABB(AABB aabb, AABB aabb2);

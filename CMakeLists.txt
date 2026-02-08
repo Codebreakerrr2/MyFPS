@@ -44,6 +44,10 @@ add_executable(MyFPS
         #-------------------
         #editor src files
         #------------------
+        src/editor/Editor.cpp
+        src/editor/Gizmos.cpp
+
+
         src/geometry/geometry.cpp
         src/network/UDP.cpp
         src/network/NetworkInit.cpp
