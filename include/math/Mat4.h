@@ -27,12 +27,22 @@ namespace Math {
             float nearPlane,
             float farPlane
         );
+        static Mat4 PerspectiveInverse(float fovRadians,
+            float aspect,
+            float nearPlane,
+            float farPlane
+            );
 
         static Mat4 LookAt(
             const Vec3& eye,
             const Vec3& center,
             const Vec3& up
         );
+        static Mat4 LookAtInverse(
+            const Vec3& eye,
+            const Vec3& center,
+            const Vec3& up
+            );
 
     };
 

@@ -77,6 +77,21 @@ namespace Math {
 
         return result;
     }
+    Mat4 Mat4::PerspectiveInverse(float fovRadians, float aspect, float nearPlane, float farPlane)
+    {
+        Mat4 result(0.0f);
+
+        float f = 1.0f / tan(fovRadians / 2.0f);
+
+        result.m[0]  = aspect / f;
+        result.m[5]  = 1.0f / f;
+        result.m[11] = (nearPlane - farPlane) / (2.0f * farPlane * nearPlane);
+        result.m[14] = -1.0f;
+        result.m[15] = (farPlane + nearPlane) / (2.0f * farPlane * nearPlane);
+
+        return result;
+    }
+
 
 
     Mat4 Mat4::LookAt(const Vec3& eye, const Vec3& center, const Vec3& up)
@@ -105,6 +120,27 @@ namespace Math {
 
         return m;
     }
+    Mat4 Mat4::LookAtInverse(const Vec3& eye, const Vec3& center, const Vec3& up)
+    {
+        Vec3 f = Normalize(center - eye);
+        Vec3 r = Normalize(Cross(f, up));
+        Vec3 u = Cross(r, f);
+
+        Mat4 m(1.0f);
+
+        // Rotation transpose
+        m.m[0] = r.x;  m.m[1] = r.y;  m.m[2]  = r.z;
+        m.m[4] = u.x;  m.m[5] = u.y;  m.m[6]  = u.z;
+        m.m[8] = -f.x; m.m[9] = -f.y; m.m[10] = -f.z;
+
+        // Translation (camera position)
+        m.m[12] = eye.x;
+        m.m[13] = eye.y;
+        m.m[14] = eye.z;
+
+        return m;
+    }
+
 
 
     // ---------------- Operators ----------------

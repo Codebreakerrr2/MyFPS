@@ -11,6 +11,14 @@ Camera::Camera(const Math::Vec3& pos, const Math::Vec3& target, const Math::Vec3
 Math::Mat4 Camera::GetViewMatrix() const {
     return Math::Mat4::LookAt(position, position + front, up);
 }
+    Math::Mat4 Camera::GetViewInverseMatrix() const
+{
+    return Math::Mat4::LookAtInverse(
+        position,
+        position + front,
+        up
+    );
+}
 
 Math::Mat4 Camera::GetProjectionMatrix() const {
     return Math::Mat4::Perspective(
@@ -20,6 +28,16 @@ Math::Mat4 Camera::GetProjectionMatrix() const {
         farPlane
     );
 }
+    Math::Mat4 Camera::GetProjectionInverseMatrix() const
+{
+    return Math::Mat4::PerspectiveInverse(
+        fov * 3.14159265f / 180.0f,
+        aspect,
+        nearPlane,
+        farPlane
+    );
+}
+
 
 void Camera::Move(const Math::Vec3& delta) {
     position = position + delta;

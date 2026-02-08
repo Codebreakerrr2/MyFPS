@@ -24,6 +24,8 @@ public:
 
     Math::Mat4 GetViewMatrix() const;
     Math::Mat4 GetProjectionMatrix() const;
+    Math::Mat4 GetViewInverseMatrix() const;
+    Math::Mat4 GetProjectionInverseMatrix() const;
 
 
     void Move(const Math::Vec3& delta);
