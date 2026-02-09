@@ -18,5 +18,5 @@ struct Ray{
 };
     Ray GetMouseRay(Engine::Camera camera);
     bool intersectRayAABB(AABB aabb, Ray ray);
-    bool intersectRayRay(Ray ray, Ray ray2);
+    //bool intersectRayRay(Ray ray, Ray ray2); not needed
     bool intersect2AABB(AABB aabb, AABB aabb2);
