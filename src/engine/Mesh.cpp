@@ -7,6 +7,27 @@ namespace Engine {
     static MeshID nextMeshID = 1; // 0 = invalid
 
 
+
+    AABB GetBoundingBox(const std::vector<float>& vertices) {
+        if (vertices.size() < 0) {
+            return AABB(Math::Vec3 (0),Math::Vec3(0));
+        }
+
+        Math::Vec3 min = Math::Vec3(vertices[0], vertices[1], vertices[2]);
+        Math::Vec3 max = Math::Vec3(vertices[0], vertices[1], vertices[2]);
+
+         for (int i = 3; i < vertices.size(); i+=3) {
+             min.x = std::min(min.x, vertices[i]);
+             min.y = std::min(min.y, vertices[i+1]);
+             min.z = std::min(min.z, vertices[i+2]);
+             max.x = std::max(max.x, vertices[i]);
+             max.y = std::max(max.y, vertices[i+1]);
+             max.z = std::max(max.z, vertices[i+2]);
+
+         }
+        return AABB(min, max);
+    }
+
     //REDUNDANT MESHLOAD EVENTUELL LÖSCHEN
     MeshID LoadMesh(const std::vector<float> &vertices, uint32_t vertexStride) {
         Mesh mesh;
@@ -42,6 +63,7 @@ namespace Engine {
         mesh.indexed = true;
         mesh.vertexCount = vertices.size() / vertexStride;
         mesh.indexCount = indices.size();
+        mesh.boundingBox = GetBoundingBox(vertices);
 
         glGenVertexArrays(1, &mesh.VAO);
         glGenBuffers(1, &mesh.VBO);

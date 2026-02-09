@@ -3,6 +3,7 @@
 #include "Math/Vec.h"
 #include "Math/Mat4.h"
 #include "Engine/Shader.h"
+#include "geometry/geometry.h"
 
 namespace Engine {
 
@@ -25,6 +26,8 @@ namespace Engine {
         int meshID = -1;
         Transform transform;
         Material material;
+
+        AABB GetAABB() const;
     };
 
 }

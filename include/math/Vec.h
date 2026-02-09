@@ -24,10 +24,13 @@ namespace Math {
     Vec3 operator+(const Vec3& a, const Vec3& b);
     Vec3 operator-(const Vec3& a, const Vec3& b);
     Vec3 operator*(const Vec3& v, float s);
+    Vec3 Hadamard(const Vec3& a, const Vec3& b);
     float Dot(const Vec3& a, const Vec3& b);
     Vec3 Cross(const Vec3& a, const Vec3& b);
     float Length(const Vec3& v);
     Vec3 Normalize(const Vec3& v);
+    Vec3 Min(const Vec3& a, const Vec3& b);
+    Vec3 Max(const Vec3& a, const Vec3& b);
 
     // -------- Vec4 --------
     struct Vec4 {

@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstdint>
 
+#include "geometry/geometry.h"
+
 namespace Engine {
 
     using MeshID = uint32_t;
@@ -15,6 +17,7 @@ namespace Engine {
         uint32_t vertexCount = 0;
         int indexCount = 0;
         bool indexed = false;
+        AABB boundingBox{0,0};
     };
 
     // Mesh-System API
@@ -25,6 +28,8 @@ namespace Engine {
     MeshID LoadMeshIndexed(const std::vector<float>& vertices,
         uint32_t vertexStrideFloats,
         const std::vector<uint32_t>& indices);
+
+    AABB GetBoundingBox(const std::vector<float>& vertices);
 
     const Mesh* GetMesh(MeshID id);
 
