@@ -1,19 +1,36 @@
 #pragma once
 #include <string>
+#include <vector>
 
+#include "engine/Camera.h"
+#include "engine/Entity.h"
 #include "math/Vec.h"
 
 namespace World {
 
 
-    bool LoadMap(const std::string& path);
+    //bool LoadMap(const std::string& path);
 
     // Update pro Frame (falls z.B. bewegliche Objekte, Türen)
-    void UpdateMap(float deltaTime);
+   // void UpdateMap(float deltaTime);
 
-    void RenderMap();
+   // void RenderMap();
+    class Map {
 
-    // Abfragen, ob Spieler/Gegner auf einem festen Objekt stehen (für Physics/Kollision)
-    bool IsSolid(float x, float y, float z);
+        //bool LoadMap(const std::string& path);
+
+
+
+
+    public:
+        std::vector<Engine::Camera*> cameras;
+        std::vector<Engine::Entity*> entities;
+     //   void addCamera(Engine::Camera* camera);
+     //   void removeCamera(Engine::Camera* camera);
+        void addEntity(Engine::Entity* entity);
+        void removeEntity(Engine::Entity* entity);
+        void RenderMap(Engine::Camera& camera);
+    };
+
 
 }

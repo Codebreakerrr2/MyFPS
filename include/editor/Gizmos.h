@@ -4,7 +4,8 @@
 
 
 class Gizmos {
-    void drawGizmos();
+public:
+    void drawGizmos(Engine::Entity& entity);
     void manipulateEntity(Engine::Entity& entity);
 
 

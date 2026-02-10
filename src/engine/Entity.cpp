@@ -13,8 +13,8 @@ Math::Mat4 Engine::Transform::GetModelMatrix() const {
            Math::Mat4::Scale(scale);
 }
 
-AABB Engine::Entity::GetAABB() const {
-    AABB local = GetMesh(meshID)->boundingBox;
+Geometry::AABB Engine::Entity::GetAABB() const {
+    Geometry::AABB local = GetMesh(meshID)->boundingBox;
     Math::Mat4 model = transform.GetModelMatrix();
 
     Math::Vec3 min = Math::Vec3(FLT_MIN);
@@ -38,7 +38,7 @@ AABB Engine::Entity::GetAABB() const {
         min = Min(min,transformed);
         max = Max(max,transformed);
     }
-    return AABB(min, max);
+    return Geometry::AABB(min, max);
 
 }
 

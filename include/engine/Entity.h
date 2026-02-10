@@ -27,7 +27,7 @@ namespace Engine {
         Transform transform;
         Material material;
 
-        AABB GetAABB() const;
+        Geometry::AABB GetAABB() const;
     };
 
 }
