@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Math/Vec.h"
-#include "Math/Mat4.h"
+#include "math/Vec.h"
+#include "math/Mat4.h"
 #include "Engine/Shader.h"
 #include "geometry/geometry.h"
+
 
 namespace Engine {
 
@@ -20,13 +21,14 @@ namespace Engine {
     struct Material {
         Shader* shader = nullptr;
         Math::Vec3 color {1.0f};
+        Material() = default;
+        Material(Shader* shader,Math::Vec3 color): shader(shader), color(color) {};
     };
 
     struct Entity {
         int meshID = -1;
-        Transform transform;
-        Material material;
-
+        Transform transform{};
+        Material material{};
         Geometry::AABB GetAABB() const;
     };
 

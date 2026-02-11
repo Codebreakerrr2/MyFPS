@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Camera.h"
 #include "Math/Vec.h"
+#include "geometry/geometry.h"
 
 namespace Geometry {
     struct AABB {

@@ -17,7 +17,7 @@ namespace Engine {
         uint32_t vertexCount = 0;
         int indexCount = 0;
         bool indexed = false;
-        AABB boundingBox{0,0};
+        Geometry::AABB boundingBox{0,0};
     };
 
     // Mesh-System API
@@ -29,7 +29,7 @@ namespace Engine {
         uint32_t vertexStrideFloats,
         const std::vector<uint32_t>& indices);
 
-    AABB GetBoundingBox(const std::vector<float>& vertices);
+    Geometry::AABB GetBoundingBox(const std::vector<float>& vertices);
 
     const Mesh* GetMesh(MeshID id);
 

@@ -24,7 +24,7 @@ namespace Game {
 
         void UpdateMovement(float dt);
         void UpdateTransform();
-        void UpdateCamera();
+       // void UpdateCamera();
 
     public:
         [[nodiscard]] Math::Vec3 GetPosition() const {

@@ -1,8 +1,11 @@
 #pragma once
 #include "Gizmos.h"
-#include "engine/CameraFollower.h"
 #include "engine/Entity.h"
 
+
+namespace World {
+    class Map;
+}
 
 class Editor {
 

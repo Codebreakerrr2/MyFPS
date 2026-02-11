@@ -3,7 +3,7 @@
 //
 
 #include "world/Map.h"
-
+#include "engine/Camera.h"
 #include <algorithm>
 
 #include "engine/Renderer.h"

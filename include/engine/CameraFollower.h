@@ -1,6 +1,7 @@
 #pragma once
 #include "Camera.h"
-#include "Game/Player.h"
+
+namespace Game{ class Player;}
 
 namespace Camera {
 

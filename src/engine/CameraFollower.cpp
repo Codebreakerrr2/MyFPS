@@ -1,4 +1,5 @@
 #include "engine/CameraFollower.h"
+#include "game/Player.h"
 
 namespace Camera {
 

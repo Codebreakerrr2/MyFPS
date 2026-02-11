@@ -1,11 +1,7 @@
 #pragma once
-#include <string>
 #include <vector>
-
-#include "engine/Camera.h"
-#include "engine/Entity.h"
-#include "math/Vec.h"
-
+namespace Engine { class Camera; }  // Forward Declaration
+namespace Engine { class Entity; }
 namespace World {
 
 

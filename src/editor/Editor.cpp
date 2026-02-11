@@ -1,5 +1,5 @@
 #include "editor/Editor.h"
-
+#include "World/Map.h"
 #include <cfloat>
 
 

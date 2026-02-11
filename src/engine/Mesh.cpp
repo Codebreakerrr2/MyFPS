@@ -7,10 +7,9 @@ namespace Engine {
     static MeshID nextMeshID = 1; // 0 = invalid
 
 
-
-    AABB GetBoundingBox(const std::vector<float>& vertices) {
+    Geometry::AABB GetBoundingBox(const std::vector<float>& vertices) {
         if (vertices.size() < 0) {
-            return AABB(Math::Vec3 (0),Math::Vec3(0));
+            return Geometry::AABB(Math::Vec3 (0),Math::Vec3(0));
         }
 
         Math::Vec3 min = Math::Vec3(vertices[0], vertices[1], vertices[2]);
@@ -25,7 +24,7 @@ namespace Engine {
              max.z = std::max(max.z, vertices[i+2]);
 
          }
-        return AABB(min, max);
+        return Geometry::AABB(min, max);
     }
 
     //REDUNDANT MESHLOAD EVENTUELL LÖSCHEN

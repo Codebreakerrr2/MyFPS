@@ -5,7 +5,7 @@ cmake-build-*/
 # IDE-Dateien
 .idea/
 *.iml
-
+*.xml
 # GLFW oder externe Libraries (falls du sie lokal hast)
 glfw/
 
