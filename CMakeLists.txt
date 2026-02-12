@@ -4,6 +4,28 @@ project(FPS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+
+#-----------------------
+# Google Test
+#-------------------
+include(FetchContent)
+
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/heads/main.zip
+)
+
+# Für Windows wichtig
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+
+
+
+
 # -----------------------------
 # GLFW
 # -----------------------------
@@ -85,3 +107,24 @@ add_custom_target(copy_assets ALL
 )
 
 add_dependencies(MyFPS copy_assets)
+
+#-------------------------
+# Google Test
+#-------------------------
+add_executable(EngineTests
+        tests/geometryTest.cpp
+        src/math/Vec.cpp
+
+)
+
+target_link_libraries(EngineTests
+        gtest_main
+
+)
+
+target_include_directories(EngineTests PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+include(GoogleTest)
+gtest_discover_tests(EngineTests)

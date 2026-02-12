@@ -6,20 +6,24 @@
 namespace World {
     class Map;
 }
+namespace Editor {
+    class Editor {
 
-class Editor {
 
 
-    Editor(World::Map& map): map(map){};
 
     public:
-    void selectObject(Engine::Camera* camera);
-    void unselectObject();
-    void update(float dt);
-    Engine::Entity* selectedEntity = nullptr;
-    World::Map& map;
+        Editor(World::Map& map): map(map){};
+        void selectObject(Engine::Camera* camera);
+        void unselectObject();
+        void drawEntities(Engine::Camera& camera);
+        void update(float dt, Engine::Camera& camera);
+        Engine::Entity* selectedEntity = nullptr;
+        World::Map& map;
 
-private:
-    Gizmos gizmos;
+    private:
+        Gizmos gizmos;
+        Engine::Camera* selectedCamera = nullptr;
 
-};
+    };
+}

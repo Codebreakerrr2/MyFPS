@@ -17,7 +17,7 @@ namespace Engine {
         uint32_t vertexCount = 0;
         int indexCount = 0;
         bool indexed = false;
-        Geometry::AABB boundingBox{0,0};
+        Geometry::AABB boundingBox{0,0}; // for new LoadMesh functions please dont forget this!
     };
 
     // Mesh-System API

@@ -6,10 +6,12 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
+#include "editor/Editor.h"
 #include "engine/CameraController.h"
 #include "engine/CameraFollower.h"
 #include "engine/parser.h"
 #include "game/Player.h"
+#include "world/Map.h"
 
 int main() {
     // ---------------- Init ----------------
@@ -100,6 +102,17 @@ int main() {
     Camera::CameraFollower camera_follower(&player, &camera);
     camera_follower.viewLook = Camera::FPS
     ; // Z-Buffer aktivieren
+    //Map
+    World::Map world;
+    world.addEntity(&cube1);
+    world.addEntity(&cube2);
+    world.addEntity(&animeGirl);
+    world.addEntity(&house);
+    world.addEntity(&floor);
+
+    //Editor
+    Editor::Editor editor(world);
+    Engine::CameraController controller;
 
     // ---------------- Main Loop ----------------
     while (Engine::WindowIsOpen()) {
@@ -111,22 +124,17 @@ int main() {
             Engine::CloseWindow();
 
         // --- Maus Rotation ---
-        player.Update(deltaTime);
-        camera_follower.UpdateCamera();
-
+      //  player.Update(deltaTime);
+      //  camera_follower.UpdateCamera();
 
         // --- WASD Bewegung ---
 
         // --- Render ---
         Engine::WindowBackgroundColor(0.1f, 0.23f, 0.3f, 1.0f);
         Engine::ClearScreen();
-        Engine::RenderEntity(floor,camera);
-        Engine::RenderEntity(house, camera);
-
-        Engine::RenderEntity(cube1, camera);
-        Engine::RenderEntity(cube2, camera);
-        Engine::RenderEntity(animeGirl, camera);
-
+        controller.Update(camera,deltaTime,Engine::MoveMode::Flying);
+        editor.update(deltaTime,camera);
+        editor.drawEntities(camera);
         Engine::SwapBuffers();
     }
 
