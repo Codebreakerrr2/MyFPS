@@ -132,9 +132,9 @@ int main() {
         // --- Render ---
         Engine::WindowBackgroundColor(0.1f, 0.23f, 0.3f, 1.0f);
         Engine::ClearScreen();
-        controller.Update(camera,deltaTime,Engine::MoveMode::Flying);
-        editor.update(deltaTime,camera);
-        editor.drawEntities(camera);
+        controller.Update(Engine::mainCamera,deltaTime,Engine::MoveMode::Flying);
+        editor.update(deltaTime,Engine::mainCamera);
+        editor.drawEntities(Engine::mainCamera);
         Engine::SwapBuffers();
     }
 

@@ -30,5 +30,17 @@ public:
 
     void Move(const Math::Vec3& delta);
     void Rotate(float pitchRadians, float yawRadians);
+
+
+    void SetAspectRatio(float aspectRatio);
+    void SetNearPlane(float nearPlane);
+    void SetFarPlane(float farPlane);
+    void SetFOV(float fov);
+
+
+
 };
+
+    //globale main camera
+    extern Camera mainCamera;
 }

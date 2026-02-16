@@ -3,6 +3,15 @@
 #include "math/Mat4.h"
 #include <cmath> // für std::tan
 namespace Engine {
+
+    Camera mainCamera;
+
+
+
+
+
+
+
 Camera::Camera(const Math::Vec3& pos, const Math::Vec3& target, const Math::Vec3& upVector)
     : position(pos), up(upVector) {
     front = Math::Normalize(target - pos);
@@ -50,5 +59,16 @@ void Camera::Rotate(float pitchRadians, float yawRadians) {
     direction.y = std::sin(pitchRadians);
     direction.z = std::cos(pitchRadians) * std::sin(yawRadians);
     front = Math::Normalize(direction);
+
+
+
+
+
+
+}
+
+void Camera::SetAspectRatio(float aspectRatio) {
+    aspect = aspectRatio;
+
 }
 }

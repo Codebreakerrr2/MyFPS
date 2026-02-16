@@ -113,12 +113,46 @@ add_dependencies(MyFPS copy_assets)
 #-------------------------
 add_executable(EngineTests
         tests/geometryTest.cpp
-        src/math/Vec.cpp
+        src/engine/Renderer.cpp
+        src/engine/Input.cpp
+        src/engine/Physics.cpp
+        src/engine/Shader.cpp
+        src/engine/Mesh.cpp
+        src/engine/Camera.cpp
+        src/engine/Entity.cpp
+        src/engine/parser.cpp
+        src/engine/CameraController.cpp
+        src/engine/CameraFollower.cpp
+
+        #-------------------
+        #editor src files
+        #------------------
+        src/editor/Editor.cpp
+        src/editor/Gizmos.cpp
+
+
+        src/geometry/geometry.cpp
+        src/network/UDP.cpp
+        src/network/NetworkInit.cpp
+        src/network/Client.cpp
+        src/network/Server.cpp
+        src/game/Player.cpp
+        src/game/Enemy.cpp
+        src/world/Map.cpp
+        src/Math/Vec.cpp
+        src/Math/Mat4.cpp
+
 
 )
 
 target_link_libraries(EngineTests
         gtest_main
+        glad
+        glfw
+        opengl32
+        user32
+        gdi32
+        ws2_32
 
 )
 

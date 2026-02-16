@@ -18,7 +18,7 @@ Geometry::AABB Engine::Entity::GetAABB() const {
     Math::Mat4 model = transform.GetModelMatrix();
 
     Math::Vec3 min = Math::Vec3(FLT_MIN);
-    Math::Vec3 max = Math::Vec3(FLT_MAX);
+    Math::Vec3 max = Math::Vec3(-FLT_MAX);
 
     Math::Vec3 corners[8] = {
         {local.min.x, local.min.y, local.min.z},

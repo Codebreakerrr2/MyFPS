@@ -20,4 +20,10 @@ namespace Geometry {
     bool intersectRayAABB(AABB& aabb, Ray& ray, float &tHit);
     //bool intersectRayRay(Ray ray, Ray ray2); not needed
     bool intersect2AABB(AABB& aabb, AABB& aabb2);
+    //----------------------------------------------
+    // needed Test Functions
+    Ray GetMouseRay(Engine::Camera* camera,Math::Vec2);
+
+
+    //_______________________________________________
 }

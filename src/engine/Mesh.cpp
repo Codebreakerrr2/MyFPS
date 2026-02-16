@@ -8,7 +8,7 @@ namespace Engine {
 
 
     Geometry::AABB GetBoundingBox(const std::vector<float>& vertices) {
-        if (vertices.size() < 0) {
+        if (vertices.size()%3!=0 || vertices.size() < 3) {
             return Geometry::AABB(Math::Vec3 (0),Math::Vec3(0));
         }
 
@@ -109,4 +109,17 @@ namespace Engine {
         }
         meshes.clear();
     }
+
+    //________________TEST FUNCTIONS_____________________
+    MeshID LoadMeshTest(const std::vector<float>& vertices) {
+
+        Mesh mesh{};
+        mesh.indexed = true;
+        mesh.boundingBox = GetBoundingBox(vertices);
+        meshes[++nextMeshID] = mesh;
+        return nextMeshID;
+
+    }
+
+
 }

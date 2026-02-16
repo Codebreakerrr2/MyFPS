@@ -35,4 +35,8 @@ namespace Engine {
 
     void ShutdownMeshes();
 
+
+    //__________TEST FUNCTIONS __________________
+    MeshID LoadMeshTest(const std::vector<float>& vertices);
+
 }

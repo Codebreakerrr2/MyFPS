@@ -12,6 +12,7 @@ namespace Engine {
     // Callback für Fenstergröße
     void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
+        mainCamera.aspect= (float)width / (float)height;
     }
 
 
@@ -127,7 +128,7 @@ namespace Engine {
     }
 
     void GetWindowSize(int &width, int &height) {
-        glfwGetWindowSize(window, &width, &height);
+        glfwGetFramebufferSize(window, &width, &height);
     }
 
     //_______________________TEST__AND___FUN____METHODS______________________________________
