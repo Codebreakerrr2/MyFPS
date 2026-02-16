@@ -3,6 +3,9 @@
 MyFPS is a small first-person shooter prototype written in C++17 using OpenGL and GLFW.  
 It has a lightweight engine layer (rendering, input, math, physics) and a simple game layer (player, enemies), plus optional UDP networking (currently Windows-only).
 
+**Target Platform**: Windows  
+**Development Platforms**: Windows, macOS (for development and testing)
+
 ### Requirements
 
 - **C++17** compatible compiler
@@ -55,5 +58,8 @@ Create the `assets/models` directory and place your OBJ files there (or adjust t
 
 ### Notes
 
-- Networking (client/server, UDP) is implemented with WinSock2 and is only compiled on Windows.
+- **Target Platform**: Windows (primary platform)
+- **Development**: The project compiles and runs on macOS for development/testing purposes
+- **Networking**: UDP networking (client/server) is implemented with WinSock2 and only available on Windows builds
+- **Cross-Platform Development**: Rendering and gameplay work on both Windows and macOS; networking is Windows-only
 - Physics and world/level systems are intentionally minimal and can be expanded.
