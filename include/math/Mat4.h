@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-#include "Math/Vec.h"
+#include "math/Vec.h"
 
 
 namespace Math {

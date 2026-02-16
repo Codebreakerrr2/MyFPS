@@ -1,0 +1,36 @@
+# Build directories
+build/
+cmake-build-*/
+
+# CLion
+.idea/
+cmake-build-*/
+
+# Cursor / VS Code
+.vscode/
+.cursor/
+
+# macOS
+.DS_Store
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*~
+*.swp
+*.swo
+*.tmp

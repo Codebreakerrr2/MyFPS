@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Math/Vec.h"
-#include "Math/Mat4.h"
-#include "Engine/Shader.h"
+#include "math/Vec.h"
+#include "math/Mat4.h"
+#include "engine/Shader.h"
 
 namespace Engine {
 

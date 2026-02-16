@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "Math/Vec.h"
+#include "math/Vec.h"
 
 #pragma pack(push, 1)
 
