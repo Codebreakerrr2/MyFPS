@@ -53,12 +53,14 @@ int main() {
     std::vector<float> vertices1;
     std::vector<uint32_t> indices1;
 
-    if (!Engine::LoadOBJ("C:/Users/usman/Documents/Anime_charcter.obj", vertices, indices)) {
-        std::cerr << "OBJ konnte nicht geladen werden!\n";
+    // Load models from the project-relative assets directory instead of
+    // hardcoded absolute Windows paths so this works on any machine.
+    if (!Engine::LoadOBJ("assets/models/Anime_charcter.obj", vertices, indices)) {
+        std::cerr << "Failed to load OBJ: assets/models/Anime_charcter.obj\n";
     }
 
-    if (!Engine::LoadOBJ("C:/Users/usman/Documents/building.obj", vertices1, indices1)) {
-        std::cerr << "OBJ konnte nicht geladen werden!\n";
+    if (!Engine::LoadOBJ("assets/models/building.obj", vertices1, indices1)) {
+        std::cerr << "Failed to load OBJ: assets/models/building.obj\n";
     }
 
     Engine::Entity animeGirl;

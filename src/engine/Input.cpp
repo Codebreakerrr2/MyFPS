@@ -1,6 +1,11 @@
 #include "engine/Input.h"
-#include <windows.h>
 #include "engine/Renderer.h"
+
+// On Windows builds, allow including Win32 headers if needed,
+// but avoid breaking non-Windows platforms like macOS/Linux.
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+#endif
 
 namespace Engine {
 

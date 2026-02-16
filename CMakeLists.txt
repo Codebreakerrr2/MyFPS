@@ -28,7 +28,9 @@ target_include_directories(glad PUBLIC
 # -----------------------------
 # Executable
 # -----------------------------
-add_executable(MyFPS
+
+# Core game/engine sources (platform-independent)
+set(MYFPS_SOURCES
         src/main.cpp
         src/engine/Renderer.cpp
         src/engine/Input.cpp
@@ -40,32 +42,49 @@ add_executable(MyFPS
         src/engine/parser.cpp
         src/engine/CameraController.cpp
         src/engine/CameraFollower.cpp
-        src/network/UDP.cpp
-        src/network/NetworkInit.cpp
-        src/network/Client.cpp
-        src/network/Server.cpp
         src/game/Player.cpp
         src/game/Enemy.cpp
         src/world/Map.cpp
-        src/Math/Vec.cpp
-        src/Math/Mat4.cpp
-
-
+        src/math/Vec.cpp
+        src/math/Mat4.cpp
 )
+
+# Networking is currently implemented with WinSock2 and is only
+# available on Windows builds.
+if (WIN32)
+    list(APPEND MYFPS_SOURCES
+            src/network/UDP.cpp
+            src/network/NetworkInit.cpp
+            src/network/Client.cpp
+            src/network/Server.cpp
+    )
+endif ()
+
+add_executable(MyFPS ${MYFPS_SOURCES})
 
 target_include_directories(MyFPS PRIVATE
         include
         ${GLFW_INCLUDE_DIR}
 )
 
-target_link_libraries(MyFPS PRIVATE
-        glad
-        glfw
-        opengl32
-        user32
-        gdi32
-        ws2_32
-)
+if (WIN32)
+    target_link_libraries(MyFPS PRIVATE
+            glad
+            glfw
+            opengl32
+            user32
+            gdi32
+            ws2_32
+    )
+else ()
+    # macOS / Linux: use system OpenGL instead of Win32 libs
+    find_package(OpenGL REQUIRED)
+    target_link_libraries(MyFPS PRIVATE
+            glad
+            glfw
+            OpenGL::GL
+    )
+endif ()
 # -----------------------------
 # Copy assets to runtime dir
 # -----------------------------
