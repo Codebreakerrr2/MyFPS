@@ -13,7 +13,7 @@ namespace Engine {
     void InitInput(GLFWwindow* win) {
         window = win;
         // Optional: Cursor sperren
-        //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
     bool IsKeyPressed(int keyCode) {
         return glfwGetKey(window, keyCode) == GLFW_PRESS;
@@ -36,5 +36,9 @@ namespace Engine {
 
     void getMousePosition(GLFWwindow* win,double &mouseX, double &mouseY) {
         glfwGetCursorPos(win, &mouseX, &mouseY);
+    }
+
+    bool IsMouseButtonPressed(int keyCode) {
+        return glfwGetMouseButton(window, keyCode) == GLFW_PRESS;
     }
 }

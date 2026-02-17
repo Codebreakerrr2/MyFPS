@@ -92,4 +92,9 @@ namespace Engine {
         int loc = glGetUniformLocation(ID, name.c_str());
         glUniform1f(loc, v);
     }
+
+    void Shader::setBool(const std::string &name, bool v) const {
+        int loc = glGetUniformLocation(ID, name.c_str());
+        glUniform1i(loc, v);
+    }
 }

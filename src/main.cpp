@@ -15,7 +15,7 @@
 
 int main() {
     // ---------------- Init ----------------
-    Engine::InitRenderer(800, 600, "Cube + Floor");
+    Engine::InitRenderer(1920, 1080, "Cube + Floor");
     Engine::InitInput(Engine::GetWindow());
     Engine::WireFrame(false);
 

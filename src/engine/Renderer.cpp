@@ -2,6 +2,8 @@
 #include "engine/Entity.h"
 #include "glad/glad.h"
 #include <iostream>
+
+#include "editor/Editor.h"
 #include "GLFW/glfw3.h"
 #include "engine/Mesh.h"
 
@@ -107,6 +109,27 @@ namespace Engine {
             glDrawArrays(GL_TRIANGLES, 0, mesh->vertexCount);
 
 
+
+    }
+
+    void RenderEditorOverlay(const Entity &entity, const Camera &camera,Shader& shader) {
+        const Mesh* mesh = GetMesh(entity.meshID);
+
+        shader.use();
+        shader.setMat4("u_model",entity.transform.GetModelMatrix());
+        shader.setMat4("u_view",camera.GetViewMatrix());
+        shader.setMat4("u_proj",camera.GetProjectionMatrix());
+        glBindVertexArray(mesh->VAO);
+
+        glEnable(GL_POLYGON_OFFSET_FILL);
+        glPolygonOffset(-1.0f, -1.0f);  // etwas näher an der Kamera
+
+        if (mesh->indexed)
+            glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_INT, 0);
+        else
+            glDrawArrays(GL_TRIANGLES, 0, mesh->vertexCount);
+
+        glDisable(GL_POLYGON_OFFSET_FILL);
 
     }
 

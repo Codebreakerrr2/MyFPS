@@ -15,6 +15,7 @@ namespace Engine {
 
     void RenderMesh(int meshID, float x, float y, float z);
     void RenderEntity(const Entity& entity, const Camera& camera);
+    void RenderEditorOverlay(const Entity& entity, const Camera& camera,Shader& shader);
     void Shutdown();
 
     bool WindowIsOpen();

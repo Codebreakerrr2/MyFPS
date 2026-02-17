@@ -6,12 +6,17 @@
 #include "engine/Renderer.h"
 
 namespace Editor {
+
     void Editor::drawEntities(Engine::Camera& camera) {
         for (Engine::Entity* entity: map.entities) {
             Engine::RenderEntity(*entity,camera);
+
+        }
+
+        if (selectedEntity) {
+            Engine::RenderEditorOverlay(*selectedEntity,camera,EditorShader);
         }
     }
-
 
     void Editor::selectObject(Engine::Camera* camera)  {
         //shot ray if ray intersect with the nearest object then select that object
@@ -38,7 +43,7 @@ namespace Editor {
     }
 
     void Editor::update(float dt,Engine::Camera& camera ) {
-        if (Engine::IsKeyPressed(GLFW_KEY_Q)) {
+        if (Engine::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
             selectObject(&camera);
         }
         if (selectedEntity){

@@ -7,6 +7,7 @@ namespace Engine {
     // Input
     void InitInput(GLFWwindow* window);
     bool IsKeyPressed(int keyCode);
+    bool IsMouseButtonPressed(int keyCode);
     void GetMouseDelta(int& deltaX, int& deltaY);
     void setMouseSensitivity(float sensitivity);
     float getMouseSensitivity();
