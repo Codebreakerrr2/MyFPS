@@ -129,6 +129,7 @@ add_executable(EngineTests
         #------------------
         src/editor/Editor.cpp
         src/editor/Gizmos.cpp
+        src/editor/EditorUI.cpp
 
 
         src/geometry/geometry.cpp
