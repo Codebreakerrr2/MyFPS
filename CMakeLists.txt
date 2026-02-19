@@ -69,15 +69,39 @@ add_executable(MyFPS
         src/editor/Editor.cpp
         src/editor/Gizmos.cpp
 
+        #------------------
+        #assets manager src files
+        #-------------------
+        src/asset_manager/EntityManager.cpp
 
+
+
+
+        #------------------
+        #geometry src files
+        #---------------------
         src/geometry/geometry.cpp
+
+        #------------------
+        #network src files
+        #---------------------
         src/network/UDP.cpp
         src/network/NetworkInit.cpp
         src/network/Client.cpp
         src/network/Server.cpp
+
+        #-----------------
+        #game src files
+        #----------------
         src/game/Player.cpp
         src/game/Enemy.cpp
+        #----------------
+        #world src files
+        #--------------
         src/world/Map.cpp
+        #------------
+        #Math src files
+        #--------------
         src/Math/Vec.cpp
         src/Math/Mat4.cpp
 
@@ -129,17 +153,40 @@ add_executable(EngineTests
         #------------------
         src/editor/Editor.cpp
         src/editor/Gizmos.cpp
-        src/editor/EditorUI.cpp
+
+        #------------------
+        #assets manager src files
+        #-------------------
+        src/asset_manager/EntityManager.cpp
 
 
+
+
+        #------------------
+        #geometry src files
+        #---------------------
         src/geometry/geometry.cpp
+
+        #------------------
+        #network src files
+        #---------------------
         src/network/UDP.cpp
         src/network/NetworkInit.cpp
         src/network/Client.cpp
         src/network/Server.cpp
+
+        #-----------------
+        #game src files
+        #----------------
         src/game/Player.cpp
         src/game/Enemy.cpp
+        #----------------
+        #world src files
+        #--------------
         src/world/Map.cpp
+        #------------
+        #Math src files
+        #--------------
         src/Math/Vec.cpp
         src/Math/Mat4.cpp
 

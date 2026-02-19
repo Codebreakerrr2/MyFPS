@@ -1,9 +1,10 @@
 #pragma once
 
+#include "asset_manager/type.h"
 #include "math/Vec.h"
 #include "math/Mat4.h"
 #include "Engine/Shader.h"
-#include "geometry/geometry.h"
+#include "geometry/Geometry.h"
 
 
 namespace Engine {
@@ -26,6 +27,8 @@ namespace Engine {
     };
 
     struct Entity {
+        std::string name;
+        Manager::EntityID id;
         int meshID = -1;
         Transform transform{};
         Material material{};

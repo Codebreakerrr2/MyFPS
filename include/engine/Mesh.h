@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "geometry/geometry.h"
+#include "geometry/Geometry.h"
 
 namespace Engine {
 

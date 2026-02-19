@@ -14,7 +14,7 @@ TEST(Vec3Test, NormalizeX) {
 }
 
 
-#include "geometry/geometry.h"
+#include "geometry/Geometry.h"
 #include "engine/Camera.h"
 
 

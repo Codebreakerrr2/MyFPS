@@ -1,4 +1,4 @@
-#include "geometry/geometry.h"
+#include "geometry/Geometry.h"
 
 #include <cfloat>
 #include "engine/Camera.h"
