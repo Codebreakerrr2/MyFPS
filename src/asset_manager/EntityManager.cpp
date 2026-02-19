@@ -50,14 +50,40 @@ namespace Manager {
     }
 
     Engine::Entity * EntityManager::GetEntity(const std::string &name) {
+            //finde shared Pointer von Entity in map mittels name oder lieber in vector mit find 
+            for(const std::shared_ptr<Engine::Entity>& shrPointer : entities){
+                if(shrPointer->name == name){         
+                    return shrPointer.get();        
+                }
+            }
+            return nullptr;
     }
 
     Engine::Entity * EntityManager::GetEntity(EntityID id) {
-    }
-    std::shared_ptr<Engine::Entity> GetEntitySharedP(const std::string& name) {
+                auto it = entities_map.find(id);
+                if(it!= entities_map.end()){
+                    return it->second.get();
+                }
+                return nullptr;
 
+            }
+    
+    std::shared_ptr<Engine::Entity> GetEntitySharedP(const std::string& name) {
+           for(const std::shared_ptr<Engine::Entity>& shrPointer : entities){
+                if(shrPointer->name == name){         
+                    return shrPointer;        
+                }
+            }
+            return {};
     }
 
     std::vector<Engine::Entity *> EntityManager::GetAllEntities() {
-    }
+            std::vector<Engine::Entity*> result;
+            
+            for(std::shared_ptr<Engine::Entity>& sharePointer : entities){
+                result.push_back(sharePointer.get());
+            }
+            return result;
+
+        }
 }
