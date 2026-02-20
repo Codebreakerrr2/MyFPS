@@ -8,7 +8,7 @@ namespace Manager {
 
     /**
      * Manages Entity single point of Responsibility , its not typical Asset Manager. so the Asset Manager Requirement
-     * dosen't apply here.
+     * doesn't apply here.
      */
 
 

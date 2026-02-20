@@ -68,8 +68,8 @@ namespace Manager {
 
             }
     
-    std::shared_ptr<Engine::Entity> GetEntitySharedP(const std::string& name) {
-           for(const std::shared_ptr<Engine::Entity>& shrPointer : entities){
+    std::shared_ptr<Engine::Entity> EntityManager::GetEntitySharedP(const std::string& name) {
+           for(auto& shrPointer : entities){
                 if(shrPointer->name == name){         
                     return shrPointer;        
                 }
