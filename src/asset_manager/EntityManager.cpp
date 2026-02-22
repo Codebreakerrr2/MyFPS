@@ -10,80 +10,83 @@ namespace Manager {
         if (auto existing = GetEntity(name)) {
             return existing->id;
         }
-        auto ent = std::make_shared<Engine::Entity>();
+        auto ent = std::make_unique<Engine::Entity>();
         ent->name = name;
         ent->id = nextID++;
-        entities.push_back(ent);
-        entities_map[ent->id] = ent;
-        return ent->id;
+        Engine::Entity* rawPtr = ent.get();
+        entities.push_back(std::move(ent));
+        size_t index = entities.size()-1;
+        id_to_index[rawPtr->id] = index;
+        name_map[name] = rawPtr->id;
+        return rawPtr->id;
     }
 
-    void EntityManager::DestroyEntity(EntityID id) {
-        //find entity if not do nothing
-        auto it = entities_map.find(id);
-        if (it != entities_map.end()) {
-            entities.erase(std::remove(entities.begin(),entities.end(),it->second),entities.end()); // not efficient
-            entities_map.erase(it);
-            }
+  void EntityManager::DestroyEntity(EntityID id)
+{
+    auto it = id_to_index.find(id);
+    if (it == id_to_index.end())
+        return;
+
+    size_t index = it->second;
+    size_t lastIndex = entities.size() - 1;
+     name_map.erase(entities[index]->name);
+    if (index != lastIndex)
+    {
+        std::swap(entities[index], entities[lastIndex]);
+
+        // Update index of swapped entity
+        id_to_index[entities[index]->id] = index;
     }
+
+    entities.pop_back();        // IMMER poppen
+    id_to_index.erase(id);      // IMMER ID löschen
+
+}
 
 
 
 
     void EntityManager::DestroyEntity(const std::string &name) {
-        std::shared_ptr<Engine::Entity> entitySharedPtr = GetEntitySharedP(name);
-        if (entitySharedPtr) {
-            entities_map.erase(entitySharedPtr->id);
-                // little efficienter
-            auto it = std::find(entities.begin(),entities.end(),entitySharedPtr);
-            if (it != entities.end()) {
-                    std::iter_swap(it,entities.end()-1);
-                    entities.pop_back();
-            }
+      // find the Entity if not do nothing
+      auto it = name_map.find(name);
+      if(it != name_map.end()){
+            size_t id = it->second;
+            DestroyEntity(id);
 
-        }
+      }
     }
 
     void EntityManager::DestroyAllEntities() {
-        entities_map.clear();
-        entities.clear();
+            entities.clear();
+            name_map.clear();
+            id_to_index.clear();
     }
 
     Engine::Entity * EntityManager::GetEntity(const std::string &name) {
-            //finde shared Pointer von Entity in map mittels name oder lieber in vector mit find 
-            for(const std::shared_ptr<Engine::Entity>& shrPointer : entities){
-                if(shrPointer->name == name){         
-                    return shrPointer.get();        
-                }
-            }
-            return nullptr;
+            auto it = name_map.find(name);
+            if(it!= name_map.end()){
+                EntityID id = it->second;
+              return  GetEntity(id);
     }
-
+    return nullptr;
+    }
     Engine::Entity * EntityManager::GetEntity(EntityID id) {
-                auto it = entities_map.find(id);
-                if(it!= entities_map.end()){
-                    return it->second.get();
+               auto it = id_to_index.find(id);
+                if(it!= id_to_index.end()){
+                    return entities[it->second].get();
                 }
                 return nullptr;
-
             }
     
-    std::shared_ptr<Engine::Entity> EntityManager::GetEntitySharedP(const std::string& name) {
-           for(auto& shrPointer : entities){
-                if(shrPointer->name == name){         
-                    return shrPointer;        
-                }
-            }
-            return {};
-    }
+    
 
     std::vector<Engine::Entity *> EntityManager::GetAllEntities() {
-            std::vector<Engine::Entity*> result;
-            
-            for(std::shared_ptr<Engine::Entity>& sharePointer : entities){
-                result.push_back(sharePointer.get());
-            }
-            return result;
+         std::vector<Engine::Entity*> result;
+         result.reserve(entities.size());
+         for(auto& it : entities){
+            result.push_back(it.get());
+         }
+         return result;
 
         }
 }

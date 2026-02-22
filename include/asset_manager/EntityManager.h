@@ -24,15 +24,17 @@ namespace Manager {
         void DestroyAllEntities();
         Engine::Entity* GetEntity(const std::string& name);
         Engine::Entity* GetEntity(EntityID id);
-        std::shared_ptr<Engine::Entity> GetEntitySharedP(const std::string& name);
+        
         std::vector<Engine::Entity*> GetAllEntities();
 
 
     private:
         EntityID nextID;
        //two data Structures for good performance
-        std::vector<std::shared_ptr<Engine::Entity>> entities;
-        std::unordered_map<EntityID, std::shared_ptr<Engine::Entity>> entities_map;
+        std::vector<std::unique_ptr<Engine::Entity>> entities;
+        std::unordered_map<std::string, EntityID> name_map;
+        std::unordered_map<EntityID, size_t> id_to_index;
+    
 
     };
 
