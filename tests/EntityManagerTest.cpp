@@ -14,6 +14,7 @@ TEST(EnitityManager,CreatingEntity) {
     Engine::Entity* firstByID = entityManager.GetEntity(id1);
 
 
+
     EXPECT_EQ(entityManager.GetAllEntities().size(), 3);
     EXPECT_EQ(first,firstByID);
 

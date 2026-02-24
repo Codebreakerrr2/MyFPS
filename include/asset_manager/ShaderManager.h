@@ -11,21 +11,22 @@ namespace Engine {
 
 namespace Manager{
 
-class ShaderManager {
+    class ShaderManager {
 
-private:
+    private:
 
-    ShaderID nextID;
-    std::unordered_map<ShaderID, std::unique_ptr<Engine::Shader>> map; 
-    std::unordered_map<std::string,ShaderID> nameToIdMap;
-    std::vector<ShaderID> shaderRemoveMemory;
-public:
-    Engine::Shader* GetShader(ShaderID id);
-    Engine::Shader* GetShader(const std::string& name);
-    void DestroyShader(ShaderID id);
-    void DestroyShader(const std::string& name);
-    Engine::Shader* CreatShader(std::string name,const std::string& pathVertex, const std::string& pathFrag);
+        ShaderID nextID;
+        std::unordered_map<ShaderID, std::unique_ptr<Engine::Shader>> map;
+        std::unordered_map<std::string,ShaderID> name_to_id;
+        std::vector<ShaderID> shaderRemoveMemory;
+    public:
+        Engine::Shader* GetShader(ShaderID id);
+        Engine::Shader* GetShader(const std::string& name);
+        void DestroyShader(ShaderID id);
+        void DestroyShader(const std::string& name);
+        Engine::Shader* CreatShader(std::string name,const std::string& pathVertex, const std::string& pathFrag);
+        void DestryAllShaders();
+        void cleanUp();
 
-
-        };
+    };
 }

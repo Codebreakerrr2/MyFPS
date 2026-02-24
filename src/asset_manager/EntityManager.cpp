@@ -17,7 +17,7 @@ namespace Manager {
         entities.push_back(std::move(ent));
         size_t index = entities.size()-1;
         id_to_index[rawPtr->id] = index;
-        name_map[name] = rawPtr->id;
+        name_to_id[name] = rawPtr->id;
         return rawPtr->id;
     }
 
@@ -29,7 +29,7 @@ namespace Manager {
 
     size_t index = it->second;
     size_t lastIndex = entities.size() - 1;
-     name_map.erase(entities[index]->name);
+     name_to_id.erase(entities[index]->name);
     if (index != lastIndex)
     {
         std::swap(entities[index], entities[lastIndex]);
@@ -48,8 +48,8 @@ namespace Manager {
 
     void EntityManager::DestroyEntity(const std::string &name) {
       // find the Entity if not do nothing
-      auto it = name_map.find(name);
-      if(it != name_map.end()){
+      auto it = name_to_id.find(name);
+      if(it != name_to_id.end()){
             size_t id = it->second;
             DestroyEntity(id);
 
@@ -58,13 +58,13 @@ namespace Manager {
 
     void EntityManager::DestroyAllEntities() {
             entities.clear();
-            name_map.clear();
+            name_to_id.clear();
             id_to_index.clear();
     }
 
     Engine::Entity * EntityManager::GetEntity(const std::string &name) {
-            auto it = name_map.find(name);
-            if(it!= name_map.end()){
+            auto it = name_to_id.find(name);
+            if(it!= name_to_id.end()){
                 EntityID id = it->second;
               return  GetEntity(id);
     }

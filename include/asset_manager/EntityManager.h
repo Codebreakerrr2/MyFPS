@@ -2,7 +2,8 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
-#include "type.h"
+#include <string>
+#include "engine/Entity.h"
 
 namespace Manager {
 
@@ -15,7 +16,8 @@ namespace Manager {
     using EntityID = uint32_t;
     class EntityManager {
         public:
-        EntityManager(): nextID(1){};
+        EntityManager() : nextID(1) {
+        };
         ~EntityManager(){DestroyAllEntities();};
 
         EntityID CreateEntity(const std::string& name);
@@ -32,7 +34,7 @@ namespace Manager {
         EntityID nextID;
        //two data Structures for good performance
         std::vector<std::unique_ptr<Engine::Entity>> entities;
-        std::unordered_map<std::string, EntityID> name_map;
+        std::unordered_map<std::string, EntityID> name_to_id;
         std::unordered_map<EntityID, size_t> id_to_index;
     
 
