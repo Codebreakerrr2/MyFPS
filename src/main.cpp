@@ -6,12 +6,16 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
+
+#include "asset_manager/EntityManager.h"
 #include "editor/Editor.h"
 #include "engine/CameraController.h"
 #include "engine/CameraFollower.h"
 #include "engine/parser.h"
 #include "game/Player.h"
+#include "profiling/FrameTimer.h"
 #include "world/Map.h"
+#include "profiling/ScopeTimer.h"
 
 int main() {
     // ---------------- Init ----------------
@@ -78,7 +82,8 @@ int main() {
     house.transform.scale = Math::Vec3(0.2f, 0.2f, 0.2f);
 
     Engine::Entity cube1, cube2;
-    cube1.meshID = cube2.meshID = Engine::LoadMeshIndexed(cubeVertices, 3, cubeIndices);
+    Engine::MeshID meshids;
+    meshids = cube1.meshID = cube2.meshID = Engine::LoadMeshIndexed(cubeVertices, 3, cubeIndices);
     cube1.material.shader = cube2.material.shader = &shader;
 
     cube1.material.color = Math::Vec3(1.0f, 0.0f, 0.0f); // rot
@@ -109,13 +114,24 @@ int main() {
     world.addEntity(&animeGirl);
     world.addEntity(&house);
     world.addEntity(&floor);
+//entitties erzeugen und shader übergeben.
+    Manager::EntityManager entity_manager;
 
+    for (int i= 1; i<2500; i++) {
+        entity_manager.CreateEntity(std::to_string(i));
+        Engine::Entity* entity =  entity_manager.GetEntity(i);
+        entity->material.shader= &shader;
+        entity->meshID= meshids;
+        world.addEntity(entity);
+    }
     //Editor
     Editor::Editor editor(world);
     Engine::CameraController controller;
-
+    double movementScope=0.0, drawScope=0.0, editorScope=0.0;
     // ---------------- Main Loop ----------------
     while (Engine::WindowIsOpen()) {
+        Profiling::FrameTimer frameTimer;
+        frameTimer.beginFrame();
         double currentTime = glfwGetTime();
         float deltaTime = static_cast<float>(currentTime - lastTime);
         lastTime = currentTime;
@@ -132,12 +148,33 @@ int main() {
         // --- Render ---
         Engine::WindowBackgroundColor(0.1f, 0.23f, 0.3f, 1.0f);
         Engine::ClearScreen();
-        controller.Update(Engine::mainCamera,deltaTime,Engine::MoveMode::Flying);
-        editor.update(deltaTime,Engine::mainCamera);
-        editor.drawEntities(Engine::mainCamera);
+        {
+            Profiling::ScopedTimer timer(movementScope);
+           controller.Update(Engine::mainCamera,deltaTime,Engine::MoveMode::Flying);
+        }
+        {
+            Profiling::ScopedTimer timer(editorScope);
+            editor.update(deltaTime,Engine::mainCamera);
+        }
+
+
+
+
+        {
+            Profiling::ScopedTimer timer(drawScope);
+            editor.drawEntities(Engine::mainCamera);
+        }
         Engine::SwapBuffers();
+        frameTimer.endFrame();
+        std::cout << "Frame: " << frameTimer.getFrameTime()
+             << " ms | draw: " << drawScope
+             << " ms | editor: " << editorScope
+             << " ms | movements: " << movementScope
+             << " ms | FPS: " << frameTimer.getFPS()
+             << std::endl;
     }
 
     Engine::Shutdown();
+
     return 0;
 }
