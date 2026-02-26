@@ -138,6 +138,12 @@ add_dependencies(MyFPS copy_assets)
 add_executable(EngineTests
         tests/geometryTest.cpp
         tests/EntityManagerTest.cpp
+        tests/ShaderManagerTest.cpp
+
+
+
+
+
         src/engine/Renderer.cpp
         src/engine/Input.cpp
         src/engine/Physics.cpp

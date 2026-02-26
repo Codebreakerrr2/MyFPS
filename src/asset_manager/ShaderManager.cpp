@@ -1,6 +1,10 @@
 #include "asset_manager/ShaderManager.h"
 #include <string>
 #include "engine/Shader.h"
+#include <unordered_map>
+#include <memory>
+#include <vector>
+
 
 namespace Manager{
 
@@ -59,13 +63,10 @@ namespace Manager{
     }
      Engine::Shader* ShaderManager::CreateShader(std::string name,const std::string& pathVertex, const std::string& pathFrag){
             // erzeuge 
-           auto thing =  std::make_unique<Engine::Shader>(pathVertex,pathFrag);
-           ShaderID id = nextID++;
-           auto* ptr =thing.get();
-            map.emplace(id,std::move(thing));
-            name_to_id.emplace(name,id);
-            id_to_name.emplace(id,name);
-            return ptr;
+           auto thing =  std::make_unique<Engine::Shader>(pathVertex.c_str(),pathFrag.c_str());
+
+
+            return nullptr  ;
 
      }
 }
