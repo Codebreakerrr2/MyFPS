@@ -35,6 +35,7 @@ namespace Manager{
         Engine::Shader* CreateShader(std::string name,const std::string& pathVertex, const std::string& pathFrag);
         void DestroyAllShaders();
         void cleanUp();
-
+    //-------------------TEST FUNCTION----------------------
+        Engine::Shader* CreateShaderMock(std::string name,const std::string& pathVertex, const std::string& pathFrag);
     };
 }

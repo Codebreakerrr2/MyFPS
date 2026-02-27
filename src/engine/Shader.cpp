@@ -97,4 +97,12 @@ namespace Engine {
         int loc = glGetUniformLocation(ID, name.c_str());
         glUniform1i(loc, v);
     }
+
+//_____________________TEst Function______________________
+    Shader::Shader(const char* vertexPath, const char* fragmentPath, bool mock){
+        static size_t nextID = 1;
+        ID = nextID++;
+    }
+
+
 }

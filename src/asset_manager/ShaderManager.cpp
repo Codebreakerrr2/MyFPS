@@ -64,9 +64,24 @@ namespace Manager{
      Engine::Shader* ShaderManager::CreateShader(std::string name,const std::string& pathVertex, const std::string& pathFrag){
             // erzeuge 
            auto thing =  std::make_unique<Engine::Shader>(pathVertex.c_str(),pathFrag.c_str());
-
+        
 
             return nullptr  ;
+     }
+
+     //--------------------------------TEST_____FUNCTION--------------------------------------
+
+      Engine::Shader* ShaderManager::CreateShaderMock(std::string name,const std::string& pathVertex, const std::string& pathFrag){
+            // erzeuge 
+           auto thing =  std::make_unique<Engine::Shader>(pathVertex.c_str(),pathFrag.c_str(),true);
+            
+    ShaderID id = nextID++;
+    name_to_id[name] = id;
+    id_to_name[id] = name;
+    Engine::Shader* ptr = thing.get();
+    map[id] = std::move(thing);
+    return ptr;
+
 
      }
 }

@@ -7,7 +7,7 @@ namespace Engine {
     class Shader {
 
     public:
-        unsigned int ID;
+        unsigned int ID = 1;
         Shader(const char* vertexPath, const char* fragmentPath);
         ~Shader();
 
@@ -18,6 +18,9 @@ namespace Engine {
         void setVec3(const std::string& name, const Math::Vec3& vec3) const;
         void setFloat(const std::string& name, float v) const;
         void setBool(const std::string& name, bool v) const;
+
+        //________________TEST FUNCTION_________________
+        Shader(const char* vertexPath, const char* fragmentPath, bool mock);
 
     };
 }
