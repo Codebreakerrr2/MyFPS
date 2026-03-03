@@ -7,6 +7,21 @@ struct GLFWwindow;
 
 
 namespace Engine {
+    class IShader;
+
+
+    enum class RenderType {
+        OPENGL, VULKAN, DIRECTX
+    };
+    static RenderType renderType = RenderType::OPENGL;
+    inline RenderType GetRenderType() {
+        return renderType;
+    }
+    inline void SetRenderType(RenderType type) {
+        renderType = type;
+    }
+
+
     extern GLFWwindow* window;
     bool InitRenderer(int width = 800, int height = 600, const std::string& title = "FPS");
 
@@ -15,7 +30,7 @@ namespace Engine {
 
     void RenderMesh(int meshID, float x, float y, float z);
     void RenderEntity(const Entity& entity, const Camera& camera);
-    void RenderEditorOverlay(const Entity& entity, const Camera& camera,Shader& shader);
+    void RenderEditorOverlay(const Entity& entity, const Camera& camera,IShader& shader);
     void Shutdown();
 
     bool WindowIsOpen();

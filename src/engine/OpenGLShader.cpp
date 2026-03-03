@@ -1,4 +1,4 @@
-#include "engine/Shader.h"
+#include "engine/OpenGLShader.h"
 #include "math/Vec.h"
 #include <glad/glad.h>
 #include <iostream>
@@ -38,7 +38,7 @@ namespace Engine {
     }
 
     // -------- Konstruktor --------
-    Shader::Shader(const char* vertexPath, const char* fragmentPath)
+    OpenGLShader::OpenGLShader(const char* vertexPath, const char* fragmentPath)
     {
         std::string vertCode = ReadShaderFile(vertexPath);
         std::string fragCode = ReadShaderFile(fragmentPath);
@@ -64,45 +64,41 @@ namespace Engine {
     }
 
     // -------- Destruktor --------
-    Shader::~Shader()
+    OpenGLShader::~OpenGLShader()
     {
         glDeleteProgram(ID);
     }
 
 
-    void Shader::use() const
+    void OpenGLShader::use() const
     {
         glUseProgram(ID);
     }
 
     // -------- Uniforms --------
-    void Shader::setMat4(const std::string& name, const Math::Mat4& mat) const
+    void OpenGLShader::setMat4(const std::string& name, const Math::Mat4& mat) const
     {
         int loc = glGetUniformLocation(ID, name.c_str());
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.m);
     }
 
-    void Shader::setVec3(const std::string& name, const Math::Vec3& v) const {
+    void OpenGLShader::setVec3(const std::string& name, const Math::Vec3& v) const {
         int loc = glGetUniformLocation(ID, name.c_str());
         glUniform3f(loc, v.x, v.y, v.z);
     }
 
-    void Shader::setFloat(const std::string& name, float v) const
+    void OpenGLShader::setFloat(const std::string& name, float v) const
     {
         int loc = glGetUniformLocation(ID, name.c_str());
         glUniform1f(loc, v);
     }
 
-    void Shader::setBool(const std::string &name, bool v) const {
+    void OpenGLShader::setBool(const std::string &name, bool v) const {
         int loc = glGetUniformLocation(ID, name.c_str());
         glUniform1i(loc, v);
     }
 
-//_____________________TEst Function______________________
-    Shader::Shader(const char* vertexPath, const char* fragmentPath, bool mock){
-        static size_t nextID = 1;
-        ID = nextID++;
+    Engine::IShader* OpenGLShader::CreatShader(const char *vertexPath, const char *fragmentPath) {
+        return nullptr;
     }
-
-
 }

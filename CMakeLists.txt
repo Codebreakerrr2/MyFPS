@@ -55,7 +55,7 @@ add_executable(MyFPS
         src/engine/Renderer.cpp
         src/engine/Input.cpp
         src/engine/Physics.cpp
-        src/engine/Shader.cpp
+        src/engine/OpenGLShader.cpp
         src/engine/Mesh.cpp
         src/engine/Camera.cpp
         src/engine/Entity.cpp
@@ -147,7 +147,7 @@ add_executable(EngineTests
         src/engine/Renderer.cpp
         src/engine/Input.cpp
         src/engine/Physics.cpp
-        src/engine/Shader.cpp
+        src/engine/OpenGLShader.cpp
         src/engine/Mesh.cpp
         src/engine/Camera.cpp
         src/engine/Entity.cpp

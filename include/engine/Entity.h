@@ -20,10 +20,10 @@ namespace Engine {
 
 
     struct Material {
-        Shader* shader = nullptr;
+        OpenGLShader* shader = nullptr;
         Math::Vec3 color {1.0f};
         Material() = default;
-        Material(Shader* shader,Math::Vec3 color): shader(shader), color(color) {};
+        Material(OpenGLShader* shader,Math::Vec3 color): shader(shader), color(color) {};
     };
 
     struct Entity {

@@ -1,14 +1,15 @@
 #include "asset_manager/ShaderManager.h"
 #include <string>
-#include "engine/Shader.h"
 #include <unordered_map>
 #include <memory>
 #include <vector>
 
+#include "engine/Renderer.h"
+
 
 namespace Manager{
 
- Engine::Shader* ShaderManager::GetShader(ShaderID id){
+ Engine::IShader* ShaderManager::GetShader(ShaderID id){
 
     auto it = map.find(id);
     if(it != map.end()){
@@ -17,7 +18,7 @@ namespace Manager{
     return nullptr;
  }
 
- Engine::Shader* ShaderManager::GetShader(const std::string& name){
+ Engine::IShader* ShaderManager::GetShader(const std::string& name){
     auto it = name_to_id.find(name);
     if(it != name_to_id.end()){
         ShaderID id = it->second; 
@@ -61,24 +62,31 @@ namespace Manager{
 
 
     }
-     Engine::Shader* ShaderManager::CreateShader(std::string name,const std::string& pathVertex, const std::string& pathFrag){
-            // erzeuge 
-           auto thing =  std::make_unique<Engine::Shader>(pathVertex.c_str(),pathFrag.c_str());
-        
+     Engine::IShader* ShaderManager::CreateShader(std::string name,const std::string& pathVertex, const std::string& pathFrag){
+            // erzeuge
+            Engine::IShader* ptr;
+     switch(Engine::GetRenderType()) {
+
+
+
+
+
+     }
+
 
             return nullptr  ;
      }
 
      //--------------------------------TEST_____FUNCTION--------------------------------------
 
-      Engine::Shader* ShaderManager::CreateShaderMock(std::string name,const std::string& pathVertex, const std::string& pathFrag){
+      Engine::OpenGLShader* ShaderManager::CreateShaderMock(std::string name,const std::string& pathVertex, const std::string& pathFrag){
             // erzeuge 
-           auto thing =  std::make_unique<Engine::Shader>(pathVertex.c_str(),pathFrag.c_str(),true);
+           auto thing =  std::make_unique<Engine::IShader>(CreateShader(pathVertex.c_str(),pathFrag.c_str());
             
     ShaderID id = nextID++;
     name_to_id[name] = id;
     id_to_name[id] = name;
-    Engine::Shader* ptr = thing.get();
+    Engine::OpenGLShader* ptr = thing.get();
     map[id] = std::move(thing);
     return ptr;
 
