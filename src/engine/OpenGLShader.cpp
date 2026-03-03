@@ -98,7 +98,5 @@ namespace Engine {
         glUniform1i(loc, v);
     }
 
-    Engine::IShader* OpenGLShader::CreatShader(const char *vertexPath, const char *fragmentPath) {
-        return nullptr;
-    }
+  
 }

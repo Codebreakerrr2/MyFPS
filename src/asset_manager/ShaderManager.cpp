@@ -64,33 +64,42 @@ namespace Manager{
     }
      Engine::IShader* ShaderManager::CreateShader(std::string name,const std::string& pathVertex, const std::string& pathFrag){
             // erzeuge
-            Engine::IShader* ptr;
+            Engine::IShader* ptr = nullptr;
+             ShaderID id = nextID++;
      switch(Engine::GetRenderType()) {
+        
+        case RenderType::OPENGL:{
+         auto thing =  std::make_unique<Engine::OpenGLShader>(pathVertex.c_str(),pathFrag.c_str());
+         ptr = thing.get();
+         map[id] = std::move(thing);
+          name_to_id[name] = id;
+         id_to_name[id] = name;
 
+            
+         break;
+        }
+      case RenderType::DummyShader:{
+        ptr = nullptr;
+        map[id] = ptr;
+         name_to_id[name] = id;
+         id_to_name[id] = name;
+        break;
 
+      }
+      default:
+            throw std::runtime_error("Unsupported RenderType in ShaderManager::CreateShader");
 
+      //more Cases if NEEded
 
+  }
 
-     }
+           
 
-
-            return nullptr  ;
+            return ptr  ;
      }
 
      //--------------------------------TEST_____FUNCTION--------------------------------------
 
-      Engine::OpenGLShader* ShaderManager::CreateShaderMock(std::string name,const std::string& pathVertex, const std::string& pathFrag){
-            // erzeuge 
-           auto thing =  std::make_unique<Engine::IShader>(CreateShader(pathVertex.c_str(),pathFrag.c_str());
-            
-    ShaderID id = nextID++;
-    name_to_id[name] = id;
-    id_to_name[id] = name;
-    Engine::OpenGLShader* ptr = thing.get();
-    map[id] = std::move(thing);
-    return ptr;
 
-
-     }
 }
 

@@ -7,63 +7,63 @@
 #include <memory>
 #include <vector>
 
-TEST(AssetManager, ShaderManager_CreateAndGet) {
-    Manager::ShaderManager shaderManager;
+using namespace Manager;
 
-    // 3 Mock-Shader erstellen
-    auto* s1 = shaderManager.CreateShaderMock("name1", "v1", "f1");
-    auto* s2 = shaderManager.CreateShaderMock("name2", "v2", "f2");
-    auto* s3 = shaderManager.CreateShaderMock("name3", "v3", "f3");
+TEST(ShaderManager, CreateAndGetShaders) {
+    ShaderManager shaderManager;
 
-    // Shader existieren
-    EXPECT_NE(s1, nullptr);
-    EXPECT_NE(s2, nullptr);
-    EXPECT_NE(s3, nullptr);
+    // Setze RenderType auf DummyShader für den Test
+    Engine::SetRenderType(RenderType::DummyShader);
 
-    // GetShader by Name
+    // Shader erstellen
+    Engine::IShader* s1 = shaderManager.CreateShader("name1", "v1", "f1");
+    Engine::IShader* s2 = shaderManager.CreateShader("name2", "v2", "f2");
+    Engine::IShader* s3 = shaderManager.CreateShader("name3", "v3", "f3");
+
+    // Alle Shader sollen in den Maps sein
     EXPECT_EQ(shaderManager.GetShader("name1"), s1);
     EXPECT_EQ(shaderManager.GetShader("name2"), s2);
     EXPECT_EQ(shaderManager.GetShader("name3"), s3);
 
-    // GetShader by ID
-    EXPECT_EQ(shaderManager.GetShader(s1->ID), s1);
-    EXPECT_EQ(shaderManager.GetShader(s2->ID), s2);
-    EXPECT_EQ(shaderManager.GetShader(s3->ID), s3);
+    EXPECT_EQ(shaderManager.GetShader(1), s1);
+    EXPECT_EQ(shaderManager.GetShader(2), s2);
+    EXPECT_EQ(shaderManager.GetShader(3), s3);
 }
 
-TEST(AssetManager, ShaderManager_DestroyIndividual) {
-    Manager::ShaderManager shaderManager;
+TEST(ShaderManager, DestroyIndividualShader) {
+    ShaderManager shaderManager;
+    Engine::SetRenderType(RenderType::DummyShader);
 
-    auto* s1 = shaderManager.CreateShaderMock("name1", "v1", "f1");
-    auto* s2 = shaderManager.CreateShaderMock("name2", "v2", "f2");
+    Engine::IShader* s1 = shaderManager.CreateShader("name1", "v1", "f1");
+    Engine::IShader* s2 = shaderManager.CreateShader("name2", "v2", "f2");
 
-    // Shader s1 zerstören
-    shaderManager.DestroyShader(s1->ID);
+    // s1 löschen
+    shaderManager.DestroyShader(1);
     shaderManager.cleanUp();
 
     EXPECT_EQ(shaderManager.GetShader("name1"), nullptr);
-    EXPECT_EQ(shaderManager.GetShader(s1->ID), nullptr);
+    EXPECT_EQ(shaderManager.GetShader(1), nullptr);
 
-    // s2 sollte noch existieren
+    // s2 existiert noch
     EXPECT_EQ(shaderManager.GetShader("name2"), s2);
-    EXPECT_EQ(shaderManager.GetShader(s2->ID), s2);
+    EXPECT_EQ(shaderManager.GetShader(2), s2);
 
-    // Shader s2 über Name zerstören
+    // s2 löschen über Name
     shaderManager.DestroyShader("name2");
     shaderManager.cleanUp();
 
     EXPECT_EQ(shaderManager.GetShader("name2"), nullptr);
-    EXPECT_EQ(shaderManager.GetShader(s2->ID), nullptr);
+    EXPECT_EQ(shaderManager.GetShader(2), nullptr);
 }
 
-TEST(AssetManager, ShaderManager_DestroyAll) {
-    Manager::ShaderManager shaderManager;
+TEST(ShaderManager, DestroyAllShaders) {
+    ShaderManager shaderManager;
+    Engine::SetRenderType(RenderType::DummyShader);
 
-    shaderManager.CreateShaderMock("name1", "v1", "f1");
-    shaderManager.CreateShaderMock("name2", "v2", "f2");
-    shaderManager.CreateShaderMock("name3", "v3", "f3");
+    shaderManager.CreateShader("name1", "v1", "f1");
+    shaderManager.CreateShader("name2", "v2", "f2");
+    shaderManager.CreateShader("name3", "v3", "f3");
 
-    // Alle Shader zerstören
     shaderManager.DestroyAllShaders();
     shaderManager.cleanUp();
 
@@ -72,14 +72,15 @@ TEST(AssetManager, ShaderManager_DestroyAll) {
     EXPECT_EQ(shaderManager.GetShader("name3"), nullptr);
 }
 
-TEST(AssetManager, ShaderManager_UniqueIDs) {
-    Manager::ShaderManager shaderManager;
+TEST(ShaderManager, UniqueIDs) {
+    ShaderManager shaderManager;
+    Engine::SetRenderType(RenderType::DummyShader);
 
-    auto* s1 = shaderManager.CreateShaderMock("name1", "v1", "f1");
-    auto* s2 = shaderManager.CreateShaderMock("name2", "v2", "f2");
-    auto* s3 = shaderManager.CreateShaderMock("name3", "v3", "f3");
+    Engine::IShader* s1 = shaderManager.CreateShader("name1", "v1", "f1");
+    Engine::IShader* s2 = shaderManager.CreateShader("name2", "v2", "f2");
+    Engine::IShader* s3 = shaderManager.CreateShader("name3", "v3", "f3");
 
-    // Prüfen, dass alle IDs unterschiedlich sind
+    // IDs müssen einzigartig sein
     EXPECT_NE(s1->ID, s2->ID);
     EXPECT_NE(s1->ID, s3->ID);
     EXPECT_NE(s2->ID, s3->ID);

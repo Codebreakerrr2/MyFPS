@@ -12,7 +12,7 @@ namespace Engine {
 
         virtual void use() const = 0;
 
-        virtual Engine::IShader* CreatShader(const char* vertexPath,const char* fragmentPath) = 0;
+       
 
         // Uniforms
         virtual void setMat4(const std::string& name, const Math::Mat4& mat) const= 0;

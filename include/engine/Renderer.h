@@ -11,7 +11,7 @@ namespace Engine {
 
 
     enum class RenderType {
-        OPENGL, VULKAN, DIRECTX
+        OPENGL, VULKAN, DIRECTX, DummyShader
     };
     static RenderType renderType = RenderType::OPENGL;
     inline RenderType GetRenderType() {

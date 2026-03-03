@@ -26,7 +26,7 @@ namespace Engine {
          void setBool(const std::string& name,
                       bool v) const override;
 
-         Engine::IShader* CreatShader(const char *vertexPath, const char *fragmentPath) override;
+    
      };
 
 
