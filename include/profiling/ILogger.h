@@ -12,7 +12,7 @@ SUCCESS / OK	Optional, um positive Events zu loggen
  */
 namespace Logging{
     
-    enum LogLevel{
+    enum class LogLevel{
         ERROR,
         WARNING,
         INFO,
@@ -22,9 +22,11 @@ namespace Logging{
     };
 
 
-class Logger{
+class ILogger{
 
-    virtual ~Logger()= default;
+
+    public:
+    virtual ~ILogger()= default;
 
     virtual void Log(const std::string& msg,LogLevel loggerType) const =0;
 

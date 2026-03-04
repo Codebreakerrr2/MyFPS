@@ -26,7 +26,7 @@ namespace Engine {
          void setBool(const std::string& name,
                       bool v) const override;
 
-    
+ 
      };
 
 

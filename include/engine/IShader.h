@@ -2,6 +2,7 @@
 #include "math/Vec.h"
 #include "math/Mat4.h"
 #include <string>
+#include "asset_manager/type.h"
 
 namespace Engine {
     class IShader {
@@ -12,7 +13,6 @@ namespace Engine {
 
         virtual void use() const = 0;
 
-       
 
         // Uniforms
         virtual void setMat4(const std::string& name, const Math::Mat4& mat) const= 0;
