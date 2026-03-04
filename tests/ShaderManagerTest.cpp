@@ -7,13 +7,15 @@
 #include <memory>
 #include <vector>
 
+#include "engine/Renderer.h"
+
 using namespace Manager;
 
 TEST(ShaderManager, CreateAndGetShaders) {
     ShaderManager shaderManager;
 
     // Setze RenderType auf DummyShader für den Test
-    Engine::SetRenderType(RenderType::DummyShader);
+    Engine::SetRenderType(Engine::RenderType::DummyShader);
 
     // Shader erstellen
     Engine::IShader* s1 = shaderManager.CreateShader("name1", "v1", "f1");
@@ -32,7 +34,7 @@ TEST(ShaderManager, CreateAndGetShaders) {
 
 TEST(ShaderManager, DestroyIndividualShader) {
     ShaderManager shaderManager;
-    Engine::SetRenderType(RenderType::DummyShader);
+    Engine::SetRenderType(Engine::RenderType::DummyShader);
 
     Engine::IShader* s1 = shaderManager.CreateShader("name1", "v1", "f1");
     Engine::IShader* s2 = shaderManager.CreateShader("name2", "v2", "f2");
@@ -58,7 +60,7 @@ TEST(ShaderManager, DestroyIndividualShader) {
 
 TEST(ShaderManager, DestroyAllShaders) {
     ShaderManager shaderManager;
-    Engine::SetRenderType(RenderType::DummyShader);
+    Engine::SetRenderType(Engine::RenderType::DummyShader);
 
     shaderManager.CreateShader("name1", "v1", "f1");
     shaderManager.CreateShader("name2", "v2", "f2");
@@ -74,14 +76,14 @@ TEST(ShaderManager, DestroyAllShaders) {
 
 TEST(ShaderManager, UniqueIDs) {
     ShaderManager shaderManager;
-    Engine::SetRenderType(RenderType::DummyShader);
+    Engine::SetRenderType(Engine::RenderType::DummyShader);
 
     Engine::IShader* s1 = shaderManager.CreateShader("name1", "v1", "f1");
     Engine::IShader* s2 = shaderManager.CreateShader("name2", "v2", "f2");
     Engine::IShader* s3 = shaderManager.CreateShader("name3", "v3", "f3");
 
     // IDs müssen einzigartig sein
-    EXPECT_NE(s1->ID, s2->ID);
+    EXPECT_NE(s1->ID, s2->);
     EXPECT_NE(s1->ID, s3->ID);
     EXPECT_NE(s2->ID, s3->ID);
 }

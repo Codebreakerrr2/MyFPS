@@ -26,12 +26,7 @@ class Logger{
 
     virtual ~Logger()= default;
 
-    virtual Log(const std::string& msg,LogLevel loggerType){
-        
-    }
-
-
-
+    virtual void Log(const std::string& msg,LogLevel loggerType) const =0;
 
 };
 

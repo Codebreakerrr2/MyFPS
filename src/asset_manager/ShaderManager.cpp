@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "engine/OpenGLShader.h"
 #include "engine/Renderer.h"
 
 
@@ -68,7 +69,7 @@ namespace Manager{
              ShaderID id = nextID++;
      switch(Engine::GetRenderType()) {
         
-        case RenderType::OPENGL:{
+        case Engine::RenderType::OPENGL:{
          auto thing =  std::make_unique<Engine::OpenGLShader>(pathVertex.c_str(),pathFrag.c_str());
          ptr = thing.get();
          map[id] = std::move(thing);
@@ -78,16 +79,15 @@ namespace Manager{
             
          break;
         }
-      case RenderType::DummyShader:{
+      case Engine::RenderType::DummyShader:{
         ptr = nullptr;
-        map[id] = ptr;
+        map[id] = nullptr;
          name_to_id[name] = id;
          id_to_name[id] = name;
         break;
 
       }
-      default:
-            throw std::runtime_error("Unsupported RenderType in ShaderManager::CreateShader");
+
 
       //more Cases if NEEded
 
@@ -95,7 +95,7 @@ namespace Manager{
 
            
 
-            return ptr  ;
+            return ptr;
      }
 
      //--------------------------------TEST_____FUNCTION--------------------------------------
