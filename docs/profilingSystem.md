@@ -1,25 +1,44 @@
 # Profiling and Logging
 
-## Purpose
+The idea of *Profiling and Logging* is to make the system:
 
-The idea of this system is to make the project **debuggable** and to be able to **benchmark** it in order to find hotspots and optimize performance efficiently.
+- Debuggable
+- Benchmarkable
+- Able to identify hotspots for optimization
 
----
+To achieve this, loggers should be used throughout the project for **critical, important, and informative parts** of the code.
 
-## Logger Usage
+## Logger Design
 
-- Loggers should be used throughout the entire project for:
-  - **Critical parts of the code**
-  - **Important events**
-  - **Informative messages**
+Initially, I considered using **C-style global functions** for logging, but this approach quickly became **crowded and unstructured**.  
 
-- Initially, global C-style logging functions were considered, but:
-  - This approach becomes **crowded**
-  - Lacks **structure**
-  
-- Instead, each logger is implemented as a **class inheriting from the `ILogger` interface** with the function:
+Instead, the current design uses **classes** that:
 
-```cpp
-void Log(const std::string& message, LogLevel loggerType);
+- Inherit from an interface `ILogger`
+- Implement a function `Log(message, loggerType)`
 
-- Meanwhile, the LoggerManager brings all loggers together and provides developers with a single point of access for logging throughout the project.  
+### Considerations
+
+- Using classes with virtual functions introduces **overhead** due to:
+  - Virtual table lookup
+  - Pointer dereferencing
+- However, logging is only enabled in **Dev Mode**, so performance impact in production is minimized.
+
+### Logger Types
+
+`LoggerType` is implemented as an **enum class** with values such as:
+
+- `ERROR`
+- `INFO`
+- `WARNING`
+
+This allows logging to be categorized depending on the usage in specific code snippets.
+
+## Logger Manager
+
+The **LoggerManager** acts as a **user interface for developers**:
+
+- Holds all the loggers together
+- Can be **turned on or off** depending on the mode (Dev vs. Deployed)
+
+This structure allows for organized, flexible logging while minimizing performance overhead in production.
