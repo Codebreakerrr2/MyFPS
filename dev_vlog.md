@@ -29,10 +29,13 @@
 - defined the Macro to add or remove the Logging feature
 
 **Todo**
-- 
+- make Tests for Loggers
+-change Renderer to IRenderer
+-implement OPENGL RENDERER
+-change Input to Input class 
 
 **Problems**
-- 
+- alot of stuff to do to be honest, changing from a prototype to a decent architcetur is pain for real
 
 **Ideas**
 - 

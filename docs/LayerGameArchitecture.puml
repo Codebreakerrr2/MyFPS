@@ -81,6 +81,34 @@ package "AssetManager"{
 
 }
 
+package "Logging and Profiling"{
+
+       enum  LogLevel{
+        ERROR
+        WARNING
+        INFO
+        DEBUG
+        SUCCESS
+inline std::string logLevelToString(LogLevel level)
+    }
+   
+
+    interface ILogger{
+      
+    virtual ~ILogger()
+
+    virtual void Log(const std::string& msg,LogLevel loggerType)
+
+}
+class ConsoleLogger  {}
+class UILogger{}
+class FileLogger{}
+
+class ScopeTimer
+class FrameTimer
+
+}
+
 '================ Editor =====================
 package "Editor"{
 

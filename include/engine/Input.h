@@ -2,9 +2,20 @@
 #include "GLFW/glfw3.h"
 
 
-namespace Engine {
+namespace Input {
 
-    // Input
+
+
+    class Input{
+        public:
+        virtual ~Input() = default;
+
+
+
+    }
+
+
+    // Input altes system
     void InitInput(GLFWwindow* window);
     bool IsKeyPressed(int keyCode);
     bool IsMouseButtonPressed(int keyCode);

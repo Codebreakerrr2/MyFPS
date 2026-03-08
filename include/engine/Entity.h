@@ -3,7 +3,7 @@
 #include "asset_manager/type.h"
 #include "math/Vec.h"
 #include "math/Mat4.h"
-#include "Engine/Shader.h"
+#include "engine/IShader.h"
 #include "geometry/Geometry.h"
 
 
@@ -20,10 +20,10 @@ namespace Engine {
 
 
     struct Material {
-        OpenGLShader* shader = nullptr;
+        IShader* shader = nullptr;
         Math::Vec3 color {1.0f};
         Material() = default;
-        Material(OpenGLShader* shader,Math::Vec3 color): shader(shader), color(color) {};
+        Material(IShader* shader,Math::Vec3 color): shader(shader), color(color) {};
     };
 
     struct Entity {
