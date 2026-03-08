@@ -1,11 +1,11 @@
-#include "profiling/Logger.h"
+#include "profiling/ILogger.h"
 
 
 
 namespace Logging{
 
 
-    class UILogger : public Logger{
+    class UILogger : public ILogger{
         
 
 

@@ -75,7 +75,13 @@ add_executable(MyFPS
         src/asset_manager/EntityManager.cpp
         src/asset_manager/ShaderManager.cpp
 
-
+        #----------------------
+        # Logger src files
+        #---------------------
+        src/profiling/ConsoleLogger.cpp
+        src/profiling/FileLogger.cpp
+        src/profiling/LoggerManager.cpp
+        src/profiling/UILogger.cpp
 
         #-----------------
         #geometry src files
@@ -139,6 +145,7 @@ add_executable(EngineTests
         tests/geometryTest.cpp
         tests/EntityManagerTest.cpp
         tests/ShaderManagerTest.cpp
+        tests/LoggerTest.cpp
 
 
 
@@ -168,6 +175,15 @@ add_executable(EngineTests
         src/asset_manager/ShaderManager.cpp
 
 
+        #----------------------
+        # Logger src files
+        #---------------------
+        src/profiling/ConsoleLogger.cpp
+        src/profiling/FileLogger.cpp
+        src/profiling/LoggerManager.cpp
+        src/profiling/UILogger.cpp
+
+        
 
         #------------------
         #geometry src files

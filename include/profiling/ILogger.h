@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 
+
+
+
+
 /**
 ERROR	Kritische Fehler, die das Programm eventuell abbrechen lassen könnten
 WARNING	Probleme, die nicht kritisch sind, aber beachtet werden sollten
@@ -20,6 +24,16 @@ namespace Logging{
         SUCCESS
 
     };
+    inline std::string logLevelToString(LogLevel level) {
+    switch(level) {
+        case LogLevel::ERROR:   return "[ERROR] ";
+        case LogLevel::WARNING: return "[WARNING] ";
+        case LogLevel::INFO:    return "[INFO] ";
+        case LogLevel::DEBUG:   return "[DEBUG] ";
+        case LogLevel::SUCCESS: return "[SUCCESS] ";
+    }
+    return "[UNKNOWN] "; // fallback
+}
 
 
 class ILogger{
@@ -28,7 +42,7 @@ class ILogger{
     public:
     virtual ~ILogger()= default;
 
-    virtual void Log(const std::string& msg,LogLevel loggerType) const =0;
+    virtual void Log(const std::string& msg,LogLevel loggerType)  =0;
 
 };
 

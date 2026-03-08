@@ -8,7 +8,7 @@ namespace Logging{
     class ConsoleLogger : public ILogger{
 
         
-         void Log(const std::string& msg,LogLevel loggerType) const override;
+         void Log(const std::string& msg,LogLevel loggerType)  override;
 
 };
 }
