@@ -68,3 +68,17 @@ Das gibt auch eine gewisse Flexibilität, aber ich muss dafür sehr viel refakto
 Der Editor, der Renderer, eigentlich alles müsste verändert werden.
 
 Trotzdem glaube ich, dass ich das machen muss um später es nicht zu bereuen.
+
+## Umsetzung
+ Ich denke, ich mache alles über Pools.
+
+Für alle wichtigen Systeme braucht man ja Daten. Für jedes System gibt es ab jetzt eine Datenkomponente. Diese Komponente stellt alle notwendigen Daten für das System zur Verfügung, z. B. den Renderer, damit er cache-freundlich arbeiten kann.
+
+Alle Pools werden über eine zentrale Registry verwaltet. Die Registry ist unter anderem zuständig für:
+
+- Löschen von Entities
+- Konsistenz der Pools
+- Erzeugung von Entities
+- Laden von Daten / Assets
+
+Später kann man dann, je nach Performance, auch andere Features einbauen, aber erstmal werden nur die notwendigen Operationen implementiert.
