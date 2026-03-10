@@ -2,17 +2,9 @@
 #include "GLFW/glfw3.h"
 
 
-namespace Input {
+namespace Engine {
 
 
-
-    class Input{
-        public:
-        virtual ~Input() = default;
-
-
-
-    }
 
 
     // Input altes system

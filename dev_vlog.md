@@ -30,9 +30,9 @@
 
 **Todo**
 - make Tests for Loggers
--change Renderer to IRenderer
--implement OPENGL RENDERER
--change Input to Input class 
+- change Renderer to IRenderer
+- implement OPENGL RENDERER
+- change Input to Input class 
 
 **Problems**
 - alot of stuff to do to be honest, changing from a prototype to a decent architcetur is pain for real
@@ -42,14 +42,15 @@
 
 ---
 
-## YYYY-MM-DD
+## 2026-03-10
 
 ### Thema / System
 **Done**
-- 
+- started making pools for datas
 
 **Todo**
-- 
+- postpone all the TODO from last session
+- i need to make the pool and think through out the process to make the System scale able.
 
 **Problems**
 - 

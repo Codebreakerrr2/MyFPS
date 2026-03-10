@@ -2,7 +2,6 @@
 #include "math/Vec.h"
 #include "math/Mat4.h"
 #include <string>
-#include "asset_manager/type.h"
 
 namespace Engine {
     class IShader {

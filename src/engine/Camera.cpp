@@ -1,5 +1,4 @@
 #include "engine/Camera.h"
-#include "engine/Entity.h"
 #include "math/Mat4.h"
 #include <cmath> // für std::tan
 namespace Engine {

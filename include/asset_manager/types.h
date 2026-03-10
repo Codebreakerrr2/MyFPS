@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdint>
-#include "math/Mat4.h"
-#include "math/Vec.h"
 #include "geometry/Geometry.h"
+#include "math/Mat4.h"
+
 
 
 
@@ -73,7 +73,7 @@ struct Transform{
 
     // Model-Matrix aus Position / Rotation / Scale
     Math::Mat4 GetModelMatrix() const;
-}
+};
 
 struct Material{
     ShaderID id;
@@ -85,11 +85,11 @@ struct Material{
     // eventuell Meherer Sachen 
 
     
-}
+};
 struct Mesh {
         uint32_t VAO = 0;
-        uint32_t int VBO = 0;
-        uint32_t int EBO = 0;      // optional (0 = nicht benutzt)
+        uint32_t  VBO = 0;
+        uint32_t  EBO = 0;      // optional (0 = nicht benutzt)
         uint32_t vertexCount = 0;
         uint32_t indexCount = 0;
         bool indexed = false;

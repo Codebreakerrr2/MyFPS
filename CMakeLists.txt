@@ -72,8 +72,6 @@ add_executable(MyFPS
         #------------------
         #assets manager src files
         #-------------------
-        src/asset_manager/EntityManager.cpp
-        src/asset_manager/ShaderManager.cpp
 
         #----------------------
         # Logger src files
@@ -171,8 +169,6 @@ add_executable(EngineTests
         #------------------
         #assets manager src files
         #-------------------
-        src/asset_manager/EntityManager.cpp
-        src/asset_manager/ShaderManager.cpp
 
 
         #----------------------
