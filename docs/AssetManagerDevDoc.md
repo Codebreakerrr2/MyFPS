@@ -82,3 +82,14 @@ Alle Pools werden über eine zentrale Registry verwaltet. Die Registry ist unter
 - Laden von Daten / Assets
 
 Später kann man dann, je nach Performance, auch andere Features einbauen, aber erstmal werden nur die notwendigen Operationen implementiert.
+
+## UPDATE 10.03.2026
+
+- Ich habe aktuell hashmaps in pools um entity auf component zu mappen, das ist zwar ok aber hashmap hat viel overhead, ausserdem es ist nicht cache freundlich und viel zu viel speicher last, bucket lits hash function etc... 
+also ich denke so mache ich das:
+wir haben 3 arrays componnent, entites und lookup. wir bauen eine bijektive abbildung zwischen component entites und speichern in lookup entities ID als Index. dadurch kein hashmap overhead kein hin und her und super cache freundlich. cache ist unser hotspot. 
+
+
+- ich merke sparse Array ist zwar gut aber wenn ein pool z.b Shader keinen entity hat und wir bei entity 10000 angekommen sind dann müssen wir sparse[10000] Valid Index setzen. und der rest von 0-9999 invalid Index das ist Speicehr Verschwendung also nicht alle pools sparse benutzen.
+
+- 
