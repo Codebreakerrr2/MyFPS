@@ -8,7 +8,7 @@
 
 // actually only pool stuff here otherwise it can get Very BIG
 
-namespace Engine::Types{
+namespace Asset::Types{
 
 //---------------- IDS----------------//
 using EntityID = uint32_t;
@@ -63,7 +63,6 @@ inline ComponentMask operator&(ComponentMask a ,ComponentType b){
 
 struct Entity{
     EntityID id;
-    ComponentMask masks;
 };
 
 struct Transform{

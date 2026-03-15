@@ -92,4 +92,95 @@ wir haben 3 arrays componnent, entites und lookup. wir bauen eine bijektive abbi
 
 - ich merke sparse Array ist zwar gut aber wenn ein pool z.b Shader keinen entity hat und wir bei entity 10000 angekommen sind dann müssen wir sparse[10000] Valid Index setzen. und der rest von 0-9999 invalid Index das ist Speicehr Verschwendung also nicht alle pools sparse benutzen.
 
-- 
+- ## UPDATE 12.03.2026
+# Registry ? Gedanken strukturiert
+
+## 1. Allgemeine Idee der Registry
+
+- An der Registry wird gerade gearbeitet.
+- Die Registry ist ähnlich wie eine API für andere Systeme.
+- Andere Systeme greifen über die Registry auf Assets zu.
+
+**Beispiele für Assets:**
+- Shader
+- Material
+- Entity
+- Transform
+
+
+## 2. Erste Aufgabe
+
+- Zuerst müssen die genauen Aufgaben der Registry aufgelistet werden.
+- Danach kann man sich mit den Funktionsdefinitionen beschäftigen.
+
+
+## 3. Grundfunktionen der Registry
+
+Die Registry soll in der Lage sein:
+
+- Assets zu erstellen
+- Assets zu löschen
+- Assets zugreifbar zu machen
+- die interne Konsistenz der Pools zu gewährleisten
+
+
+## 4. Assets erstellen
+
+Beim Erstellen von Assets muss man wahrscheinlich jedes Asset einzeln betrachten.
+
+**Beispiel:**
+- Shader Asset erstellen
+
+Aktuell ist das System aber so gebaut, dass:
+
+- keine einzelnen Komponenten erstellt werden können
+
+Stattdessen:
+
+- Es wird immer eine Entity erstellt
+- Diese Entity hat dann eine bestimmte Komponente oder nicht
+
+**Beispiel:**
+
+- Eine Entity hat einen Shader
+- Eine Entity hat keinen Shader
+
+Also:
+
+? Für jeden Shader oder anderes Asset existiert immer eine Entity.
+
+
+## 5. Gewünschte Flexibilität
+
+Es wäre gut, wenn man sagen könnte:
+
+- Erstelle eine Entity mit Shader
+- Erstelle eine Entity mit Transform
+- Erstelle eine Entity mit Material
+
+Also beim Erstellen direkt bestimmen können:
+
+- welche Komponenten die Entity bekommt.
+
+
+## 6. Zweck der Entities
+
+Man könnte zusätzlich festlegen:
+
+- ob die Entity für Rendering gedacht ist
+- oder für Physik
+
+Also eine Art Verwendungszweck der Entity.
+
+
+## 7. Veränderbarkeit von Assets
+
+Man könnte auch Funktionen haben, die verhindern, dass bestimmte Komponenten verändert werden.
+
+**Zum Beispiel:**
+
+- Material eines Objekts nicht verändern
+- Shader nicht verändern
+- Transform nicht verändern
+
+Das wäre nützlich für den Editor, damit man bestimmte Dinge kontrolliert ändern kann.

@@ -1,19 +1,22 @@
 #pragma once
-#include "asset_manager/types.h"
+#include "asset_manager/Types.h"
 #include <vector>
-#include <unordered_map>
 #include "profiling/LoggerManager.h"
 
 
 constexpr size_t INVALID_INDEX = size_t(-1);
 
-using namespace Engine::Types;
-namespace Engine {
+using namespace Asset::Types;
+namespace Asset {
     template<class T>
     class Pool{
     public:
-     
-        T& emplace(EntityID e){
+     template<typename... Args>
+        T& emplace(EntityID e, Args&&... args){
+            if (has(e)) {
+                LOG_WARNING("Entity already exits, can't add!");
+                return components[sparse[e]];
+            }
             size_t eIndex = entities.size();
             entities.push_back(e);
     
@@ -23,7 +26,7 @@ namespace Engine {
             }
             sparse[e] = eIndex;
 
-            components.emplace_back(T{});
+            components.emplace_back(std::forward<Args>(args)...);
 
             LOG_SUCCESS("Component and Entity added to the Pool");
 
@@ -35,11 +38,11 @@ namespace Engine {
 
             if(entities.size() < 1 || !has(e)) {
 
-                LOG_DEBUG("entity not found the pool");   
+                LOG_DEBUG("entity not found im the pool");
 
                 return;
             }
-            if(entities.size()> 1){
+            if(entities.size()>= 1){
                
 
 
@@ -54,16 +57,26 @@ namespace Engine {
             }
         }
         T* getComponent(EntityID e){
-            if(!has(e)){ 
+            if(!has(e)){
 
-                LOG_DEBUG("entity not found the pool"); 
+                LOG_DEBUG("entity not found in the pool");
 
                 return nullptr;
             }
             return &components[sparse[e]];
 
         }
-        bool has(EntityID e){
+        const T* getComponent(EntityID e) const {
+         if(!has(e)){
+
+             LOG_DEBUG("entity not found in the pool");
+
+             return nullptr;
+         }
+         return &components[sparse[e]];
+
+     }
+        bool has(EntityID e) const {
             return e<sparse.size() && sparse[e] != INVALID_INDEX;
         }
         void clear(){
@@ -71,9 +84,6 @@ namespace Engine {
             components.clear();
             sparse.clear();
 
-            entities.shrink_to_fit();
-            components.shrink_to_fit();
-            sparse.shrink_to_fit();
 
             LOG_SUCCESS("Pool has been cleared!");
         }
@@ -81,7 +91,6 @@ namespace Engine {
 
     private:
         void swapEntities(EntityID e1, EntityID e2){
-            //if last Element
             if(e1 != e2){
            
               size_t e1Index =  sparse[e1];
