@@ -184,3 +184,34 @@ Man könnte auch Funktionen haben, die verhindern, dass bestimmte Komponenten ve
 - Transform nicht verändern
 
 Das wäre nützlich für den Editor, damit man bestimmte Dinge kontrolliert ändern kann.
+
+- ## UPDATE 16.03.2026
+
+Also nochmal zur Erfrischung. dieses ECS system habe ich aus einem wichtigem Grund und zwar dass man entites einfach masken kann mit einem gewissen profil. man braucht keine klassen mehr und auch kein Objekt Entity. Objekt Entity war auch problem weil nicht
+jede Entity alle attribute beinhaltet und es für cpu schnell uneffizient wird, weil er unnötige daten lesen muss. 
+genau also aufgezählt heisst es,
+1. CPU EFFIZIENZ weil keine unnötige Attributen
+2. Felixibilitat von Entity Typen durch mappen 
+3. keine riesige Entity Objekt. 
+
+eigentlich unabdingbar.
+
+was kommt nun, 
+ich habe überlegt und auch gelesen was ich letztes mal geschrieben hatte. Das Problem dass ich gemerkt habe war, dass ich Shader in pool packe, das ist aber riesen memory verschwendung weil dann musste ich für jede Entity quasi den Shader neu compileiren und erzeugen.
+deswegen greifen ich auf die alte idee von Asset Manager z.b Shader Manager. Mein ecs system zusammen mit dem Registery beinhalten information aber keine wirklcihe assets. eine Manager für jeden Assettype macht sinn auf jeden fall.
+
+ ## UPDATE 17.03.2026
+
+ So ich möchte nun etwas grobe Sicht geben zu den aktuellen Überlegungen.
+ Ich habe ja pools, Registery.  die sind eigentlcih nur ja wie soll ich das sagen einfach eine schicht von inforamtion also so eine organisationsschciht und diese schicht stellt einfach sicher dass alles richtig get referenziert usw wird. die eignetlcih daten liegen in assetmanagers. und genau also registry ist das api und pools sind einfach information behälter für diese api und die wirklciehn daten leigen wo anders. 
+
+ ich habe total mein kopf druber zerbrochen jetzt wie ich z.b pools die einfach nur values speicher wie Transform von pools die wirkilch assets speichern, von einandner unterscheide. weil ich will nicht jetzt jede shader als komponent speichern. da kam die idee von einem struct dass ShaderId behält und wir das einfach in registry dann auflösen, dafür muss aber registry den assetmanager kennen, was aber viel geiler wäre ist dass registry einfach handels bekommt und dann durch handels values holt und keine ahnung über assetmanager hat das ist aber so eine komplikation an sich es abstrahiert bisschen für registry aber ich weiss nicht ob das wirklcih nötig ist. ich wette es hat einen vorteil weil ohne handel muss registry dann immer eine implementation haben für jeden asset type und muss dessen assetmanager kennnen um ID aufzulösen. wenn wir aber ein tempalte assethandler haben dann ist die get funktion für alle pools die assetmanager brauchen gleich und pools die nicht assetmanager brauchen haben dann halt kein handler overhead und die sind dann anders. 
+
+ ubersicht
+ 2 pool arten 
+ - 1 die mit handel
+ - 2 die mit einfachen values
+
+ handel wird als template geschrieben.
+ registry kennt dann halt nur die funktion von handel und weiss nichts uber assetmanagers
+ 

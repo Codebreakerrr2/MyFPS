@@ -14,14 +14,16 @@ namespace Asset {
      template<typename... Args>
         T& emplace(EntityID e, Args&&... args){
             if (has(e)) {
+
                 LOG_WARNING("Entity already exits, can't add!");
+                
                 return components[sparse[e]];
             }
             size_t eIndex = entities.size();
             entities.push_back(e);
     
             size_t sparseLenght = sparse.size();
-            if(e > sparseLenght-1){
+            if(e >= sparseLenght){
                 sparse.resize(e+10 ,INVALID_INDEX);
             }
             sparse[e] = eIndex;

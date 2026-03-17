@@ -65,7 +65,7 @@ struct Entity{
     EntityID id;
 };
 
-struct Transform{
+struct TransformComponent{
     Math::Vec3 position {0.0f};
     Math::Vec3 rotation {0.0f};   // Euler (radians)
     Math::Vec3 scale    {1.0f};
@@ -74,28 +74,41 @@ struct Transform{
     Math::Mat4 GetModelMatrix() const;
 };
 
-struct Material{
-    ShaderID id;
+struct MaterialComponent{
+       assetHandler<IShader> shader;
     Math::Vec3 color;
      Material() = default;
 
     Material(ShaderID shader, Math::Vec3 c)
-        : id(shader), color(c) {}
+        : shader(shader), color(c) {}
     // eventuell Meherer Sachen 
 
     
 };
-struct Mesh {
-        uint32_t VAO = 0;
-        uint32_t  VBO = 0;
-        uint32_t  EBO = 0;      // optional (0 = nicht benutzt)
-        uint32_t vertexCount = 0;
-        uint32_t indexCount = 0;
-        bool indexed = false;
-        Geometry::AABB boundingBox{0,0}; // for new LoadMesh functions please dont forget this!
-    };
 
 
+struct MeshComponent{
 
+    assetHandler<IMesh> mesh;
+
+
+}
+
+//handel template
+
+template<typename T>
+struct assetHandler{
+
+    const std::function<T*()> getAsset;
+
+    const std::function<const T*()> getConstAsset;
+
+    assetHandler(const std::function<T*()>& ga,const std::function<const T*()> gca ): getAsset(ga), getConstAsset(gca){}
+        //ohne const
+    T* operator()()  {return getAsset();}
+
+    //mit const, natürlich muss dann assetmanager entsprechend const haben
+    const T* operator()() const {return getConstAsset();}
+}
 
 }//namespace
