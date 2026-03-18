@@ -10,7 +10,7 @@ namespace Engine {
 }
 
 
-namespace Manager{
+namespace AssetManager{
 
     class ShaderManager {
 
@@ -21,7 +21,7 @@ namespace Manager{
         std::unordered_map<std::string,ShaderID> name_to_id;
         std::unordered_map<ShaderID,std::string> id_to_name;
         std::vector<ShaderID> shaderRemoveMemory;
-      
+        
 
         bool allDestroyed = false;
 

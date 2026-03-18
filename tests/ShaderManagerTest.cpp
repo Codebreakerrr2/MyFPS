@@ -9,7 +9,7 @@
 
 #include "engine/Renderer.h"
 
-using namespace Manager;
+using namespace AssetManager;
 
 TEST(ShaderManager, CreateAndGetShaders) {
     ShaderManager shaderManager;

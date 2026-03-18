@@ -34,7 +34,7 @@ enum ComponentType : uint32_t{
     
 };
 
-//---------------Operator__Overloading--------------------------------//
+//---------------Operator__Overloading for ComponentType--------------------------------//
 
 // joining two Components with Or Opeation
 inline ComponentMask operator|(ComponentType a ,ComponentType b){
@@ -60,6 +60,7 @@ inline ComponentMask operator&(ComponentMask a ,ComponentType b){
 }
 
 //_____________________________________________________________________//
+//_________________________COMPONENTS_______________________________________//
 
 struct Entity{
     EntityID id;
@@ -93,6 +94,28 @@ struct MeshComponent{
 
 
 }
+//_________________________________________ functions for ComponentType and Components________________________________//
+
+template<typename T>
+constexpr ComponentType ComponentToType(){
+   if constexpr (std::is_same_v<T, TransformComponent>) return ComponentType::TRANSFORM;
+    else if constexpr (std::is_same_v<T, MeshComponent>) return ComponentType::MESH;
+    else if constexpr (std::is_same_v<T, MaterialComponent>) return ComponentType::MATERIAL;
+    else static_assert(!std::is_same_v<T, T>, "Unsupported component in conversion to componentType");
+
+}
+
+
+
+
+
+
+
+
+
+
+
+//____________________________________________________________________________________________________________________//
 
 //handel template
 
