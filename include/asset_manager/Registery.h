@@ -8,31 +8,58 @@
  */
 namespace Engine {
     class Registery {
-       
+
         private:
-        Pool<MeshComponent> meshes;
-        Pool<TransformComponent> transforms;
-        Pool<MaterialComponent> materials;
+        Asset::Pool<MeshComponent> meshes;
+        Asset::Pool<TransformComponent> transforms;
+        Asset::Pool<MaterialComponent> materials;
         std::vector<Entity> entites;
         std::vector<Entity> renderEntites;
         // hier einfachheitshalber weitere EntitesTypen
-        
+
+
+
+        //generic pool to decide which pool is needed. so the type kinda know its pool
+
+    template <typename T>
+        auto getPool(T& t) {
+
+    }
         public:
         template<typename T>
-        T* get(Entity e){
-
-            if constexpr(std::is_same_v(T,transforms){
-                return transforms.get(e);
+        T* get(Entity e) {
+            if constexpr (std::is_same_v<T, MeshComponent>) {
+                return meshes.getComponent(e.id);
             }
-            if else constexpr (std::ist_same_v(T,materials)){
-                return materials.shader();
+            else if constexpr (std::is_same_v<T, TransformComponent>) {
+                return transforms.getComponent(e.id);
             }
-
-
+            else if constexpr (std::is_same_v<T, MaterialComponent>) {
+                return materials.getComponent(e.id);
+            }
+            // hier eventuell weitere Component hinzufügen wenn die da sind.
+        }
+        template<typename T>
+        void remove(Entity e) {
 
         }
+        template<typename T>
+        bool has(Entity e) {
+            if constexpr (std::is_same_v<T, MeshComponent>) {
+                return meshes.has(e.id);
+            }
+            else if constexpr (std::is_same_v<T, TransformComponent>) {
+                return transforms.has(e.id);
+            }
+            else if constexpr (std::is_same_v<T, MaterialComponent>) {
+                return materials.has(e.id);
+            }
 
+        }
+        template<typename T>
+        T* add(Entity e) {
 
+        }
 
     };
 }

@@ -214,4 +214,14 @@ deswegen greifen ich auf die alte idee von Asset Manager z.b Shader Manager. Mei
 
  handel wird als template geschrieben.
  registry kennt dann halt nur die funktion von handel und weiss nichts uber assetmanagers
- 
+
+## UPDATE 17.03.2026
+so ich schriebe gerade die funktionen für Registery, die idee war ja dass registry einfach aus den pools beziehungsweise 
+assetmanagers die daten bekommt, also gucken wir uns an welche funktionen wir benötigen:
+
+- get funktion um ein component zu bekommen für ein entity. T* get(Entity e);
+- eine funktion um ein Component einer Entity zu löschen. void remove(Entity e); und ausserdem ganze Entity zu löschen eine
+funktion wie: void destroy(Entity e);
+- eine funktion um ein eine Entity zu erzeugen oder eine entity einen Component zuzuweisen mit einem Component oder mehrere Komponenten. 
+T* add(Entity e); es wird also einfach ein default component ohne initaliserung oder mit je nach entschiedung erzeugt und dies dann von Factory z.b bearneitet wird. 
+- void has(Entity e)
