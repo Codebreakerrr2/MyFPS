@@ -52,22 +52,15 @@ target_include_directories(glad PUBLIC
 # -----------------------------
 add_executable(MyFPS
         src/main.cpp
-        src/engine/Renderer.cpp
-        src/engine/Input.cpp
-        src/engine/Physics.cpp
-        src/engine/OpenGLShader.cpp
+        src/input/Input.cpp
+        src/shader/OpenGLShader.cpp
         src/engine/Mesh.cpp
-        src/engine/Camera.cpp
-        src/engine/Entity.cpp
-        src/engine/parser.cpp
-        src/engine/CameraController.cpp
-        src/engine/CameraFollower.cpp
+        src/camera/Camera.cpp
+        src/camera/CameraController.cpp
 
         #-------------------
         #editor src files
         #------------------
-        src/editor/Editor.cpp
-        src/editor/Gizmos.cpp
 
         #------------------
         #assets manager src files
@@ -102,7 +95,6 @@ add_executable(MyFPS
         #----------------
         #world src files
         #--------------
-        src/world/Map.cpp
         #------------
         #Math src files
         #--------------
@@ -146,25 +138,15 @@ add_executable(EngineTests
         tests/LoggerTest.cpp
 
 
-
-
-
-        src/engine/Renderer.cpp
-        src/engine/Input.cpp
-        src/engine/Physics.cpp
-        src/engine/OpenGLShader.cpp
+        src/input/Input.cpp
+        src/shader/OpenGLShader.cpp
         src/engine/Mesh.cpp
-        src/engine/Camera.cpp
-        src/engine/Entity.cpp
-        src/engine/parser.cpp
-        src/engine/CameraController.cpp
-        src/engine/CameraFollower.cpp
+        src/camera/Camera.cpp
+        src/camera/CameraController.cpp
 
         #-------------------
         #editor src files
         #------------------
-        src/editor/Editor.cpp
-        src/editor/Gizmos.cpp
 
         #------------------
         #assets manager src files
@@ -202,7 +184,6 @@ add_executable(EngineTests
         #----------------
         #world src files
         #--------------
-        src/world/Map.cpp
         #------------
         #Math src files
         #--------------

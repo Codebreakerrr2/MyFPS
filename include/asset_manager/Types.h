@@ -72,7 +72,13 @@ struct TransformComponent{
     Math::Vec3 scale    {1.0f};
 
     // Model-Matrix aus Position / Rotation / Scale
-    Math::Mat4 GetModelMatrix() const;
+    Math::Mat4 GetModelMatrix() const {
+        return Math::Mat4::Translation(position) *
+          Math::Mat4::RotationX(rotation.x) *
+          Math::Mat4::RotationY(rotation.y) *
+          Math::Mat4::RotationZ(rotation.z) *
+          Math::Mat4::Scale(scale);
+    }
 };
 
 struct MaterialComponent{

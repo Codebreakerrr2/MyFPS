@@ -2,12 +2,3 @@
 
 
 
-namespace Logging{
-
-
-    class UILogger : public ILogger{
-        
-
-
-};
-}

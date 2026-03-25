@@ -1,5 +1,5 @@
 #pragma once
-
+namespace Window {
 class IWindow {
 public:
     virtual ~IWindow() = default;
@@ -7,6 +7,9 @@ public:
     virtual void close() = 0;
     virtual void getSize(int& width, int& height) const = 0;
     virtual void pollEvents() = 0;
+
     virtual void swapBuffers() = 0;
     virtual void setBackgroundColor(float r, float g, float b, float a) = 0;
+	virtual void* getNativeHandle() = 0;
 };
+}

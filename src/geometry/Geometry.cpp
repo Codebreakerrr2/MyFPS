@@ -1,9 +1,8 @@
 #include "geometry/Geometry.h"
 
 #include <cfloat>
-#include "engine/Camera.h"
-#include "engine/Input.h"
-#include "engine/Renderer.h"
+#include "../../include/camera/Camera.h"
+#include "../../include/input/Input.h"
 
 namespace Geometry {
 
@@ -17,7 +16,7 @@ namespace Geometry {
         mouseX= mouseXY.x;
         mouseY= mouseXY.y;
 
-        Engine::GetWindowSize(windowWidth, windowHeight);
+       // Engine::GetWindowSize(windowWidth, windowHeight);need to be fixed
 
 
         double x_ndc = (2.0 * mouseX) / 600 - 1.0;
@@ -72,9 +71,9 @@ namespace Geometry {
     {
         double mouseX, mouseY;
         int windowWidth, windowHeight;
-        GLFWwindow* window = Engine::GetWindow();
+       // GLFWwindow* window = Engine::GetWindow(); need to be fixed
 
-        Engine::GetWindowSize(windowWidth, windowHeight);
+      //  Engine::GetWindowSize(windowWidth, windowHeight);need to be fixed
         Engine::getMousePosition(window, mouseX, mouseY);
 
         double x_ndc = (2.0 * mouseX) / windowWidth - 1.0;
