@@ -1,10 +1,10 @@
-#include "engine/OpenGLShader.h"
+#include "shader/OpenGLShader.h"
 #include "math/Vec.h"
 #include <glad/glad.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-namespace Engine {
+namespace SHADER {
     // -------- Hilfsfunktion: Datei lesen --------
     static std::string ReadShaderFile(const char* path)
     {

@@ -2,7 +2,7 @@
 #include "asset_manager/Types.h"
 #include <vector>
 #include "profiling/LoggerManager.h"
-
+#include <utility>
 
 constexpr size_t INVALID_INDEX = size_t(-1);
 
@@ -38,13 +38,13 @@ namespace Asset {
 
         void remove(EntityID e){
 
-            if(entities.size() < 1 || !has(e)) {
+            if(!has(e)) {
 
                 LOG_DEBUG("entity not found im the pool");
 
                 return;
             }
-            if(entities.size()>= 1){
+
                
 
 
@@ -56,7 +56,7 @@ namespace Asset {
 
             LOG_SUCCESS("entity succesfully removed from pool");
 
-            }
+
         }
         T* getComponent(EntityID e){
             if(!has(e)){
@@ -93,16 +93,18 @@ namespace Asset {
 
     private:
         void swapEntities(EntityID e1, EntityID e2){
-            if(e1 != e2){
-           
-              size_t e1Index =  sparse[e1];
-              size_t e2Index = sparse[e2];
+            assert(has(e1) && has(e2));
 
-              std::swap(entities[e1Index],entities[e2Index]);
-              std::swap(components[e1Index],components[e2Index]);
-              sparse[e2] = e1Index; 
-              sparse[e1] = e2Index;
-            }
+            if(e1 == e2) return;
+
+            size_t e1Index = sparse[e1];
+            size_t e2Index = sparse[e2];
+
+            std::swap(entities[e1Index], entities[e2Index]);
+            std::swap(components[e1Index], components[e2Index]);
+
+            sparse[e1] = e2Index;
+            sparse[e2] = e1Index;
 
         }
         

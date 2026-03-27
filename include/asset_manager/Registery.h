@@ -1,7 +1,6 @@
 #pragma once
 #include "asset_manager/pool.h"
 #include "asset_manager/Types.h"
-#include "asset_manager/Registery.h"
 #include <vector>
 /**
  * Registery is the API for other Systems to get access to assets
@@ -75,33 +74,27 @@ namespace Engine {
 
 
 
-        template<typename T>
-        void remove(EntityID e) {
-            getPool<T>().remove(e);  
-            masks[e] =(~ComponentToType<T>()) & masks[e];
 
-        }
 
         template<typename... Components>
         void remove(EntityID e){
-            (getPool<Components>().remove(e),...);
-            (masks[e] =(~ComponentToType<Components>()) & masks[e],...);
+             ((getPool<Components>().remove(e), masks[e] &= ~ComponentToType<Components>()), ...);
         }
 
 
         template<typename T>
         bool has(EntityID e) {
-            return masks[e] & ComponentToType<T>() != 0;
+            return (masks[e] & ComponentToType<T>()) != 0;
         }
 
 
-        template<typename T>
-        T& add(EntityID e) {
+        template<typename T,typename... Args>
+        T& add(EntityID e,Args... args) {
             if(e >= masks.size()){
                 masks.resize(e+10,0);
             }
             masks[e] |= ComponentToType<T>();
-            return getPool<T>().emplace(e);
+            return getPool<T>().emplace(e,args...);
 
         }
 
@@ -111,9 +104,9 @@ namespace Engine {
                if(e >= masks.size()){
                 masks.resize(e+10,0);
             }
-            (masks[e] |= ComponentToType<Components>(),...);
-
-            return std::make_tuple(getPool<Components>().emplace(e)...);
+             return std::forward_as_tuple(
+          (masks[e] |= ComponentToType<Components>(), getPool<Components>().emplace(e))...
+      );
         }
        
     };

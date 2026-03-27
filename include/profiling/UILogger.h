@@ -6,7 +6,7 @@ namespace Logging{
 
 
     class UILogger : public ILogger{
-         void Log(const std::string& msg,LogLevel loggerType)  override;
+         void Log(const std::string& msg,LogLevel loggerType)  override{}
         
 
 };

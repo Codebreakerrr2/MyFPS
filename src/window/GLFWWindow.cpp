@@ -1,12 +1,13 @@
 #pragma once
-#include "IWindow.h"
+#include "window/GLFWWindow.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <stdexcept>
 
-GLFWWindow::GLFWWindow(int width, int height, const char* title){
+using namespace Window;
+GLFWWindow::GLFWWindow(int width, int height, const std::string& title){
 	if(!glfwInit()){
-		throw std::runtime_error("Failed to initialize GLFW")
+		throw std::runtime_error("Failed to initialize GLFW");
 	}
 	// Optional: OpenGL Version festlegen
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -18,11 +19,10 @@ if (!window) {
         throw std::runtime_error("Failed to create GLFW window");
     }
 glfwMakeContextCurrent(window);
-glfwSetFramebufferSizeCallback(m_window, cb);
 }
 
 void GLFWWindow::close() {
-    glfwSetWindowShouldClose(m_window, true);
+    glfwSetWindowShouldClose(window, true);
 }
 void GLFWWindow::getSize(int& width, int& height) const {
     glfwGetWindowSize(window, &width, &height);
@@ -36,7 +36,7 @@ void GLFWWindow::swapBuffers() {
 void GLFWWindow::setBackgroundColor(float r, float g, float b, float a) {
     glClearColor(r, g, b, a);
     glClear(GL_COLOR_BUFFER_BIT);
-
+}
 
 void* GLFWWindow::getNativeHandle() {
 	return window;

@@ -12,7 +12,7 @@ namespace MESH {
     };
 
     class IMesh {
-
+    public:
         virtual ~IMesh() = default;
         virtual void set(const std::vector<Vertex>& vertices) = 0;
         virtual const std::vector<Vertex>& get() const = 0;

@@ -1,0 +1,84 @@
+@startuml
+title ECS + Asset System Overview
+
+package "AssetManager" {
+    class Manager<T> {
+        - nextID : IDTYPE
+        - map : unordered_map<IDTYPE, unique_ptr<T>>
+        - name_to_id : unordered_map<string, IDTYPE>
+        - id_to_name : unordered_map<IDTYPE, string>
+
+        + create(name, factory) : T*
+        + get(id) : T*
+        + get(name) : T*
+        + destroy(id)
+        + cleanUp()
+    }
+}
+
+package "ECS Core" {
+
+    class Pool<T> {
+        - components : vector<T>
+        - entities : vector<EntityID>
+        - sparse : vector<size_t>
+
+        + emplace(e) : T&
+        + remove(e)
+        + getComponent(e) : T*
+        + has(e) : bool
+    }
+
+    class Registery {
+        - meshes : Pool<MeshComponent>
+        - transforms : Pool<TransformComponent>
+        - materials : Pool<MaterialComponent>
+        - masks : vector<ComponentMask>
+
+        + add<T>(e) : T&
+        + get<T>(e) : T*
+        + remove<T>(e)
+        + has<T>(e) : bool
+    }
+}
+
+package "Components" {
+
+    class TransformComponent {
+        position
+        rotation
+        scale
+    }
+
+    class MeshComponent {
+        mesh : assetHandler<IMesh>
+    }
+
+    class MaterialComponent {
+        shader : assetHandler<IShader>
+        color
+    }
+
+    class assetHandler<T> {
+        + operator()() : T*
+    }
+}
+
+'================ RELATIONS =================
+
+Registery --> Pool : owns
+Pool --> "many" EntityID
+Pool --> "many" T
+
+Registery --> TransformComponent
+Registery --> MeshComponent
+Registery --> MaterialComponent
+
+MeshComponent --> assetHandler
+MaterialComponent --> assetHandler
+
+assetHandler --> Manager : fetches from
+
+Manager --> T : owns assets
+
+@enduml

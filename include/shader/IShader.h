@@ -3,7 +3,7 @@
 #include "math/Mat4.h"
 #include <string>
 
-namespace Engine {
+namespace SHADER {
     class IShader {
 
     public:

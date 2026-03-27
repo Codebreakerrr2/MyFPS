@@ -52,19 +52,30 @@ target_include_directories(glad PUBLIC
 # -----------------------------
 add_executable(MyFPS
         src/main.cpp
-        src/input/Input.cpp
+
+        #------------------
+        #Shader src files
+        #-----------------------
         src/shader/OpenGLShader.cpp
-        src/engine/Mesh.cpp
         src/camera/Camera.cpp
-        src/camera/CameraController.cpp
 
-        #-------------------
-        #editor src files
-        #------------------
 
         #------------------
-        #assets manager src files
+        #renderer source files
         #-------------------
+        src/renderer/OpenGLRenderer.cpp
+
+        #------------------
+        #window src files
+        #-------------------
+        src/window/GLFWWindow.cpp
+
+
+        #------------------
+        #mesh source files
+        #-------------------
+        src/mesh/OpenGLMesh.cpp
+
 
         #----------------------
         # Logger src files
@@ -77,7 +88,6 @@ add_executable(MyFPS
         #-----------------
         #geometry src files
         #---------------------
-        src/geometry/geometry.cpp
 
         #------------------
         #network src files
@@ -90,8 +100,7 @@ add_executable(MyFPS
         #-----------------
         #game src files
         #----------------
-        src/game/Player.cpp
-        src/game/Enemy.cpp
+
         #----------------
         #world src files
         #--------------
@@ -132,18 +141,8 @@ add_dependencies(MyFPS copy_assets)
 # Google Test
 #-------------------------
 add_executable(EngineTests
-        tests/geometryTest.cpp
-        tests/EntityManagerTest.cpp
-        tests/ShaderManagerTest.cpp
-        tests/LoggerTest.cpp
-
-
-        src/input/Input.cpp
-        src/shader/OpenGLShader.cpp
-        src/engine/Mesh.cpp
-        src/camera/Camera.cpp
-        src/camera/CameraController.cpp
-
+        tests/profilingTests.cpp
+        tests/databaseTests.cpp
         #-------------------
         #editor src files
         #------------------
@@ -151,6 +150,28 @@ add_executable(EngineTests
         #------------------
         #assets manager src files
         #-------------------
+
+
+        src/shader/OpenGLShader.cpp
+
+        src/camera/Camera.cpp
+
+
+        #------------------
+        #renderer source files
+        #-------------------
+        src/renderer/OpenGLRenderer.cpp
+
+        #------------------
+        #window src files
+        #-------------------
+        src/window/GLFWWindow.cpp
+
+
+        #------------------
+        #mesh source files
+        #-------------------
+        src/mesh/OpenGLMesh.cpp
 
 
         #----------------------
@@ -161,12 +182,9 @@ add_executable(EngineTests
         src/profiling/LoggerManager.cpp
         src/profiling/UILogger.cpp
 
-        
-
-        #------------------
+        #-----------------
         #geometry src files
         #---------------------
-        src/geometry/geometry.cpp
 
         #------------------
         #network src files
@@ -179,8 +197,7 @@ add_executable(EngineTests
         #-----------------
         #game src files
         #----------------
-        src/game/Player.cpp
-        src/game/Enemy.cpp
+
         #----------------
         #world src files
         #--------------
@@ -189,6 +206,8 @@ add_executable(EngineTests
         #--------------
         src/Math/Vec.cpp
         src/Math/Mat4.cpp
+
+
 
 
 )

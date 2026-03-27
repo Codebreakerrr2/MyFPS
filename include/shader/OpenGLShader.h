@@ -1,6 +1,6 @@
 #pragma once
-#include "engine/IShader.h"
-namespace Engine {
+#include "shader/IShader.h"
+namespace SHADER {
 
 
      class OpenGLShader : public IShader {

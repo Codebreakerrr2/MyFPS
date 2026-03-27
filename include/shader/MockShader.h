@@ -1,0 +1,24 @@
+#pragma once
+#include "shader/IShader.h"
+
+
+namespace SHADER {
+    class shaderMock : public SHADER::IShader {
+    public:
+        void use() const override{}
+
+        void setMat4(const std::string& name,
+                     const Math::Mat4& mat) const override{}
+
+        void setVec3(const std::string& name,
+                     const Math::Vec3& vec3) const override{}
+
+        void setFloat(const std::string& name,
+                      float v) const override{}
+
+        void setBool(const std::string& name,
+                     bool v) const override{}
+
+
+    };
+}

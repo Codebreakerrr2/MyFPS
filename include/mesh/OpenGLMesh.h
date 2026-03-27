@@ -1,5 +1,6 @@
 #pragma once
-#include "mesh/OpenGLMesh.h"
+#include <cstdint>
+#include "mesh/IMeshGpu.h"
 
 
 namespace MESH {
@@ -8,7 +9,7 @@ namespace MESH {
         uint32_t vao=0, vbo=0, ebo=0, indexCount = 0;
     public:
         IMeshGpu* upload(const IMesh& mesh) override;
-        void draw()= 0 override;
+        void draw() override;
         ~OpenGLMesh() override;
         OpenGLMesh(const IMesh& mesh);
     };

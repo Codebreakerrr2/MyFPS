@@ -29,6 +29,16 @@ namespace Math {
     }
 
     // ===================== Vec3 =====================
+#include <cmath>
+
+    bool Vec3::operator==(const Vec3& b) const {
+        constexpr float eps =1e-3f;
+        return std::fabs(x - b.x) < eps &&
+               std::fabs(y - b.y) < eps &&
+               std::fabs(z - b.z) < eps;
+    }
+
+
     Vec3 operator+(const Vec3 &a, const Vec3 &b) {
         return Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
     }

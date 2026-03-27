@@ -1,5 +1,5 @@
 #pragma once
-#include "profiling/ILogger.h"
+#include "ILogger.h"
 #include <memory>
 
 
@@ -7,11 +7,11 @@
 
 
 #ifdef ENGINE_DEBUG
-    #define LOG_ERROR(msg)   Logging::LoggerManager::Get().Log(msg, LogLevel::ERROR)
-    #define LOG_WARNING(msg) Logging::LoggerManager::Get().Log(msg, LogLevel::WARNING)
-    #define LOG_INFO(msg)    Logging::LoggerManager::Get().Log(msg, LogLevel::INFO)
-    #define LOG_DEBUG(msg)   Logging::LoggerManager::Get().Log(msg, LogLevel::DEBUG)
-    #define LOG_SUCCESS(msg) Logging::LoggerManager::Get().Log(msg, LogLevel::SUCCESS)
+#define LOG_ERROR(msg)   Logging::LoggerManager::Get().Log(msg, Logging::LogLevel::ERROR)
+#define LOG_WARNING(msg) Logging::LoggerManager::Get().Log(msg, Logging::LogLevel::WARNING)
+#define LOG_INFO(msg)    Logging::LoggerManager::Get().Log(msg, Logging::LogLevel::INFO)
+#define LOG_DEBUG(msg)   Logging::LoggerManager::Get().Log(msg, Logging::LogLevel::DEBUG)
+#define LOG_SUCCESS(msg) Logging::LoggerManager::Get().Log(msg, Logging::LogLevel::SUCCESS)
 #else
     #define LOG_ERROR(msg) do{}while(0)
     #define LOG_WARNING(msg) do{}while(0)
@@ -46,8 +46,7 @@ class LoggerManager: public ILogger{
 
     private:
     //eventuell andere Logger hier RAII Best Practice and no delete needed big brain
-    LoggerManager();   
-    ~LoggerManager();
+    LoggerManager();
     std::unique_ptr<ILogger> consoleLogger;
     std::unique_ptr<ILogger> uiLogger;
     std::unique_ptr<ILogger> fileLogger;

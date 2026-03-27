@@ -1,25 +1,61 @@
 #pragma once
-#include <cstdint>
-#include "geometry/Geometry.h"
 #include "math/Mat4.h"
-
+#include <functional>
 
 
 
 // actually only pool stuff here otherwise it can get Very BIG
 
-namespace Asset::Types{
+namespace SHADER {
+    class IShader;
+}
 
-//---------------- IDS----------------//
-using EntityID = uint32_t;
-using ShaderID = uint32_t;
-using ComponentMask = uint32_t; //Bit Masks
-
-//_____________________________________//
-
+namespace MESH {
+    class IMesh;
+}
 
 
+
+namespace Asset::Types {
+    //---------------- IDS----------------//
+    using EntityID = uint32_t;
+    using ShaderID = uint32_t;
+    using ComponentMask = uint32_t; //Bit Masks
+    using MeshID = uint32_t;
+    //_____________________________________//
+    // So this template is ok but its just annoying passing a function and i really dont need it now , so i would just go with something simpler
+    //handel template
+    /*
+        template<typename T>
+        struct assetHandler{
+
+             std::function<T*()> getAsset;
+
+             std::function<const T*()> getConstAsset;
+
+            assetHandler(const std::function<T*()>& ga,const std::function<const T*()> gca ): getAsset(ga), getConstAsset(gca){}
+            //ohne const
+            T* operator()()  {return getAsset();}
+
+            //mit const, natürlich muss dann assetmanager entsprechend const haben
+            const T* operator()() const {return getConstAsset();}
+        };
+    */
+    template<typename T, typename F>
+struct assetHandler {
+        T ID;
+        std::function<F*()> get;
+
+        // rvalue version (move)
+        assetHandler(T id, std::function<F*()>&& func)
+            : ID(id), get(std::move(func)) {}
+
+        // lvalue version (copy)
+        assetHandler(T id, const std::function<F*()>& func)
+            : ID(id), get(func) {}
+    };
 //---------------types-------------------------------------------------------------------------------------------------------------//
+
 
 
 enum ComponentType : uint32_t{
@@ -71,6 +107,14 @@ struct TransformComponent{
     Math::Vec3 rotation {0.0f};   // Euler (radians)
     Math::Vec3 scale    {1.0f};
 
+    struct Init {
+        Math::Vec3 pos{0.0f};
+        Math::Vec3 rot{0.0f};
+        Math::Vec3 scale{1.0f};
+    };
+    TransformComponent()= default;
+    TransformComponent(const Init& init):position(init.pos),rotation(init.rot),scale(init.scale){};
+
     // Model-Matrix aus Position / Rotation / Scale
     Math::Mat4 GetModelMatrix() const {
         return Math::Mat4::Translation(position) *
@@ -78,28 +122,40 @@ struct TransformComponent{
           Math::Mat4::RotationY(rotation.y) *
           Math::Mat4::RotationZ(rotation.z) *
           Math::Mat4::Scale(scale);
+
     }
 };
 
 struct MaterialComponent{
-       assetHandler<IShader> shader;
-    Math::Vec3 color;
-     Material() = default;
+       assetHandler<ShaderID,SHADER::IShader> shader;
+    Math::Vec3 color = {1.0f, 1.0f, 1.0f};
 
-    Material(ShaderID shader, Math::Vec3 c)
-        : shader(shader), color(c) {}
-    // eventuell Meherer Sachen 
 
-    
+    struct Init {
+        ShaderID id=0;
+        std::function<SHADER::IShader*()> get =nullptr;
+        Math::Vec3 color = {1.0f, 1.0f, 1.0f};
+    };
+
+     MaterialComponent() :shader(0,nullptr) {}
+    MaterialComponent (const  Init& init): shader(init.id,init.get),color(init.color) {}
+    // eventuell Meherer Sachen
+
+
 };
 
 
 struct MeshComponent{
 
-    assetHandler<IMesh> mesh;
+    assetHandler<MeshID, MESH::IMesh> mesh;
+    struct Init {
+        MeshID id =0;
+        std::function<MESH::IMesh*()> get = nullptr;
+    };
+    MeshComponent(): mesh(0,nullptr){}
+    MeshComponent(const  Init& init): mesh(init.id,init.get){}
 
-
-}
+};
 //_________________________________________ functions for ComponentType and Components________________________________//
 
 template<typename T>
@@ -123,21 +179,6 @@ constexpr ComponentType ComponentToType(){
 
 //____________________________________________________________________________________________________________________//
 
-//handel template
 
-template<typename T>
-struct assetHandler{
-
-    const std::function<T*()> getAsset;
-
-    const std::function<const T*()> getConstAsset;
-
-    assetHandler(const std::function<T*()>& ga,const std::function<const T*()> gca ): getAsset(ga), getConstAsset(gca){}
-        //ohne const
-    T* operator()()  {return getAsset();}
-
-    //mit const, natürlich muss dann assetmanager entsprechend const haben
-    const T* operator()() const {return getConstAsset();}
-}
 
 }//namespace
