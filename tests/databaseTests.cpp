@@ -64,12 +64,38 @@ TEST(ManagerTests, CreatManager) {
     AssetManager::Manager<SHADER::IShader> shaderManager;
     shaderManager.create("mock",Factory::mockShader);
     Engine::Registery rg;
-    rg.add<MaterialComponent>(1,
-        MaterialComponent::Init{1,
-            [&shaderManager](){return shaderManager.get("mock");},
-            Math::Vec3{1}});
+    rg.add<MaterialComponent>(1,MaterialComponent::Init{1,&shaderManager});
+    rg.get<MaterialComponent>(1)->shader();
 
 
 
+}
+TEST(ManagerTests, MultipleAssets) {
+    AssetManager::Manager<SHADER::IShader> shaderManager;
 
+    // Mehrere Shader erstellen
+    shaderManager.create("red_shader", Factory::mockShader);
+    shaderManager.create("blue_shader", Factory::mockShader);
+    shaderManager.create("green_shader", Factory::mockShader);
+
+    Engine::Registery rg;
+
+    // Entities mit verschiedenen Shadern
+    rg.add<MaterialComponent>(1, MaterialComponent::Init{1, &shaderManager});  // red
+    rg.add<MaterialComponent>(2, MaterialComponent::Init{2, &shaderManager});  // blue
+    rg.add<MaterialComponent>(3, MaterialComponent::Init{3, &shaderManager});  // green
+
+    // Teste dass jeder seinen eigenen Shader hat
+    auto* mat1 = rg.get<MaterialComponent>(1);
+    auto* mat2 = rg.get<MaterialComponent>(2);
+    auto* mat3 = rg.get<MaterialComponent>(3);
+
+    ASSERT_NE(mat1->shader(), mat2->shader());  // Verschiedene Shader
+    ASSERT_NE(mat1->shader(), mat3->shader());
+    ASSERT_NE(mat2->shader(), mat3->shader());
+
+    // Teste Zugriff über Namen
+    EXPECT_EQ(mat1->shader(), shaderManager.get("red_shader"));
+    EXPECT_EQ(mat2->shader(), shaderManager.get("blue_shader"));
+    EXPECT_EQ(mat3->shader(), shaderManager.get("green_shader"));
 }

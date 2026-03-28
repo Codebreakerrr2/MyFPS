@@ -108,6 +108,8 @@ namespace Engine {
           (masks[e] |= ComponentToType<Components>(), getPool<Components>().emplace(e))...
       );
         }
-       
+
+        template<typename... Components>
+
     };
 }

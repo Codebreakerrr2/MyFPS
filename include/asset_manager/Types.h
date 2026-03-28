@@ -2,6 +2,7 @@
 #include "math/Mat4.h"
 #include <functional>
 
+#include "Manager.h"
 
 
 // actually only pool stuff here otherwise it can get Very BIG
@@ -42,17 +43,14 @@ namespace Asset::Types {
         };
     */
     template<typename T, typename F>
-struct assetHandler {
+ struct assetHandler {
         T ID;
-        std::function<F*()> get;
+        AssetManager::Manager<F>* manager;
+        assetHandler(T id,AssetManager::Manager<F>* man): ID(id), manager(man){}
 
-        // rvalue version (move)
-        assetHandler(T id, std::function<F*()>&& func)
-            : ID(id), get(std::move(func)) {}
-
-        // lvalue version (copy)
-        assetHandler(T id, const std::function<F*()>& func)
-            : ID(id), get(func) {}
+        F* operator()() {
+            return manager->get(ID);
+        }
     };
 //---------------types-------------------------------------------------------------------------------------------------------------//
 
@@ -133,27 +131,26 @@ struct MaterialComponent{
 
     struct Init {
         ShaderID id=0;
-        std::function<SHADER::IShader*()> get =nullptr;
+        AssetManager::Manager<SHADER::IShader>* manager;
         Math::Vec3 color = {1.0f, 1.0f, 1.0f};
     };
-
-     MaterialComponent() :shader(0,nullptr) {}
-    MaterialComponent (const  Init& init): shader(init.id,init.get),color(init.color) {}
+    MaterialComponent():shader(0,nullptr){}
+    MaterialComponent (const  Init& init): shader(init.id,init.manager),color(init.color) {}
     // eventuell Meherer Sachen
+
 
 
 };
 
 
 struct MeshComponent{
-
     assetHandler<MeshID, MESH::IMesh> mesh;
     struct Init {
         MeshID id =0;
-        std::function<MESH::IMesh*()> get = nullptr;
+        AssetManager::Manager<MESH::IMesh>* manager = nullptr;
     };
-    MeshComponent(): mesh(0,nullptr){}
-    MeshComponent(const  Init& init): mesh(init.id,init.get){}
+    MeshComponent():mesh(0,nullptr){};
+    MeshComponent(const  Init& init): mesh(init.id,init.manager){}
 
 };
 //_________________________________________ functions for ComponentType and Components________________________________//
