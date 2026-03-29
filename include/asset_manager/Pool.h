@@ -89,6 +89,9 @@ namespace Asset {
 
             LOG_SUCCESS("Pool has been cleared!");
         }
+        const std::vector<EntityID>& getEntities(){
+            return entities;
+        }
 
 
     private:

@@ -108,7 +108,10 @@ namespace Engine {
           (masks[e] |= ComponentToType<Components>(), getPool<Components>().emplace(e))...
       );
         }
-
+        enum class cache {
+             UseCache,
+             NoCache,
+         };
         template<typename... Components>
 
     };
