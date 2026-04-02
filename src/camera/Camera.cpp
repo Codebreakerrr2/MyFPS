@@ -1,13 +1,7 @@
 #include "camera/Camera.h"
 #include "math/Mat4.h"
 #include <cmath> // für std::tan
-namespace Engine {
-
-    Camera mainCamera;
-
-
-
-
+namespace Camera {
 
 
 

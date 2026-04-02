@@ -3,7 +3,7 @@
 #include "math/Vec.h"
 
 
-namespace Engine{
+namespace Camera{
 class Camera {
 public:
     // Position & Orientierung

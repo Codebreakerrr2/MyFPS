@@ -124,19 +124,34 @@ struct TransformComponent{
     }
 };
 
+struct noShaderMaterial{
+    Math::Vec3 color = {1.0f, 1.0f, 1.0f};
+    //add more 
+
+
+    // need compare stuff for sort to be honest it sucks
+    bool operator==(const noShaderMaterial& other ) const{
+        return color == other.color;
+        //add more 
+    }
+    bool operator<(noShaderMaterial& other)
+     return true; // spielt erstmal keine rolle es sei denn man macht damit was andere aber kann mir nicht vorstellen
+
+}
+
 struct MaterialComponent{
        assetHandler<ShaderID,SHADER::IShader> shader;
-    Math::Vec3 color = {1.0f, 1.0f, 1.0f};
+        noShaderMaterial mateirals;
 
 
     struct Init {
         ShaderID id=0;
-        AssetManager::Manager<SHADER::IShader>* manager;
-        Math::Vec3 color = {1.0f, 1.0f, 1.0f};
+        AssetManager::Manager<SHADER::IShader>* manager = nullptr;
+        noShaderMaterial mateirals{};
     };
-    MaterialComponent():shader(0,nullptr){}
-    MaterialComponent (const  Init& init): shader(init.id,init.manager),color(init.color) {}
-    // eventuell Meherer Sachen
+    MaterialComponent():shader(0,nullptr), mateirals{}{}
+    MaterialComponent (const  Init& init): shader(init.id,init.manager),noShaderMaterial(init.materials) {}
+
 
 
 
@@ -144,13 +159,17 @@ struct MaterialComponent{
 
 
 struct MeshComponent{
-    assetHandler<MeshID, MESH::IMesh> mesh;
+   // assetHandler<MeshID, MESH::IMesh> mesh;
+    assetHandler<MeshID,MESH::IMeshGpu> gpuMesh;
     struct Init {
         MeshID id =0;
-        AssetManager::Manager<MESH::IMesh>* manager = nullptr;
+        //AssetManager::Manager<MESH::IMesh>* manager = nullptr;
+        //following  is experimental can be done better 
+        AssetManager::Manager<MESH::IMeshGpu>* gpuManager = nullptr;
+
     };
-    MeshComponent():mesh(0,nullptr){};
-    MeshComponent(const  Init& init): mesh(init.id,init.manager){}
+    MeshComponent():gpuMesh(0,nullptr){};
+    MeshComponent(const  Init& init): gpuMesh(init.id,init.gpuManager){}
 
 };
 //_________________________________________ functions for ComponentType and Components________________________________//

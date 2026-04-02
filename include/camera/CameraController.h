@@ -4,7 +4,7 @@
 
 
 
-namespace Engine {
+namespace Camera {
     enum class MoveMode {Flying, Player };
     class CameraController {
     public:
