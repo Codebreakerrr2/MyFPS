@@ -21,7 +21,9 @@ namespace Math {
         Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 
         bool operator==(const Vec3& vec3a) const;
+        bool operator!=(const Vec3& vec3a) const;
     };
+
 
     Vec3 operator+(const Vec3& a, const Vec3& b);
     Vec3 operator-(const Vec3& a, const Vec3& b);

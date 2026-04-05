@@ -7,7 +7,7 @@ namespace Window {
     class GLFWWindow : public IWindow {
 	public:
         GLFWWindow( int width, int height,const std::string& title);
-        // bool isOpen() const override;
+         bool isOpen() const override{return true;}
          void close()  override;
          void getSize(int& width, int& height) const override;
          void pollEvents() override;

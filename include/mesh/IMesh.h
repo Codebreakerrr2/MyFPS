@@ -15,7 +15,7 @@ namespace MESH {
     public:
         virtual ~IMesh() = default;
         virtual void set(const std::vector<Vertex>& vertices) = 0;
-        virtual const std::vector<Vertex>& get() const = 0;
+        virtual const std::vector<Vertex>& getVertices() const = 0;
         virtual void set(const std::vector<uint32_t>& indices) = 0;
         virtual const std::vector<uint32_t>& getIndices() const = 0;
     };

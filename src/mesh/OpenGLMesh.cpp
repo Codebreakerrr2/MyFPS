@@ -14,7 +14,7 @@ namespace MESH {
     }
 
     IMeshGpu* OpenGLMesh::upload(const IMesh& mesh) {
-        const auto& vertices = mesh.get();
+        const auto& vertices = mesh.getVertices();
         const auto& indices = mesh.getIndices();
 
         indexCount = static_cast<uint32_t>(indices.size());

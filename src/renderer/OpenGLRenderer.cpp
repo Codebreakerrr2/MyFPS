@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <window/GLFWWindow.h>
 #include "asset_manager/Registery.h"
+#include "camera/Camera.h"
+#include "mesh/IMeshPair.h"
+#include "shader/IShader.h"
 #include "window/IWindow.h"
 
 namespace Renderer {
@@ -36,32 +39,33 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
         const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();
         const Asset::Pool<MaterialComponent>& materialPool = rg.getPool<MaterialComponent>();
         std::vector<drawCommand> list;
-        for(const auto& e : meshpool.getEntites()){
+        for(const auto& e : meshPool.getEntities()){
             if(rg.has<TransformComponent>(e) && rg.has<MaterialComponent>(e)){
                 list.emplace_back(
                     drawCommand{
-                        materialPool.getComponent(e).shader(),
+                        materialPool.getComponent(e)->shader(),
                         materialPool.getComponent(e),
-                        meshPool.get(e).mesh()
-                        transformPool.get(e);
+                        meshPool.getComponent(e)->meshtupel()->getGpuMesh(),
+                        transformPool.getComponent(e)
                     }
                 );
             }
         }
           auto compare = [](drawCommand& a, drawCommand& b){
             if(a.shader != b.shader) return a.shader<b.shader;
-            if(a.mat.noShaderMaterial != a.mat.noShaderMaterial) return a.mat.noShaderMaterial < b.mat.noShaderMaterial;
+            if(a.mat->mateirals != b.mat->mateirals) return a.mat->mateirals < b.mat->mateirals;
             return a.mesh < b.mesh;
         };
         std::sort(list.begin(),list.end(), compare);
         renderables = std::move(list);
-        LOG_INFO("renderables has been updated!")
+        LOG_INFO("renderables has been updated!");
     }
 
-    void OpenGLRenderer::drawTriangle(const Engine::Registery& rg, ,const Camera& camera) {
+    void OpenGLRenderer::drawTriangle(const Engine::Registery& rg,const Camera::Camera& camera) {
   
                 if(renderablesDirty){
                     filterRenderables(rg);
+                    renderablesDirty = false;
                 }
 
                 SHADER::IShader* currentShader = nullptr;
@@ -74,11 +78,11 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
                         if(currentShader == nullptr){ LOG_ERROR("shader of the renderable entity is not set, PROGRAM CRASH!");
                             continue;
                         }
-                        currentShader.use();
+                        currentShader->use();
                 }
-                    currentShader.setMat4("u_model",cd.trans.GetModelMatrix());
-                    currentShader.setMat4("u_view",camera.GetViewMatrix());
-                    currentShader.setMat4("u_proj",camera.GetProjectionMatrix());
+                    currentShader->setMat4("u_model",cd.trans->GetModelMatrix());
+                    currentShader->setMat4("u_view",camera.GetViewMatrix());
+                    currentShader->setMat4("u_proj",camera.GetProjectionMatrix());
                     // naja eventuell roughness etc aus mateiral noch einbinden aber dafür kein shader datei erstmal
 
                     if(currentMesh != cd.mesh){
@@ -88,7 +92,7 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
                         }
 
                     }
-                    currentMesh.draw();
+                    currentMesh->draw();
                 }
     }
 }

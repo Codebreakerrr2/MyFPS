@@ -1,16 +1,22 @@
 #pragma once
-#include "asset_manager/Registery.h"
-#include "asset_manager/Manager.h"
-#include "shader/IShader.h"
-#include "mesh/IMesh.h"
+#include <camera/Camera.h>
+#include <mesh/OpenGLMeshPair.h>
+#include <renderer/IRenderer.h>
+#include <renderer/OpenGLRenderer.h>
+#include <window/GLFWWindow.h>
+
 
 namespace Engine {
     class EngineContext {
 
     public:
-        Registery* rg;
+        Window::GLFWWindow window;
+        Registery rg;
         AssetManager::Manager<SHADER::IShader,ShaderID> shaderManger;
-        AssetManager::Manager<MESH::IMesh,MeshID> meshManger;
+        AssetManager::Manager<MESH::IMeshPair,MeshID> meshManger;
+        Camera::Camera mainCamera;
+        Renderer::OpenGLRenderer renderer;
+        EngineContext():window(800,600,"FPS"){}
 
 
     };

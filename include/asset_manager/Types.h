@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "Manager.h"
+#include "mesh/IMeshGpu.h"
 
 
 // actually only pool stuff here otherwise it can get Very BIG
@@ -12,6 +13,7 @@ namespace SHADER {
 }
 
 namespace MESH {
+    class IMeshPair;
     class IMesh;
 }
 
@@ -49,6 +51,9 @@ namespace Asset::Types {
         assetHandler(T id,AssetManager::Manager<F>* man): ID(id), manager(man){}
 
         F* operator()() {
+            return manager->get(ID);
+        }
+         F* operator()() const {
             return manager->get(ID);
         }
     };
@@ -124,8 +129,8 @@ struct TransformComponent{
     }
 };
 
-struct noShaderMaterial{
-    Math::Vec3 color = {1.0f, 1.0f, 1.0f};
+struct noShaderMaterial {
+    Math::Vec3 color = {7.0f, 2.0f, 8.0f};
     //add more 
 
 
@@ -134,11 +139,15 @@ struct noShaderMaterial{
         return color == other.color;
         //add more 
     }
-    bool operator<(noShaderMaterial& other)
-     return true; // spielt erstmal keine rolle es sei denn man macht damit was andere aber kann mir nicht vorstellen
+    bool operator!=(const noShaderMaterial& other ) const{
+        return color != other.color;
+        //add more
+    }
+    bool operator<(const noShaderMaterial& other) const{
+        return true; // spielt erstmal keine rolle es sei denn man macht damit was andere aber kann mir nicht vorstellen
 
-}
-
+    }
+};
 struct MaterialComponent{
        assetHandler<ShaderID,SHADER::IShader> shader;
         noShaderMaterial mateirals;
@@ -150,7 +159,7 @@ struct MaterialComponent{
         noShaderMaterial mateirals{};
     };
     MaterialComponent():shader(0,nullptr), mateirals{}{}
-    MaterialComponent (const  Init& init): shader(init.id,init.manager),noShaderMaterial(init.materials) {}
+    MaterialComponent (const  Init& init): shader(init.id,init.manager),mateirals(init.mateirals) {}
 
 
 
@@ -158,18 +167,19 @@ struct MaterialComponent{
 };
 
 
+
+
 struct MeshComponent{
-   // assetHandler<MeshID, MESH::IMesh> mesh;
-    assetHandler<MeshID,MESH::IMeshGpu> gpuMesh;
+
+    assetHandler<MeshID,MESH::IMeshPair> meshtupel;
+
     struct Init {
         MeshID id =0;
-        //AssetManager::Manager<MESH::IMesh>* manager = nullptr;
-        //following  is experimental can be done better 
-        AssetManager::Manager<MESH::IMeshGpu>* gpuManager = nullptr;
-
+        AssetManager::Manager<MESH::IMeshPair>* manager = nullptr;
     };
-    MeshComponent():gpuMesh(0,nullptr){};
-    MeshComponent(const  Init& init): gpuMesh(init.id,init.gpuManager){}
+
+    MeshComponent():meshtupel(0,nullptr){};
+    MeshComponent(const  Init& init): meshtupel(init.id,init.manager){}
 
 };
 //_________________________________________ functions for ComponentType and Components________________________________//

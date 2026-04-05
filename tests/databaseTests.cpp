@@ -60,7 +60,7 @@ TEST(RegisteryTests, PoolTests) {
     EXPECT_TRUE(transform.has(1));
 
 }
-TEST(ManagerTests, CreatManager) {
+TEST(ManagerTestsShader, CreatManager) {
     AssetManager::Manager<SHADER::IShader> shaderManager;
     shaderManager.create("mock",Factory::mockShader);
     Engine::Registery rg;
@@ -70,7 +70,7 @@ TEST(ManagerTests, CreatManager) {
 
 
 }
-TEST(ManagerTests, MultipleAssets) {
+TEST(ManagerTestsShader, MultipleAssets) {
     AssetManager::Manager<SHADER::IShader> shaderManager;
 
     // Mehrere Shader erstellen
@@ -98,4 +98,16 @@ TEST(ManagerTests, MultipleAssets) {
     EXPECT_EQ(mat1->shader(), shaderManager.get("red_shader"));
     EXPECT_EQ(mat2->shader(), shaderManager.get("blue_shader"));
     EXPECT_EQ(mat3->shader(), shaderManager.get("green_shader"));
+}
+TEST(ManagerTestsMesh, CreatManager) {
+    AssetManager::Manager<MESH::IMeshPair> meshManager;
+    meshManager.create("mock",Factory::mockMesh);
+    Engine::Registery rg;
+    rg.add<MeshComponent>(1,MeshComponent::Init{1,&meshManager});
+    EXPECT_EQ(nullptr,rg.get<MeshComponent>(1)->meshtupel()->getGpuMesh());
+    rg.get<MeshComponent>(1)->meshtupel()->getMesh();
+
+}
+TEST(ManagerTestsMesh, MultipleAssets) {
+
 }

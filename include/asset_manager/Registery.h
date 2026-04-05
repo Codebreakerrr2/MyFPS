@@ -13,7 +13,7 @@ namespace Engine {
         Asset::Pool<TransformComponent> transforms;
         Asset::Pool<MaterialComponent> materials;
         std::vector<ComponentMask> masks;
-
+        EntityID nextEntity = 1;
 
 
 
@@ -61,7 +61,10 @@ namespace Engine {
     }
  //__________________________________________________________________________________________________//
 
-
+        EntityID createEntity() {
+             EntityID id = nextEntity++;
+             return id;
+         }
 
         template<typename T>
         T* get(EntityID e) {
@@ -83,7 +86,7 @@ namespace Engine {
 
 
         template<typename T>
-        bool has(EntityID e) {
+        bool has(EntityID e) const {
             return (masks[e] & ComponentToType<T>()) != 0;
         }
 
@@ -112,7 +115,6 @@ namespace Engine {
              UseCache,
              NoCache,
          };
-        template<typename... Components>
 
     };
 }

@@ -30,6 +30,10 @@ void GLFWWindow::getSize(int& width, int& height) const {
 void GLFWWindow::pollEvents() {
     glfwPollEvents();
 }
+
+void GLFWWindow::setFramebufferSizeCallback(GLFWframebuffersizefun cb) {
+}
+
 void GLFWWindow::swapBuffers() {
     glfwSwapBuffers(window);
 }

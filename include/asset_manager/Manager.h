@@ -23,10 +23,10 @@ public:
 
     // ---------------- CREATE ----------------
     template<typename Factory>
-    T* create(const std::string& name, Factory&& factory) {
+    IDTYPE create(const std::string& name, Factory&& factory) {
         if (name_to_id.find(name) != name_to_id.end()) {
-            LOG_WARNING("Asset already exists with name: " + name);
-            return map[name_to_id[name]].get();
+            LOG_WARNING("Asset already exists in manager with name: " + name);
+            return name_to_id[name];
         }
 
         IDTYPE id = nextID++;
@@ -35,7 +35,7 @@ public:
         id_to_name[id] = name;
 
         LOG_SUCCESS("Asset created: " + name);
-        return map[id].get();
+        return id;
     }
 
     // Optional: Mock-Funktion
@@ -48,7 +48,7 @@ public:
     T* get(IDTYPE id) {
         auto it = map.find(id);
         if(it != map.end()) return it->second.get();
-        LOG_WARNING("Asset not found for ID");
+        LOG_WARNING("Asset not found for ID in manager");
         return nullptr;
     }
 
@@ -61,7 +61,7 @@ public:
     T* get(const std::string& name) {
         auto it = name_to_id.find(name);
         if(it != name_to_id.end()) return get(it->second);
-        LOG_WARNING("Asset not found for name: " + name);
+        LOG_WARNING("Asset not found in manager for name: " + name);
         return nullptr;
     }
 
@@ -95,7 +95,7 @@ public:
             id_to_name.clear();
             removeMemory.clear();
             allDestroyed = false;
-            LOG_WARNING("All assets destroyed!");
+            LOG_WARNING("All assets in manager destroyed!");
             return;
         }
 
@@ -108,7 +108,7 @@ public:
             }
         }
 
-        LOG_INFO("Marked assets destroyed!");
+        LOG_INFO("Marked assets in manager destroyed!");
         removeMemory.clear();
     }
 };
