@@ -28,8 +28,8 @@ public:
     Math::Mat4 GetProjectionInverseMatrix() const;
 
 
-    void Move(const Math::Vec3& delta);
-    void Rotate(float pitchRadians, float yawRadians);
+    void move(const Math::Vec3& delta);
+    void rotate(float pitchRadians, float yawRadians);
 
 
     void SetAspectRatio(float aspectRatio);
@@ -41,6 +41,4 @@ public:
 
 };
 
-    //globale main camera
-    extern Camera mainCamera;
 }

@@ -57,8 +57,21 @@ add_executable(MyFPS
         #Shader src files
         #-----------------------
         src/shader/OpenGLShader.cpp
-        src/camera/Camera.cpp
 
+
+        #------------------
+        #camera src files
+        #-----------------------
+
+        src/camera/Camera.cpp
+        src/camera/CameraController.cpp
+
+        #------------------
+        #Input src files
+        #-------------------
+        src/input/InputKeyboard.cpp
+        src/input/InputMouse.cpp
+        src/input/InputXBOX.cpp
 
         #------------------
         #renderer source files

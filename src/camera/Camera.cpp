@@ -41,11 +41,11 @@ Math::Mat4 Camera::GetProjectionMatrix() const {
 }
 
 
-void Camera::Move(const Math::Vec3& delta) {
+void Camera::move(const Math::Vec3& delta) {
     position = position + delta;
 }
 
-void Camera::Rotate(float pitchRadians, float yawRadians) {
+void Camera::rotate(float pitchRadians, float yawRadians) {
     // einfache Yaw-Pitch-Rotation
     Math::Vec3 direction;
     direction.x = std::cos(pitchRadians) * std::cos(yawRadians);
