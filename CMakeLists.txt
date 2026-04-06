@@ -25,14 +25,12 @@ enable_testing()
 #-----------------------
 #--GLAD --------------
 #-------------------
-include(FetchContent)
-FetchContent_Declare(
-        glad
-        URL GIT_REPOSITORY https://github.com/Dav1dde/glad.git
-        GIT_TAG master
+add_library(glad
+    external_libraries/glad.c
 )
-FetchContent_MakeAvailable(glad)
-
+target_include_directories(glad PUBLIC
+        external_libraries/include
+)
 
 
 # -----------------------------

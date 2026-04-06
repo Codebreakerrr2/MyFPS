@@ -11,11 +11,11 @@ class OpenGLRenderer : public IRenderer{
          void clear(float r, float g, float b, float a) override;
          void drawTriangle(const Engine::Registery& rg,const Camera::Camera& camera) override;
          void filterRenderables(const Engine::Registery& rg) override;
-         void addViewport(Viewport viewport)override;
+         void addViewport(Viewport& viewport)override;
          void renderViewports(const Engine::Registery& rg) override;
 	private:
 		Window::IWindow* window;
-                std::vector<Viewport> viewports;
+                std::vector<Viewport*> viewports;
                 std::vector<drawCommand> renderables;
                 bool renderablesDirty = true;
 

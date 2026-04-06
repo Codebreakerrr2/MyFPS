@@ -25,12 +25,12 @@ Math::Vec3 Camera::CameraController::getMoveDirection(const Camera &camera, Move
     float keyboardRight   = inputKeyBoard ? inputKeyBoard->GetAxis(Input::Action::Right)   : 0.0f;
 
 
-    float xBOXForward = inputXBOX ? inputXBOX->GetAxis(Input::Action::Forward) : 0.0f;
-    float xBOXRight   = inputXBOX ? inputXBOX->GetAxis(Input::Action::Right)   : 0.0f;
+    //float xBOXForward = inputXBOX ? inputXBOX->GetAxis(Input::Action::Forward) : 0.0f;
+   // float xBOXRight   = inputXBOX ? inputXBOX->GetAxis(Input::Action::Right)   : 0.0f;
 
 
-    moveDirection = moveDirection +(forward * (keyboardForward + xBOXForward));
-    moveDirection = moveDirection +(right   * (keyboardRight   + xBOXRight));
+    moveDirection = moveDirection +forward * keyboardForward; //+ xBOXForward));
+    moveDirection = moveDirection +right   * keyboardRight  ; //+ xBOXRight));
 
     if (Math::Length(moveDirection) > 0.0f)
         moveDirection = Math::Normalize(moveDirection);
@@ -46,18 +46,9 @@ void Camera::CameraController::updateRotation(Camera &camera, float deltaTime) {
     float mouseDX = inputMouse ? inputMouse->GetMouseDeltaX() : 0.0f;
     float mouseDY = inputMouse ? inputMouse->GetMouseDeltaY() : 0.0f;
 
-    // 🔹 XBOX Stick (Zustand, MIT deltaTime!)
-    float stickX = inputXBOX ?
-        (inputXBOX->GetAxis(Input::Action::LookRight) -
-         inputXBOX->GetAxis(Input::Action::LookLeft)) : 0.0f;
 
-    float stickY = inputXBOX ?
-        (inputXBOX->GetAxis(Input::Action::LookUp) -
-         inputXBOX->GetAxis(Input::Action::LookDown)) : 0.0f;
-
-    // 🔹 kombinieren
-    float dx = mouseDX + stickX * deltaTime * 100.0f; // 100 = Stick-Sensitivity
-    float dy = mouseDY + stickY * deltaTime * 100.0f;
+    float dx = mouseDX ;
+    float dy = mouseDY;
 
     // 🔹 Rotation anwenden
     yaw   += dx * MouseSensitivity;

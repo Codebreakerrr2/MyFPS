@@ -1,4 +1,6 @@
 #pragma once
+#include <cassert>
+
 #include "asset_manager/Types.h"
 #include <vector>
 #include "profiling/LoggerManager.h"
@@ -8,6 +10,23 @@ constexpr size_t INVALID_INDEX = size_t(-1);
 
 using namespace Asset::Types;
 namespace Asset {
+
+
+    template <typename T>
+std::string getPoolName() {
+        if constexpr (std::is_same_v<T, MeshComponent>) {
+            return "meshesPool";
+        } else if constexpr (std::is_same_v<T, TransformComponent>) {
+            return "transformsPool";
+        } else if constexpr (std::is_same_v<T, MaterialComponent>) {
+            return "materialsPool";
+        } else {
+            static_assert(!std::is_same_v<T, T>, "Unsupported component type to get name");
+            return ""; // nur um den Compiler zufriedenzustellen
+        }
+    }
+
+
     template<class T>
     class Pool{
     public:
@@ -30,7 +49,7 @@ namespace Asset {
 
             components.emplace_back(std::forward<Args>(args)...);
 
-            LOG_SUCCESS("Component "+getComponentName<T>()+ "with Entity "+std::to_string(e)+" added to the Pool");
+            LOG_SUCCESS("Component "+getComponentName<T>()+ " with Entity "+std::to_string(e)+" added to the Pool");
 
             return components.back();
         }
@@ -95,8 +114,9 @@ namespace Asset {
 
     private:
         void swapEntities(EntityID e1, EntityID e2){
-            assert(has(e1) && has(e2));
-
+            //..........................................
+            assert(has(e1) && has(e2));// gefährlich
+            //..........................................(
             if(e1 == e2) return;
 
             size_t e1Index = sparse[e1];
@@ -115,18 +135,6 @@ namespace Asset {
         std::vector<size_t> sparse;
 
     };
-    template <typename T>
-std::string getPoolName() {
-    if constexpr (std::is_same_v<T, MeshComponent>) {
-        return "meshesPool";
-    } else if constexpr (std::is_same_v<T, TransformComponent>) {
-        return "transformsPool";
-    } else if constexpr (std::is_same_v<T, MaterialComponent>) {
-        return "materialsPool";
-    } else {
-        static_assert(!std::is_same_v<T, T>, "Unsupported component type to get name");
-        return ""; // nur um den Compiler zufriedenzustellen
-    }
-}
+
 
 }

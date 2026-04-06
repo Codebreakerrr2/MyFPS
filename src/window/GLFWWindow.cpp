@@ -1,6 +1,8 @@
 #include "window/GLFWWindow.h"
 #include <iostream>
 
+#include "profiling/LoggerManager.h"
+
 namespace Window {
 
     GLFWWindow::GLFWWindow(int width, int height, const std::string& title) {
