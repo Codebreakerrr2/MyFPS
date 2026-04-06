@@ -34,6 +34,26 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+
+
+     void OpenGLRenderer::addViewport(Viewport viewport){
+        viewports.emplace_back(viewport);
+    }
+
+    void OpenGLRenderer::renderViewports(const Engine::Registery& rg){
+        glEnable(GL_SCISSOR_TEST);
+        for(auto& vp: viewports){
+            glViewport(vp.getX(),vp.getY(),vp.getWidth(),vp.getHeight());
+            glScissor(vp.getX(), vp.getY(), vp.getWidth(), vp.getHeight());
+
+            drawTriangle(rg,vp.getCamera();)
+
+        }
+       glDisable(GL_SCISSOR_TEST);
+
+    }
+
+
     void OpenGLRenderer::filterRenderables(const Engine::Registery& rg){
             const Asset::Pool<MeshComponent>& meshPool = rg.getPool<MeshComponent>();
         const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();

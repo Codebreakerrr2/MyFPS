@@ -1,0 +1,63 @@
+@startuml
+' -------------------------
+' Renderer-Klassen
+' -------------------------
+
+package Renderer {
+
+    class IRenderer {
+        +init(window: IWindow*): bool
+        +beginFrame()
+        +endFrame()
+        +clear(r: float, g: float, b: float, a: float)
+        +drawTriangle(rg: Registery&, camera: Camera)
+        +filterRenderables(rg: Registery&)
+        +addViewport(viewport: Viewport)
+        +renderViewports(rg: Registery&)
+    }
+
+    class OpenGLRenderer {
+        -window: IWindow*
+        -viewports: vector<Viewport>
+        -renderables: vector<drawCommand>
+        -renderablesDirty: bool
+        +init(window: IWindow*): bool
+        +beginFrame()
+        +endFrame()
+        +clear(r: float, g: float, b: float, a: float)
+        +drawTriangle(rg: Registery&, camera: Camera)
+        +filterRenderables(rg: Registery&)
+        +addViewport(viewport: Viewport)
+        +renderViewports(rg: Registery&)
+    }
+
+    class Viewport {
+        -x: int
+        -y: int
+        -width: int
+        -height: int
+        -camera: Camera&
+        +Viewport(x: int, y: int, width: int, height: int, camera: Camera&)
+        +setCamera(camera: Camera)
+        +setOrigin(x: int, y: int)
+        +setSize(width: int, height: int)
+        +getCamera(): Camera&
+        +getX(): int
+        +getY(): int
+        +getWidth(): int
+        +getHeight(): int
+    }
+
+    class drawCommand {
+        -shader: IShader*
+        -mat: MaterialComponent*
+        -mesh: IMeshGpu*
+        -trans: TransformComponent*
+    }
+
+    ' -------------------------
+    ' Beziehungen
+    ' -------------------------
+   
+}
+@enduml

@@ -42,6 +42,7 @@ namespace Renderer {
         virtual void clear(float r, float g, float b, float a) = 0;
         virtual void drawTriangle(const Engine::Registery& rg,const Camera::Camera& camera) = 0;
         virtual void filterRenderables(const Engine::Registery& rg) = 0;
-
+        virtual void addViewport(Viewport viewport) = 0;
+        virtual void renderViewports(const Engine::Registery& rg);
     };
 }

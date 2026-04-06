@@ -64,21 +64,10 @@ package "Components" {
     }
 }
 
-'================ RELATIONS =================
+ ' -------------------------
+    ' Beziehungen
+    ' -------------------------
 
-Registery --> Pool : owns
-Pool --> "many" EntityID
-Pool --> "many" T
 
-Registery --> TransformComponent
-Registery --> MeshComponent
-Registery --> MaterialComponent
-
-MeshComponent --> assetHandler
-MaterialComponent --> assetHandler
-
-assetHandler --> Manager : fetches from
-
-Manager --> T : owns assets
 
 @enduml
