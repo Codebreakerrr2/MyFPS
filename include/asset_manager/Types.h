@@ -193,7 +193,14 @@ constexpr ComponentType ComponentToType(){
 
 }
 
+template<typename T>
+constexpr std::string getComponentName(){
+   if constexpr (std::is_same_v<T, TransformComponent>) return "ComponentType::TRANSFORM";
+    else if constexpr (std::is_same_v<T, MeshComponent>) return "ComponentType::MESH";
+    else if constexpr (std::is_same_v<T, MaterialComponent>) return "ComponentType::MATERIAL";
+    else static_assert(!std::is_same_v<T, T>, "Unsupported component in conversion to componentTypeName");
 
+}
 
 
 
