@@ -1,0 +1,27 @@
+@startuml
+package SHADER {
+
+    '---------------- IShader ----------------'
+    interface IShader {
+        +~IShader()
+        +use() : void
+        +setMat4(name: string, mat: Mat4) : void
+        +setVec3(name: string, vec3: Vec3) : void
+        +setFloat(name: string, v: float) : void
+        +setBool(name: string, v: bool) : void
+    }
+
+    '---------------- OpenGLShader ----------------'
+    class OpenGLShader {
+        +ID: unsigned int
+        +OpenGLShader(vertexPath: const char*, fragmentPath: const char*)
+        +~OpenGLShader()
+        +use() : void
+        +setMat4(name: string, mat: Mat4) : void
+        +setVec3(name: string, vec3: Vec3) : void
+        +setFloat(name: string, v: float) : void
+        +setBool(name: string, v: bool) : void
+    }
+    OpenGLShader ..|> IShader
+}
+@enduml

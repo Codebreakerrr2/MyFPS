@@ -11,6 +11,7 @@ namespace MESH {
          IMeshGpu* getGpuMesh()const override {
             if (!gpuMesh) {
                 gpuMesh = std::make_unique<OpenGLMesh>(*mesh);
+                LOG_SUCCESS("Mesh has been uploaded to GPU")
             }
             return gpuMesh.get();
         }

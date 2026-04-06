@@ -20,12 +20,14 @@ namespace Window {
         }
 
         glfwMakeContextCurrent(window);
+        LOG_SUCCESS("GLFWWindow initialized and sat as current window");
         lastTime = static_cast<float>(glfwGetTime());
     }
 
     GLFWWindow::~GLFWWindow() {
         if (window) glfwDestroyWindow(window);
         glfwTerminate();
+        LOG_WARNING("GLFWWinodw has been destroyed and glfw has been terminated");
     }
 
     bool GLFWWindow::isOpen() const {
@@ -34,6 +36,7 @@ namespace Window {
 
     void GLFWWindow::close() {
         glfwSetWindowShouldClose(window, true);
+        LOG_INFO("GLFWWindow is sat to close");
     }
 
     void GLFWWindow::getSize(int& width, int& height) const {
@@ -55,6 +58,7 @@ namespace Window {
 
     void GLFWWindow::setFramebufferSizeCallback(GLFWframebuffersizefun cb) {
         glfwSetFramebufferSizeCallback(window, cb);
+        LOG_SUCCESS("frameBufferSize call back function has been registered!");
     }
 
     void* GLFWWindow::getNativeHandle() {

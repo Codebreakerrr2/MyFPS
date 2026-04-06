@@ -1,0 +1,73 @@
+@startuml
+package MESH {
+
+    '---------------- Vertex ----------------'
+    class Vertex {
+        +Vec3 Position
+        +Vec3 Normal
+        +Vec2 uv
+    }
+
+    '---------------- IMesh ----------------'
+    interface IMesh {
+        +set(vertices: vector<Vertex>)
+        +getVertices(): vector<Vertex>
+        +set(indices: vector<uint32_t>)
+        +getIndices(): vector<uint32_t>
+    }
+
+    '---------------- CPUmesh ----------------'
+    class CPUmesh {
+        -vertices: vector<Vertex>
+        -indices: vector<uint32_t>
+        +CPUmesh(vertices, indices)
+        +set(vertices)
+        +getVertices()
+        +set(indices)
+        +getIndices()
+    }
+    CPUmesh ..|> IMesh
+
+    '---------------- IMeshGpu ----------------'
+    interface IMeshGpu {
+        +upload(mesh: IMesh): IMeshGpu*
+        +draw()
+    }
+
+    '---------------- OpenGLMesh ----------------'
+    class OpenGLMesh {
+        -vao: uint32_t
+        -vbo: uint32_t
+        -ebo: uint32_t
+        -indexCount: uint32_t
+        +OpenGLMesh(mesh: IMesh)
+        +upload(mesh: IMesh): IMeshGpu*
+        +draw()
+        +~OpenGLMesh()
+    }
+    OpenGLMesh ..|> IMeshGpu
+
+    '---------------- IMeshPair ----------------'
+    class IMeshPair {
+        -mesh: unique_ptr<IMesh>
+        -gpuMesh: unique_ptr<IMeshGpu> (mutable)
+        +IMeshPair(mesh: unique_ptr<IMesh>)
+        +getMesh(): IMesh*
+        +getGpuMesh(): IMeshGpu*  <<abstract>>
+    }
+
+    '---------------- OpenGLMeshPair ----------------'
+    class OpenGLMeshPair {
+        +OpenGLMeshPair(mesh: unique_ptr<IMesh>)
+        +getGpuMesh(): IMeshGpu*
+    }
+    OpenGLMeshPair ..|> IMeshPair
+
+    '---------------- Relationships ----------------'
+    IMeshPair --> IMesh : "contains"
+    IMeshPair --> IMeshGpu : "lazy creates"
+    OpenGLMeshPair --> OpenGLMesh : "instantiates"
+
+}
+
+@enduml

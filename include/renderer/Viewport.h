@@ -1,15 +1,17 @@
 #pragma once
 
+
 namespace Renderer{
 class Viewport{
 
 
     private:
+    std::string name;
     int x,y,width,height;
     Camera::Camera& camera;
 
     public:
-    Viewport(int x,int y, int width,int height,Camera::Camera& camera):x(x),y(y),width(width),height(height),camera(camera){}
+    Viewport(const std::string& name;,int x,int y, int width,int height,Camera::Camera& camera):x(x),y(y),width(width),height(height),camera(camera),name(name){}
 
     void setCamera(Camera::Camera& camera){
         this->camera = camera;
@@ -28,6 +30,7 @@ class Viewport{
     int getY() const { return y; }
     int getWidth() const { return width; }
     int getHeight() const { return height; }
+    std::string& getName(){return name;}
 
 
 };

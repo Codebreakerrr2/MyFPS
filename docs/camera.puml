@@ -1,0 +1,49 @@
+@startuml
+package Camera {
+
+    class Camera {
+        +Vec3 position
+        +Vec3 front
+        +Vec3 up
+        +float fov
+        +float aspect
+        +float nearPlane
+        +float farPlane
+        +Camera()
+        +Camera(Vec3 pos, Vec3 target, Vec3 upVector)
+        +Mat4 GetViewMatrix() : Mat4
+        +Mat4 GetProjectionMatrix() : Mat4
+        +Mat4 GetViewInverseMatrix() : Mat4
+        +Mat4 GetProjectionInverseMatrix() : Mat4
+        +void move(Vec3 delta)
+        +void rotate(float pitchRadians, float yawRadians)
+        +void SetAspectRatio(float aspectRatio)
+        +void SetNearPlane(float nearPlane)
+        +void SetFarPlane(float farPlane)
+        +void SetFOV(float fov)
+    }
+
+    enum MoveMode {
+        Flying
+        Player
+    }
+
+    class CameraController {
+        -InputKeyboard* inputKeyBoard
+        -InputXBOX* inputXBOX
+        -InputMouse* inputMouse
+        -float speed
+        -float yaw
+        -float pitch
+        -float MouseSensitivity
+        +CameraController(InputKeyboard*, InputXBOX*, InputMouse*)
+        +void update(Camera &camera, float deltaTime, MoveMode mode)
+        +Vec3 getMoveDirection(const Camera &camera, MoveMode mode) : Vec3
+        +void updateRotation(Camera &camera, float deltaTime)
+        +void setSpeed(float s)
+    }
+
+    CameraController --> Camera : "controls"
+}
+
+@enduml

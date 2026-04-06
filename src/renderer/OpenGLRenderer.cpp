@@ -26,7 +26,7 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
     window->getSize(width, height);
     glViewport(0, 0, width, height);
     glEnable(GL_DEPTH_TEST);
-
+    LOG_SUCCESS(OpenGLRenderer initialized!);
     return true;
 }
     void OpenGLRenderer::clear(float r, float g, float b, float a)  {
@@ -38,6 +38,7 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
 
      void OpenGLRenderer::addViewport(Viewport viewport){
         viewports.emplace_back(viewport);
+        LOG_SUCCESS("Viewport "+ viewport.getName()+" added to viewport collection!");
     }
 
     void OpenGLRenderer::renderViewports(const Engine::Registery& rg){
@@ -45,9 +46,9 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
         for(auto& vp: viewports){
             glViewport(vp.getX(),vp.getY(),vp.getWidth(),vp.getHeight());
             glScissor(vp.getX(), vp.getY(), vp.getWidth(), vp.getHeight());
-
+            LOG_INFO("viewport "+vp.getName()+" starting to draw!")
             drawTriangle(rg,vp.getCamera();)
-
+            LOG_INFO("viewport "+ vp.getName()," finished drawing!")
         }
        glDisable(GL_SCISSOR_TEST);
 
