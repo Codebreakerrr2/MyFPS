@@ -1,6 +1,6 @@
 #pragma once
 #include <chrono>
-
+#include <iostream>
 namespace Profiling {
 
     class FrameTimer {
@@ -18,7 +18,7 @@ namespace Profiling {
             frameTime = std::chrono::duration<double, std::milli>(endTime- startTime).count();
         }
         double getFrameTime() const { return frameTime; }
-        double getFPS() const { return 1000.0 / frameTime; }
+        void printFPS() const { std::cout<<"FPS: " <<1000/frameTime << std::endl; } // geschätzt auf einen frame
 
 
     };

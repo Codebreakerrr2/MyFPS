@@ -2,12 +2,14 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stdexcept>
-#include <window/GLFWWindow.h>
+#include "asset_manager/Types.h"
 #include "asset_manager/Registery.h"
 #include "camera/Camera.h"
 #include "mesh/IMeshPair.h"
+#include "renderer/Viewport.h"
 #include "shader/IShader.h"
 #include "window/IWindow.h"
+#include "asset_manager/RenderBuffer.h"
 
 namespace Renderer {
 
@@ -26,7 +28,7 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
     window->getSize(width, height);
     glViewport(0, 0, width, height);
     glEnable(GL_DEPTH_TEST);
-
+    LOG_SUCCESS("OpenGLRenderer initialized!");
     return true;
 }
     void OpenGLRenderer::clear(float r, float g, float b, float a)  {
@@ -34,48 +36,39 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-    void OpenGLRenderer::filterRenderables(const Engine::Registery& rg){
-            const Asset::Pool<MeshComponent>& meshPool = rg.getPool<MeshComponent>();
-        const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();
-        const Asset::Pool<MaterialComponent>& materialPool = rg.getPool<MaterialComponent>();
-        std::vector<drawCommand> list;
-        for(const auto& e : meshPool.getEntities()){
-            if(rg.has<TransformComponent>(e) && rg.has<MaterialComponent>(e)){
-                list.emplace_back(
-                    drawCommand{
-                        materialPool.getComponent(e)->shader(),
-                        materialPool.getComponent(e),
-                        meshPool.getComponent(e)->meshtupel()->getGpuMesh(),
-                        transformPool.getComponent(e)
-                    }
-                );
-            }
-        }
-          auto compare = [](drawCommand& a, drawCommand& b){
-            if(a.shader != b.shader) return a.shader<b.shader;
-            if(a.mat->mateirals != b.mat->mateirals) return a.mat->mateirals < b.mat->mateirals;
-            return a.mesh < b.mesh;
-        };
-        std::sort(list.begin(),list.end(), compare);
-        renderables = std::move(list);
-        LOG_INFO("renderables has been updated!");
+
+
+     void OpenGLRenderer::addViewport(Viewport& viewport){
+        viewports.emplace_back(&viewport);
+        LOG_SUCCESS("Viewport "+ viewport.getName()+" added to viewport collection!");
     }
 
-    void OpenGLRenderer::drawTriangle(const Engine::Registery& rg,const Camera::Camera& camera) {
-  
-                if(renderablesDirty){
-                    filterRenderables(rg);
-                    renderablesDirty = false;
-                }
+    void OpenGLRenderer::renderViewports(Asset::Types::RenderBuffer& buffer){
+        glEnable(GL_SCISSOR_TEST);
+        for(auto* vp: viewports){
+            glViewport(vp->getX(),vp->getY(),vp->getWidth(),vp->getHeight());
+            glScissor(vp->getX(), vp->getY(), vp->getWidth(), vp->getHeight());
+
+            drawTriangle(buffer,*vp->getCamera());
+        }
+       glDisable(GL_SCISSOR_TEST);
+
+    }
+
+
+
+    void OpenGLRenderer::drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) {
+
+                auto* drawCommands = buffer.getBuffer();
 
                 SHADER::IShader* currentShader = nullptr;
                 MESH::IMeshGpu* currentMesh = nullptr;
 
-                for(const drawCommand& cd : renderables ){
+                for(const drawCommand& cd : *drawCommands ){
                     //Shader
                     if(currentShader != cd.shader){ 
                         currentShader = cd.shader;
-                        if(currentShader == nullptr){ LOG_ERROR("shader of the renderable entity is not set, PROGRAM CRASH!");
+                        if(currentShader == nullptr){ LOG_ERROR("shader of the renderable entity is not set, PROGRAM MIGHT CRASH!");
                             continue;
                         }
                         currentShader->use();
@@ -87,7 +80,7 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
 
                     if(currentMesh != cd.mesh){
                         currentMesh = cd.mesh;
-                        if(currentMesh == nullptr){ LOG_ERROR("mesh of renderable enitty is not set, PROGRAM CRASH!");
+                        if(currentMesh == nullptr){ LOG_ERROR("mesh of renderable enitty is not set, PROGRAM MIGHT CRASH!");
                             continue;
                         }
 

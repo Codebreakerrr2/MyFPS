@@ -1,4 +1,6 @@
 #pragma once
+#include <cassert>
+
 #include "asset_manager/Types.h"
 #include <vector>
 #include "profiling/LoggerManager.h"
@@ -8,6 +10,23 @@ constexpr size_t INVALID_INDEX = size_t(-1);
 
 using namespace Asset::Types;
 namespace Asset {
+
+
+    template <typename T>
+std::string getPoolName() {
+        if constexpr (std::is_same_v<T, MeshComponent>) {
+            return "meshesPool";
+        } else if constexpr (std::is_same_v<T, TransformComponent>) {
+            return "transformsPool";
+        } else if constexpr (std::is_same_v<T, MaterialComponent>) {
+            return "materialsPool";
+        } else {
+            static_assert(!std::is_same_v<T, T>, "Unsupported component type to get name");
+            return ""; // nur um den Compiler zufriedenzustellen
+        }
+    }
+
+
     template<class T>
     class Pool{
     public:
@@ -15,7 +34,7 @@ namespace Asset {
         T& emplace(EntityID e, Args&&... args){
             if (has(e)) {
 
-                LOG_WARNING("Entity already exits, can't add!");
+                LOG_WARNING("Entity "+ std::to_string(e)+ " already exits, can't add!, instead returning Entity");
                 
                 return components[sparse[e]];
             }
@@ -24,13 +43,13 @@ namespace Asset {
     
             size_t sparseLenght = sparse.size();
             if(e >= sparseLenght){
-                sparse.resize(e+10 ,INVALID_INDEX);
+                sparse.resize(e*2 ,INVALID_INDEX);
             }
             sparse[e] = eIndex;
 
             components.emplace_back(std::forward<Args>(args)...);
 
-            LOG_SUCCESS("Component and Entity added to the Pool");
+            LOG_SUCCESS("Component "+getComponentName<T>()+ " with Entity "+std::to_string(e)+" added to the Pool");
 
             return components.back();
         }
@@ -40,7 +59,7 @@ namespace Asset {
 
             if(!has(e)) {
 
-                LOG_DEBUG("entity not found im the pool");
+                LOG_DEBUG("entity "+ std::to_string(e) +" not found im the pool");
 
                 return;
             }
@@ -54,15 +73,14 @@ namespace Asset {
             entities.pop_back();
             components.pop_back();
 
-            LOG_SUCCESS("entity succesfully removed from pool");
+            LOG_SUCCESS("entity "+std::to_string(e) +" succesfully removed from pool");
 
 
         }
         T* getComponent(EntityID e){
             if(!has(e)){
 
-                LOG_DEBUG("entity not found in the pool");
-
+                LOG_DEBUG("entity "+ std::to_string(e) +" not found im the pool");
                 return nullptr;
             }
             return &components[sparse[e]];
@@ -71,7 +89,7 @@ namespace Asset {
         const T* getComponent(EntityID e) const {
          if(!has(e)){
 
-             LOG_DEBUG("entity not found in the pool");
+             LOG_DEBUG("entity "+ std::to_string(e) +" not found im the pool");
 
              return nullptr;
          }
@@ -87,7 +105,7 @@ namespace Asset {
             sparse.clear();
 
 
-            LOG_SUCCESS("Pool has been cleared!");
+            LOG_SUCCESS("Pool "+ getPoolName<T>()+ " has been cleared!");
         }
         const std::vector<EntityID>& getEntities() const{
             return entities;
@@ -96,8 +114,9 @@ namespace Asset {
 
     private:
         void swapEntities(EntityID e1, EntityID e2){
-            assert(has(e1) && has(e2));
-
+            //..........................................
+            assert(has(e1) && has(e2));// gefährlich
+            //..........................................(
             if(e1 == e2) return;
 
             size_t e1Index = sparse[e1];
@@ -116,4 +135,6 @@ namespace Asset {
         std::vector<size_t> sparse;
 
     };
+
+
 }

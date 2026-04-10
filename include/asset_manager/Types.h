@@ -118,6 +118,16 @@ struct TransformComponent{
     TransformComponent()= default;
     TransformComponent(const Init& init):position(init.pos),rotation(init.rot),scale(init.scale){};
 
+    void setPosition(Math::Vec3 pos) {
+        position = pos;
+    }
+    void setRotation(Math::Vec3 rot) {
+        rotation = rot;
+    }
+    void setScale(Math::Vec3 scal) {
+            scale = scal;
+    }
+
     // Model-Matrix aus Position / Rotation / Scale
     Math::Mat4 GetModelMatrix() const {
         return Math::Mat4::Translation(position) *
@@ -182,6 +192,10 @@ struct MeshComponent{
     MeshComponent(const  Init& init): meshtupel(init.id,init.manager){}
 
 };
+
+//________________________________________REDNER COMMAND ADN ETC_________________________________________________________//
+
+
 //_________________________________________ functions for ComponentType and Components________________________________//
 
 template<typename T>
@@ -193,14 +207,15 @@ constexpr ComponentType ComponentToType(){
 
 }
 
+template<typename T>
 
-
-
-
-
-
-
-
+ std::string getComponentName(){
+   if constexpr (std::is_same_v<T, TransformComponent>) return "ComponentType::TRANSFORM";
+    else if constexpr (std::is_same_v<T, MeshComponent>) return "ComponentType::MESH";
+    else if constexpr (std::is_same_v<T, MaterialComponent>) return "ComponentType::MATERIAL";
+    else static_assert(!std::is_same_v<T, T>, "Unsupported component in conversion to componentTypeName");
+   return "";
+}
 
 
 //____________________________________________________________________________________________________________________//
@@ -208,3 +223,12 @@ constexpr ComponentType ComponentToType(){
 
 
 }//namespace
+namespace Renderer {
+    struct drawCommand{
+        SHADER::IShader* shader;
+        const Asset::Types::MaterialComponent* mat;
+        MESH::IMeshGpu* mesh; // const nervig
+        const Asset::Types::TransformComponent* trans;
+    };
+
+}

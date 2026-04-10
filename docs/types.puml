@@ -1,0 +1,60 @@
+@startuml
+package Asset::Types {
+
+    '----------------- IDs -----------------'
+    class Entity {
+        +EntityID id
+    }
+
+    class TransformComponent {
+        +Vec3 position
+        +Vec3 rotation
+        +Vec3 scale
+        +Mat4 GetModelMatrix()
+    }
+
+    class MaterialComponent {
+        +assetHandler<ShaderID, SHADER::IShader> shader
+        +noShaderMaterial mateirals
+    }
+
+    class MeshComponent {
+        +assetHandler<MeshID, MESH::IMeshPair> meshtupel
+    }
+
+    class noShaderMaterial {
+        +Vec3 color
+        +operator==()
+        +operator!=()
+        +operator<()
+    }
+
+    class assetHandler<T,F> {
+        -T ID
+        -AssetManager::Manager<F>* manager
+        +F* operator()()
+        +F* operator()() const
+    }
+
+    enum ComponentType {
+        TRANSFORM
+        MATERIAL
+        MESH
+        SHADER
+        RENDERER
+        PHYSICS
+        AABB
+    }
+
+    class ComponentMask
+
+    '---------------- Relationships ----------------'
+    TransformComponent --> Math::Mat4 : "generates"
+    MaterialComponent --> SHADER::IShader : "references via assetHandler"
+    MeshComponent --> MESH::IMeshPair : "references via assetHandler"
+
+    assetHandler --> "Manager<F>" : manages
+
+}
+
+@enduml

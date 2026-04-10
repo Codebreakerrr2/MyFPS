@@ -73,6 +73,7 @@ namespace SHADER {
     void OpenGLShader::use() const
     {
         glUseProgram(ID);
+
     }
 
     // -------- Uniforms --------

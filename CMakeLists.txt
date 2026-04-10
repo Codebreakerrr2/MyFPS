@@ -22,42 +22,44 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-
-
+#-----------------------
+#--GLAD --------------
+#-------------------
+add_library(glad
+    external_libraries/glad.c
+)
+target_include_directories(glad PUBLIC
+        external_libraries/include
+)
 
 
 # -----------------------------
 # GLFW
 # -----------------------------
-add_subdirectory(glfw)
-
-# -----------------------------
-# GLAD
-# -----------------------------
-add_library(glad STATIC
-        src/glad.c
+include(FetchContent)
+FetchContent_Declare(
+        glfw
+        URL GIT_REPOSITORY https://github.com/glfw/glfw.git
+        GIT_TAG master
 )
+FetchContent_MakeAvailable(glfw)
 
-target_include_directories(glad PUBLIC
-        ${CMAKE_SOURCE_DIR}/include
 
-)
 #---------------
 # win32 Socket
 #----------------------
 
 
-# -----------------------------
-# Executable
-# -----------------------------
-add_executable(MyFPS
-        src/main.cpp
+#-------------------
+#--ENGINE LIBRARY---
+#--------------------
+
+add_library(Engine 
 
         #------------------
         #Shader src files
         #-----------------------
         src/shader/OpenGLShader.cpp
-
 
         #------------------
         #camera src files
@@ -83,12 +85,10 @@ add_executable(MyFPS
         #-------------------
         src/window/GLFWWindow.cpp
 
-
         #------------------
         #mesh source files
         #-------------------
         src/mesh/OpenGLMesh.cpp
-
 
         #----------------------
         # Logger src files
@@ -100,7 +100,7 @@ add_executable(MyFPS
 
         #-----------------
         #geometry src files
-        #---------------------
+        #------------------
 
         #------------------
         #network src files
@@ -110,28 +110,17 @@ add_executable(MyFPS
         src/network/Client.cpp
         src/network/Server.cpp
 
-        #-----------------
-        #game src files
-        #----------------
-
-        #----------------
-        #world src files
-        #--------------
         #------------
         #Math src files
         #--------------
         src/Math/Vec.cpp
         src/Math/Mat4.cpp
 
-
 )
-
-target_include_directories(MyFPS PRIVATE
-        include
-        ${GLFW_INCLUDE_DIR}
+target_include_directories(Engine PUBLIC 
+        ${CMAKE_SOURCE_DIR}/include
 )
-
-target_link_libraries(MyFPS PRIVATE
+target_link_libraries(Engine PUBLIC
         glad
         glfw
         opengl32
@@ -139,6 +128,22 @@ target_link_libraries(MyFPS PRIVATE
         gdi32
         ws2_32
 )
+
+
+
+# -----------------------------
+# Executable
+# -----------------------------
+
+add_executable(Game 
+        src/main.cpp
+)
+
+target_link_libraries(Game PRIVATE Engine)
+
+# Erzwingt statisches Linking der Laufzeit
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+
 # -----------------------------
 # Copy assets to runtime dir
 # -----------------------------
@@ -148,97 +153,17 @@ add_custom_target(copy_assets ALL
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 
-add_dependencies(MyFPS copy_assets)
+add_dependencies(Game copy_assets)
 
 #-------------------------
 # Google Test
 #-------------------------
 add_executable(EngineTests
-        tests/profilingTests.cpp
-        tests/databaseTests.cpp
-        #-------------------
-        #editor src files
-        #------------------
-
-        #------------------
-        #assets manager src files
-        #-------------------
-
-
-        src/shader/OpenGLShader.cpp
-
-        src/camera/Camera.cpp
-
-
-        #------------------
-        #renderer source files
-        #-------------------
-        src/renderer/OpenGLRenderer.cpp
-
-        #------------------
-        #window src files
-        #-------------------
-        src/window/GLFWWindow.cpp
-
-
-        #------------------
-        #mesh source files
-        #-------------------
-        src/mesh/OpenGLMesh.cpp
-
-
-        #----------------------
-        # Logger src files
-        #---------------------
-        src/profiling/ConsoleLogger.cpp
-        src/profiling/FileLogger.cpp
-        src/profiling/LoggerManager.cpp
-        src/profiling/UILogger.cpp
-
-        #-----------------
-        #geometry src files
-        #---------------------
-
-        #------------------
-        #network src files
-        #---------------------
-        src/network/UDP.cpp
-        src/network/NetworkInit.cpp
-        src/network/Client.cpp
-        src/network/Server.cpp
-
-        #-----------------
-        #game src files
-        #----------------
-
-        #----------------
-        #world src files
-        #--------------
-        #------------
-        #Math src files
-        #--------------
-        src/Math/Vec.cpp
-        src/Math/Mat4.cpp
-
-
-
-
+       tests/databaseTests.cpp 
+       tests/profilingTests.cpp
 )
 
-target_link_libraries(EngineTests
-        gtest_main
-        glad
-        glfw
-        opengl32
-        user32
-        gdi32
-        ws2_32
-
-)
-
-target_include_directories(EngineTests PRIVATE
-        ${CMAKE_SOURCE_DIR}/include
-)
+target_link_libraries(EngineTests PRIVATE Engine)
 
 include(GoogleTest)
 gtest_discover_tests(EngineTests)

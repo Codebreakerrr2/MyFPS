@@ -1,21 +1,12 @@
 #pragma once
+
+
+#include "asset_manager/Types.h"
 #include "window/IWindow.h"
-
-
-namespace MESH {
-    class IMeshGpu;
-    class IMesh;
+#include "renderer/Viewport.h"
+namespace Asset::Types{
+    class RenderBuffer;
 }
-
-namespace Asset::Types {
-    struct TransformComponent;
-    struct MaterialComponent;
-}
-
-namespace SHADER {
-    class IShader;
-}
-
 namespace Camera{
     class Camera;
 }
@@ -25,12 +16,6 @@ namespace Engine{
 
 namespace Renderer {
 
- struct drawCommand{
-        SHADER::IShader* shader;
-        const Asset::Types::MaterialComponent* mat;
-         MESH::IMeshGpu* mesh; // const nervig
-        const Asset::Types::TransformComponent* trans;
-    };
 
 
     class IRenderer {
@@ -40,8 +25,8 @@ namespace Renderer {
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
         virtual void clear(float r, float g, float b, float a) = 0;
-        virtual void drawTriangle(const Engine::Registery& rg,const Camera::Camera& camera) = 0;
-        virtual void filterRenderables(const Engine::Registery& rg) = 0;
-
+        virtual void drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) = 0;
+        virtual void addViewport(Viewport& viewport) = 0;
+        virtual void renderViewports(Asset::Types::RenderBuffer& buffer) =0;
     };
 }

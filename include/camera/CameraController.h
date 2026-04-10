@@ -23,7 +23,7 @@ namespace Camera {
         Input::InputKeyboard* inputKeyBoard;
         Input::InputXBOX* inputXBOX;
         Input::InputMouse* inputMouse;
-        float speed = 3.0f;
+        float speed = 10.0f;
         float yaw = 0.0f;
         float pitch = 0.0f;
         float MouseSensitivity = 0.004f;
