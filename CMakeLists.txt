@@ -141,7 +141,8 @@ add_executable(Game
 
 target_link_libraries(Game PRIVATE Engine)
 
-
+# Erzwingt statisches Linking der Laufzeit
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 
 # -----------------------------
 # Copy assets to runtime dir

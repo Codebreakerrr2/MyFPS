@@ -1,4 +1,6 @@
 #pragma once
+#include <atomic>
+
 #include "asset_manager/pool.h"
 #include "asset_manager/Types.h"
 #include <vector>
@@ -6,6 +8,8 @@
  * Registery is the API for other Systems to get access to assets
  */
 namespace Engine {
+
+
     class Registery {
 
         private:
@@ -14,6 +18,7 @@ namespace Engine {
         Asset::Pool<MaterialComponent> materials;
         std::vector<ComponentMask> masks;
         EntityID nextEntity = 1;
+
 
 
 
@@ -115,6 +120,7 @@ namespace Engine {
              UseCache,
              NoCache,
          };
+
 
     };
 }

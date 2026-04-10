@@ -192,6 +192,10 @@ struct MeshComponent{
     MeshComponent(const  Init& init): meshtupel(init.id,init.manager){}
 
 };
+
+//________________________________________REDNER COMMAND ADN ETC_________________________________________________________//
+
+
 //_________________________________________ functions for ComponentType and Components________________________________//
 
 template<typename T>
@@ -219,3 +223,12 @@ template<typename T>
 
 
 }//namespace
+namespace Renderer {
+    struct drawCommand{
+        SHADER::IShader* shader;
+        const Asset::Types::MaterialComponent* mat;
+        MESH::IMeshGpu* mesh; // const nervig
+        const Asset::Types::TransformComponent* trans;
+    };
+
+}

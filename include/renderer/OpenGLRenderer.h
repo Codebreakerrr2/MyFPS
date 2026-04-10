@@ -1,6 +1,8 @@
 #pragma once
 #include "IRenderer.h"
 #include <vector>
+#include "asset_manager/Types.h"
+
 namespace Renderer{
 class OpenGLRenderer : public IRenderer{
 	public:
@@ -9,14 +11,12 @@ class OpenGLRenderer : public IRenderer{
          void beginFrame() override{};// braucht man nicht opengl
          void endFrame() override{};// braucht man nicht opengl
          void clear(float r, float g, float b, float a) override;
-         void drawTriangle(const Engine::Registery& rg,const Camera::Camera& camera) override;
-         void filterRenderables(const Engine::Registery& rg) override;
+         void drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) override;
          void addViewport(Viewport& viewport)override;
-         void renderViewports(const Engine::Registery& rg) override;
+         void renderViewports(Asset::Types::RenderBuffer& buffer) override;
 	private:
 		Window::IWindow* window;
                 std::vector<Viewport*> viewports;
-                std::vector<drawCommand> renderables;
                 bool renderablesDirty = true;
 
 };
