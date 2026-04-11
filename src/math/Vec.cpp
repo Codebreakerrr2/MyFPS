@@ -14,6 +14,7 @@ namespace Math {
         return Vec2(v.x * s, v.y * s);
     }
 
+
     float Dot(const Vec2 &a, const Vec2 &b) {
         return a.x * b.x + a.y * b.y;
     }
