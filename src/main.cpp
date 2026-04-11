@@ -19,7 +19,7 @@ int main() {
     std::mt19937 gen(rd());                    // Mersenne Twister Generator
 
     // 2. Verteilung (float zwischen -50.0 und 50.0)
-    std::normal_distribution<float> dist(-2.0f, 2.0f);
+    std::cauchy_distribution<float> dist(-2.0f, 2.0f);
 
 
 
