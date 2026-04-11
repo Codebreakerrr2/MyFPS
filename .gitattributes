@@ -1,1 +1,3 @@
 external_libraries/* linguist-vendored
+external_libraries/include/glad/* linguist-vendored
+external_libraries/include/KHR/* linguist-vendored
