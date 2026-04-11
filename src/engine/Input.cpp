@@ -13,7 +13,7 @@ namespace Engine {
     void InitInput(GLFWwindow* win) {
         window = win;
         // Optional: Cursor sperren
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+       //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
     bool IsKeyPressed(int keyCode) {
         return glfwGetKey(window, keyCode) == GLFW_PRESS;
