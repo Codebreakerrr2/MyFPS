@@ -14,7 +14,8 @@ namespace Engine {
 namespace Asset::Types {
     class RenderBuffer {
     private:
-        std::atomic<bool> registryBufferUpdated{false};
+       std::mutex mux;
+        std::atomic<bool> newSnapshot{false};
        // std::vector<Renderer::drawCommand> registryBuffer; eventuell 3 buffer wenn zu langsam
         std::vector<Renderer::drawCommand> bufferA;
         std::vector<Renderer::drawCommand> bufferB;
@@ -23,11 +24,9 @@ namespace Asset::Types {
         std::vector<Renderer::drawCommand>* readBuffer = &bufferB;
 
 
-      bool trySwap() {
-          return registryBufferUpdated.exchange(false,std::memory_order_acquire);
-        }
-        void updateRegistryBuffer(const Engine::Registery& rg) {
 
+        void updateRegistryBuffer(const Engine::Registery& rg) {
+            
                 const Asset::Pool<MeshComponent>& meshPool = rg.getPool<MeshComponent>();
                 const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();
                 const Asset::Pool<MaterialComponent>& materialPool = rg.getPool<MaterialComponent>();
@@ -43,7 +42,7 @@ namespace Asset::Types {
                             }
                         );
                     }
-                }//--
+                }//--------------------------
                 auto compare = [](Renderer::drawCommand& a, Renderer::drawCommand& b){
                     if(a.shader != b.shader) return a.shader<b.shader;
                     if(a.mat->mateirals != b.mat->mateirals) return a.mat->mateirals < b.mat->mateirals;
@@ -51,11 +50,14 @@ namespace Asset::Types {
                 };
                 std::sort(list.begin(),list.end(), compare);
                 //-----------------------------
-                *writeBuffer = std::move(list);
-                registryBufferUpdated.store(true, std::memory_order_release);
+                std::lock_guard<std::mutex> lock(mtx);
+                writeBuffer->swap(list);
+                newSnapshot.exchange(true,std::memory_order_release);
+    
                 LOG_INFO("renderables has been updated!");
 
             }
+        
 
         friend class Engine::EngineContext;
         friend class Engine::Registery;
@@ -63,10 +65,13 @@ namespace Asset::Types {
     public:
 
 [[nodiscard]] const std::vector<Renderer::drawCommand>* getBuffer()  {
-    if (trySwap()) {
-        std::swap(readBuffer, writeBuffer);
-    }
-    return readBuffer;
+
+ if (newSnapshot.load(std::memory_order_acquire)) {
+    std::lock_guard<std::mutex> lock(mtx);
+    std::swap(readBuffer, writeBuffer);
+    newSnapshot.store(false, std::memory_order_release);
+}
+      return readBuffer;
 }
 
     };
