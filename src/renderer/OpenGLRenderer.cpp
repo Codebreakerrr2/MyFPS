@@ -59,6 +59,8 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
 
     void OpenGLRenderer::drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) {
 
+
+             LOG_ERROR("getting the buffer");        
                 auto* drawCommands = buffer.getBuffer();
 
                 SHADER::IShader* currentShader = nullptr;
@@ -66,12 +68,15 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
 
                 for(const drawCommand& cd : *drawCommands ){
                     //Shader
+                    LOG_ERROR("trying to compare shaders");   
                     if(currentShader != cd.shader){ 
                         currentShader = cd.shader;
                         if(currentShader == nullptr){ LOG_ERROR("shader of the renderable entity is not set, PROGRAM MIGHT CRASH!");
                             continue;
                         }
+                        LOG_ERROR("using shader");   
                         currentShader->use();
+                        LOG_ERROR("shader usage went well");  
                 }
                     currentShader->setMat4("u_model",cd.trans->GetModelMatrix());
                     currentShader->setMat4("u_view",camera.GetViewMatrix());

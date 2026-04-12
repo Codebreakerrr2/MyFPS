@@ -28,7 +28,7 @@ int main() {
 
 
 
-    for (size_t i = 0;i<1000; ++i) {
+    for (size_t i = 0;i<1; ++i) {
         EntityID cube = context.rg.createEntity();
         MeshID meshId = context.meshManger.create("cube",Factory::cubeMesh);
         ShaderID shaderId=  context.shaderManger.create("shader",Factory::basicShader);
