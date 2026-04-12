@@ -23,7 +23,7 @@ namespace Engine {
 
 
         void updateRenderBuffer() {
-            renderBuffer.updateRegistryBuffer(rg);
+            renderBuffer.updateWriteBuffer(rg);
         }
 
     };
