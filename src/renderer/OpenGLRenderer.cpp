@@ -1,15 +1,15 @@
 #include "renderer/OpenGLRenderer.h"
+#include <stdexcept>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <stdexcept>
-#include "asset_manager/Types.h"
 #include "asset_manager/Registery.h"
+#include "asset_manager/RenderBuffer.h"
+#include "asset_manager/Types.h"
 #include "camera/Camera.h"
 #include "mesh/IMeshPair.h"
 #include "renderer/Viewport.h"
 #include "shader/IShader.h"
 #include "window/IWindow.h"
-#include "asset_manager/RenderBuffer.h"
 
 namespace Renderer {
 
@@ -60,37 +60,37 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
     void OpenGLRenderer::drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) {
 
 
-             LOG_ERROR("getting the buffer");        
-                auto* drawCommands = buffer.getBuffer();
 
+                auto* drawCommands = buffer.getBuffer();
+    LOG_DEBUG("got the buffer");
                 SHADER::IShader* currentShader = nullptr;
-                MESH::IMeshGpu* currentMesh = nullptr;
+                MESH::IMeshPair* currentMesh = nullptr;
 
                 for(const drawCommand& cd : *drawCommands ){
                     //Shader
-                    LOG_ERROR("trying to compare shaders");   
+
                     if(currentShader != cd.shader){ 
                         currentShader = cd.shader;
                         if(currentShader == nullptr){ LOG_ERROR("shader of the renderable entity is not set, PROGRAM MIGHT CRASH!");
                             continue;
                         }
-                        LOG_ERROR("using shader");   
+
                         currentShader->use();
-                        LOG_ERROR("shader usage went well");  
+
                 }
-                    currentShader->setMat4("u_model",cd.trans->GetModelMatrix());
+                    currentShader->setMat4("u_model",cd.trans.GetModelMatrix());
                     currentShader->setMat4("u_view",camera.GetViewMatrix());
                     currentShader->setMat4("u_proj",camera.GetProjectionMatrix());
                     // naja eventuell roughness etc aus mateiral noch einbinden aber dafür kein shader datei erstmal
 
-                    if(currentMesh != cd.mesh){
-                        currentMesh = cd.mesh;
+                    if(currentMesh != cd.drawCmdMeshTupel){
+                        currentMesh = cd.drawCmdMeshTupel;
                         if(currentMesh == nullptr){ LOG_ERROR("mesh of renderable enitty is not set, PROGRAM MIGHT CRASH!");
                             continue;
                         }
 
                     }
-                    currentMesh->draw();
+                    currentMesh->getGpuMesh()->draw();
                 }
     }
 }

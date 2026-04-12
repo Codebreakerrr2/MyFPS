@@ -14,7 +14,7 @@ namespace MESH {
     public:
         virtual ~IMeshPair() = default;
       IMesh* getMesh() {
-            return mesh.get();a
+            return mesh.get();
         }
         virtual   IMeshGpu* getGpuMesh() const  = 0;
 

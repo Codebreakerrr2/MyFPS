@@ -1,5 +1,6 @@
 
 #include <random>
+#include <thread>
 #include <asset_manager/Factory.h>
 #include <asset_manager/Registery.h>
 #include <engine/EngineContext.h>
@@ -25,19 +26,24 @@ int main() {
               std::mt19937 gen(rd());                    // Mersenne Twister Generator
 
     // 2. Verteilung (float zwischen -50.0 und 50.0)
-              std::cauchy_distribution<float> dist(-2.0f, 2.0f);
+              std::cauchy_distribution<float> dist(0.0f, 2.0f);
 
 
 
-    for (size_t i = 0;i<1; ++i) {
+    for (size_t i = 0;i<100000; ++i) {
         EntityID cube = context.rg.createEntity();
         context.rg.add<MeshComponent>(cube,MeshComponent::Init{meshId,&context.meshManger});
         context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&context.shaderManger});
         TransformComponent::Init tc{{dist(gen),dist(gen),dist(gen)},{dist(gen),dist(gen),dist(gen)},{0.3f}};
         context.rg.add<TransformComponent>(cube,tc);
-        
+        if (i%50 == 0) {
+            LOG_DEBUG(std::to_string(i));
+            context.updateRenderBuffer();
+        }
+
+
     }
-    context.updateRenderBuffer();
+
 
     };
     std::thread thr{addAssetsAndUpdateBuffer};

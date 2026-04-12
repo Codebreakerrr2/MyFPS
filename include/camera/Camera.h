@@ -15,7 +15,7 @@ public:
     float fov = 90.0f;          // Field of View in Grad
     float aspect = 16.0f / 9.0f;
     float nearPlane = 0.1f;
-    float farPlane  = 30.0f;
+    float farPlane  = 100.0f;
 
 
     Camera() = default;

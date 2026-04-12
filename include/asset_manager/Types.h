@@ -227,8 +227,8 @@ namespace Renderer {
     struct drawCommand{
         SHADER::IShader* shader;
         const Asset::Types::MaterialComponent* mat;
-        MESH::IMeshGpu* mesh; // const nervig
-        const Asset::Types::TransformComponent* trans;
+        MESH::IMeshPair* drawCmdMeshTupel; // const nervig
+         Asset::Types::TransformComponent trans;
     };
 
 }
