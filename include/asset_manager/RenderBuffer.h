@@ -31,8 +31,10 @@ namespace Asset::Types {
                 const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();
                 const Asset::Pool<MaterialComponent>& materialPool = rg.getPool<MaterialComponent>();
                 std::vector<Renderer::drawCommand> list;
+                LOG_INFO("started making list");
                 for(const auto& e : meshPool.getEntities()){
                     if(rg.has<TransformComponent>(e) && rg.has<MaterialComponent>(e)){
+                        LOG_INFO("i");
                         list.emplace_back(
                             Renderer::drawCommand{
                                 materialPool.getComponent(e)->shader(),
@@ -43,6 +45,7 @@ namespace Asset::Types {
                         );
                     }
                 }//--------------------------
+                LOG_INFO("ended making list");
                 auto compare = [](Renderer::drawCommand& a, Renderer::drawCommand& b){
                     if(a.shader != b.shader) return a.shader<b.shader;
                     if(a.mat->mateirals != b.mat->mateirals) return a.mat->mateirals < b.mat->mateirals;
