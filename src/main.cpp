@@ -14,12 +14,13 @@ int main() {
 
     Engine::EngineContext context;
     context.renderer.init(&context.window);
+        MeshID meshId = context.meshManger.create("cube",Factory::cubeMesh);
+        ShaderID shaderId=  context.shaderManger.create("shader",Factory::basicShader);
 
 
 
 
-
-    auto addAssetsAndUpdateBuffer = [&context](){
+    auto addAssetsAndUpdateBuffer = [&](){
               std::random_device rd;                     // für echten Seed
               std::mt19937 gen(rd());                    // Mersenne Twister Generator
 
@@ -30,8 +31,6 @@ int main() {
 
     for (size_t i = 0;i<1; ++i) {
         EntityID cube = context.rg.createEntity();
-        MeshID meshId = context.meshManger.create("cube",Factory::cubeMesh);
-        ShaderID shaderId=  context.shaderManger.create("shader",Factory::basicShader);
         context.rg.add<MeshComponent>(cube,MeshComponent::Init{meshId,&context.meshManger});
         context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&context.shaderManger});
         TransformComponent::Init tc{{dist(gen),dist(gen),dist(gen)},{dist(gen),dist(gen),dist(gen)},{0.3f}};
