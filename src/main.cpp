@@ -15,11 +15,16 @@ int main() {
     Engine::EngineContext context;
     context.renderer.init(&context.window);
 
-    std::random_device rd;                     // für echten Seed
-    std::mt19937 gen(rd());                    // Mersenne Twister Generator
+
+
+
+
+    auto addAssetsAndUpdateBuffer = [&context](){
+              std::random_device rd;                     // für echten Seed
+              std::mt19937 gen(rd());                    // Mersenne Twister Generator
 
     // 2. Verteilung (float zwischen -50.0 und 50.0)
-    std::cauchy_distribution<float> dist(-2.0f, 2.0f);
+              std::cauchy_distribution<float> dist(-2.0f, 2.0f);
 
 
 
@@ -31,7 +36,13 @@ int main() {
         context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&context.shaderManger});
         TransformComponent::Init tc{{dist(gen),dist(gen),dist(gen)},{dist(gen),dist(gen),dist(gen)},{0.3f}};
         context.rg.add<TransformComponent>(cube,tc);
+        
     }
+    context.updateRenderBuffer();
+
+    };
+    std::thread thr{addAssetsAndUpdateBuffer};
+
 
 
 
@@ -63,7 +74,6 @@ int main() {
 
         camera_controller.update(context.mainCamera,context.window.getDeltaTime(),Camera::MoveMode::Flying);
 
-        context.updateRenderBuffer();
         context.renderer.clear(0.5f, 1.0f, 1.0f, 1.0f);
 
         viewportManager.updateViewports();
@@ -77,7 +87,9 @@ int main() {
         frameTimer.endFrame();
         frameTimer.printFPS();
 
+
     }
+    thr.join();
 
     return 0;
 }

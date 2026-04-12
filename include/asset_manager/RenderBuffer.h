@@ -25,7 +25,7 @@ namespace Asset::Types {
 
 
 
-        void updateRegistryBuffer(const Engine::Registery& rg) {
+        void updateWriteBuffer(const Engine::Registery& rg) {
             
                 const Asset::Pool<MeshComponent>& meshPool = rg.getPool<MeshComponent>();
                 const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();
