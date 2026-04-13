@@ -12,12 +12,14 @@ class OpenGLRenderer : public IRenderer{
          void endFrame() override{};// braucht man nicht opengl
          void clear(float r, float g, float b, float a) override;
          void drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) override;
-         void addViewport(Viewport& viewport)override;
-         void renderViewports(Asset::Types::RenderBuffer& buffer) override;
+         void setViewPort(Viewport& viewport) override;
+         void setScissor(Viewport& viewport) override;
+         void enableScissor() override;
+         void disableScissor() override;
+         
 	private:
 		Window::IWindow* window;
-                std::vector<Viewport*> viewports;
-                bool renderablesDirty = true;
+           
 
 };
 }

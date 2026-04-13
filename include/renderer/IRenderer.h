@@ -28,5 +28,9 @@ namespace Renderer {
         virtual void drawTriangle(Asset::Types::RenderBuffer& buffer,const Camera::Camera& camera) = 0;
         virtual void addViewport(Viewport& viewport) = 0;
         virtual void renderViewports(Asset::Types::RenderBuffer& buffer) =0;
+        virtual void setViewPort(Viewport& viewport) = 0;
+        virtual void setScissor(Viewport& viewport) = 0;
+        virtual void enableScissor() = 0;
+        virtual void disableScissor() =0;
     };
 }

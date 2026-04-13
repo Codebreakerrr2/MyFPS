@@ -38,22 +38,21 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
 
 
 
-     void OpenGLRenderer::addViewport(Viewport& viewport){
-        viewports.emplace_back(&viewport);
-        LOG_SUCCESS("Viewport "+ viewport.getName()+" added to viewport collection!");
-    }
 
-    void OpenGLRenderer::renderViewports(Asset::Types::RenderBuffer& buffer){
-        glEnable(GL_SCISSOR_TEST);
-        for(auto* vp: viewports){
-            glViewport(vp->getX(),vp->getY(),vp->getWidth(),vp->getHeight());
-            glScissor(vp->getX(), vp->getY(), vp->getWidth(), vp->getHeight());
-
-            drawTriangle(buffer,*vp->getCamera());
+  void setViewPort(Viewport& viewport){
+                 glViewport(vp->getX(),vp->getY(),vp->getWidth(),vp->getHeight());
         }
-       glDisable(GL_SCISSOR_TEST);
+         void setScissor(Viewport& viewport) {
+                  glScissor(vp->getX(), vp->getY(), vp->getWidth(), vp->getHeight());
+        }
+           void enableScissor(){
+            glEnable(GL_SCISSOR_TEST);
+           }
+         void disableScissor(){
+            glDisable(GL_SCISSOR_TEST);
+         }
 
-    }
+
 
 
 

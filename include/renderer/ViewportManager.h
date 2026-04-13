@@ -10,15 +10,15 @@ namespace Renderer {
     public:
         ViewportManager(Window::IWindow* window) : window(window) {}
 
-        void addViewport(Viewport& vp) {
-            viewports.push_back(&vp);
+        void addViewport(std::unique_ptr<Viewport> vp) {
+            viewports.push_back(std::move(vp));
         }
 
         void updateViewports() {
             int width, height;
             window->getSize(width, height);
 
-            for (auto* vp : viewports) {
+            for (auto& vp : viewports) {
                 vp->setSize(width, height);
                 if (vp->getCamera()) {
                     vp->getCamera()->SetAspectRatio(float(width) / height);
@@ -26,11 +26,17 @@ namespace Renderer {
             }
         }
 
-        const std::vector<Viewport*>& getViewports() const { return viewports; }
+        const  std::vector<Viewport*>& getViewports() const {
+            std::vector<Viewport*> result;
+            for(auto& vp : viewports){
+                result.emplace_back(vp.get());
+            }
+            return result;
+         }
 
     private:
         Window::IWindow* window;
-        std::vector<Viewport*> viewports;
+        std::vector<std::unique_ptr<Viewport>> viewports;
     };
 
 } // namespace Renderer
