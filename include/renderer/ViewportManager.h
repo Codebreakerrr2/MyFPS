@@ -10,8 +10,9 @@ namespace Renderer {
     public:
         ViewportManager(Window::IWindow* window) : window(window) {}
 
-        void addViewport(std::unique_ptr<Viewport> vp) {
-            viewports.push_back(std::move(vp));
+    Viewport* creatViewport(const std::string& name,int x,int y, int width,int height,Camera::Camera* camera) {
+            viewports.emplace_back(std::make_unique<Viewport>(name,x,y,width,height,camera));
+            return viewports.back().get();
         }
 
         void updateViewports() {
@@ -26,7 +27,7 @@ namespace Renderer {
             }
         }
 
-        const  std::vector<Viewport*>& getViewports() const {
+          [[nodiscard]] std::vector<Viewport*> getViewports() const {
             std::vector<Viewport*> result;
             for(auto& vp : viewports){
                 result.emplace_back(vp.get());

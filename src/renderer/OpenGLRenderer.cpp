@@ -39,16 +39,16 @@ bool OpenGLRenderer::init(Window::IWindow* window) {
 
 
 
-  void setViewPort(Viewport& viewport){
-                 glViewport(vp->getX(),vp->getY(),vp->getWidth(),vp->getHeight());
+  void OpenGLRenderer::setViewPort(Viewport& vp){
+                 glViewport(vp.getX(),vp.getY(),vp.getWidth(),vp.getHeight());
         }
-         void setScissor(Viewport& viewport) {
-                  glScissor(vp->getX(), vp->getY(), vp->getWidth(), vp->getHeight());
+         void OpenGLRenderer::setScissor(Viewport& vp) {
+                  glScissor(vp.getX(), vp.getY(), vp.getWidth(), vp.getHeight());
         }
-           void enableScissor(){
+           void OpenGLRenderer::enableScissor(){
             glEnable(GL_SCISSOR_TEST);
            }
-         void disableScissor(){
+         void OpenGLRenderer::disableScissor(){
             glDisable(GL_SCISSOR_TEST);
          }
 

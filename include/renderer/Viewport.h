@@ -12,7 +12,7 @@ class Viewport{
     Camera::Camera* camera;
 
     public:
-    Viewport(const std::string& name,int x,int y, int width,int height,Camera::Camera* camera):x(x),y(y),width(width),height(height),camera(camera),name(name){}
+    Viewport(const std::string& name,int x,int y, int width,int height,Camera::Camera* camera):name(name),x(x),y(y),width(width),height(height),camera(camera){}
 
     void setCamera(Camera::Camera* camera){
         this->camera = camera;

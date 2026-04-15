@@ -6,6 +6,8 @@
 #include <window/GLFWWindow.h>
 
 #include "asset_manager/RenderBuffer.h"
+#include "renderer/RendererSystem.h"
+#include "renderer/ViewportManager.h"
 
 
 namespace Engine {
@@ -18,8 +20,11 @@ namespace Engine {
         AssetManager::Manager<SHADER::IShader,ShaderID> shaderManger;
         AssetManager::Manager<MESH::IMeshPair,MeshID> meshManger;
         Camera::Camera mainCamera;
-        Renderer::OpenGLRenderer renderer;
-        EngineContext():window(800,600,"FPS"){}
+        Renderer::ViewportManager viewportManager;
+        Renderer::RendererSystem renderer;
+        EngineContext(const std::string& windowName ,int windowWidth, int windowHeight,std::unique_ptr<Renderer::IRenderer> renderer) : window(windowWidth,
+            windowHeight, windowName), viewportManager(&window), renderer(std::move(renderer)) {
+        }
 
 
         void updateRenderBuffer() {
