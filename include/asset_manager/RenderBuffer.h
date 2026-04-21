@@ -1,11 +1,14 @@
 #pragma once
 #include <atomic>
 #include <mutex>
-
 #include "Registery.h"
 #include "asset_manager/Types.h"
-#include "mesh/IMeshPair.h"
 #include "renderer/IRenderer.h"
+
+
+namespace Context {
+    class FrameContext;
+}
 
 
 namespace Engine {
@@ -26,7 +29,7 @@ namespace Asset::Types {
 
 
 
-        void updateWriteBuffer(const Engine::Registery& rg) {
+        void updateReadBuffer(const Engine::Registery& rg) {
             
                 const Asset::Pool<MeshComponent>& meshPool = rg.getPool<MeshComponent>();
                 const Asset::Pool<TransformComponent>& transformPool = rg.getPool<TransformComponent>();
@@ -63,7 +66,7 @@ namespace Asset::Types {
             }
         
 
-        friend class Engine::EngineContext;
+        friend class Context::FrameContext;
         friend class Engine::Registery;
 
     public:

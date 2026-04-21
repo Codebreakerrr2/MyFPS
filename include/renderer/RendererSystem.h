@@ -17,18 +17,25 @@ namespace Renderer {
         std::unique_ptr<Renderer::IRenderer> renderer;
 
     public:
+        std::unique_ptr<Renderer::IRenderer>* getRenderer() {
+            return &renderer;
+        }
         RendererSystem(std::unique_ptr<Renderer::IRenderer> renderer)
             : renderer(std::move(renderer)) {}
+
 
         void addViewport(Renderer::Viewport& viewport) {
             viewports.push_back(&viewport);
             LOG_SUCCESS("Viewport " + viewport.getName() + " added to viewport collection!");
         }
+        IRenderer* getNativeRenderer() {
+            return renderer.get();
+        }
 
         void addViewport(std::vector<Renderer::Viewport*> vps) {
             for (auto* vp :vps) {
                 viewports.push_back(vp);
-                LOG_SUCCESS("Viewport " + viewport.getName() + " added to viewport collection!");
+                LOG_SUCCESS("Viewport " + vp->getName() + " added to viewport collection!");
             }
         }
 

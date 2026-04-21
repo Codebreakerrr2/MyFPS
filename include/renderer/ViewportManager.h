@@ -14,7 +14,6 @@ namespace Renderer {
             viewports.emplace_back(std::make_unique<Viewport>(name,x,y,width,height,camera));
             return viewports.back().get();
         }
-
         void updateViewports() {
             int width, height;
             window->getSize(width, height);

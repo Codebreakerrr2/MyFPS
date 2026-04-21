@@ -3,20 +3,25 @@
 #include <thread>
 #include <asset_manager/Factory.h>
 #include <asset_manager/Registery.h>
-#include <engine/EngineContext.h>
-
 #include "asset_manager/RenderBuffer.h"
 #include "profiling/FrameTimer.h"
 #include "camera/CameraController.h"
+#include "engine/AssetContext.h"
+#include "engine/FrameContext.h"
+#include "engine/RendererContext.h"
+#include "engine/SceneContext.h"
+#include "renderer/OpenGLRenderer.h"
 #include "renderer/ViewportManager.h"
 
 
 int main() {
 
-    Engine::EngineContext context;
-    context.renderer.init(&context.window);
-        MeshID meshId = context.meshManger.create("cube",Factory::cubeMesh);
-        ShaderID shaderId=  context.shaderManger.create("shader",Factory::basicShader);
+    Context::RendererContext rendererContext(800,600,"FPS",std::make_unique<Renderer::OpenGLRenderer>());
+    Context::SceneContext scene_context;
+    Context::FrameContext frameContext(&rendererContext, &scene_context);
+    Context::AssetContext assetContext;
+        MeshID meshId = assetContext.meshManger.create("cube",Factory::cubeMesh);
+        ShaderID shaderId=  assetContext.shaderManger.create("shader",Factory::basicShader);
 
 
 
@@ -31,14 +36,14 @@ int main() {
 
 
     for (size_t i = 0;i<100000; ++i) {
-        EntityID cube = context.rg.createEntity();
-        context.rg.add<MeshComponent>(cube,MeshComponent::Init{meshId,&context.meshManger});
-        context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&context.shaderManger});
+        EntityID cube = scene_context.rg.createEntity();
+        scene_context.rg.add<MeshComponent>(cube,MeshComponent::Init{meshId,&assetContext.meshManger});
+        scene_context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&assetContext.shaderManger});
         TransformComponent::Init tc{{dist(gen),dist(gen),dist(gen)},{dist(gen),dist(gen),dist(gen)},{0.3f}};
-        context.rg.add<TransformComponent>(cube,tc);
+        scene_context.rg.add<TransformComponent>(cube,tc);
         if (i%50 == 0) {
             LOG_DEBUG(std::to_string(i));
-            context.updateRenderBuffer();
+            frameContext.updateReadBuffer();
         }
 
 
@@ -50,44 +55,37 @@ int main() {
 
 
 
+rendererContext.viewportManager.creatViewport("fps",0,0,800,600,&scene_context.mainCamera);
+rendererContext.rendererSystem.addViewport(
+*rendererContext.viewportManager.creatViewport("fps",0,0,800,600,&scene_context.mainCamera)
+);
 
-
-    Input::InputKeyboard keyboard;
-    Input::InputMouse inputMouse;
-    Camera::CameraController camera_controller(&keyboard,nullptr,&inputMouse);
-    Renderer::Viewport viewport("test",0,0,800,600,&context.mainCamera);
-    Renderer::ViewportManager viewportManager(&context.window);
-    context.window.setFramebufferSizeCallback([](GLFWwindow* window, int width, int height) {
-        glViewport(0, 0, width, height);
-    });
-    context.renderer.addViewport(viewport);
-    viewportManager.addViewport(viewport);
     Profiling::FrameTimer frameTimer;
 
 
 
 
 
-    while(context.window.isOpen()) {
+    while(rendererContext.window.isOpen()) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glEnable(GL_DEPTH_TEST);
 
         frameTimer.beginFrame();
-        if (keyboard.IsActionPressed(Input::Action::Close)) context.window.close();
+        if (scene_context.keyboard.IsActionPressed(Input::Action::Close)) rendererContext.window.close();
 
-        camera_controller.update(context.mainCamera,context.window.getDeltaTime(),Camera::MoveMode::Flying);
+        scene_context.controller.update(scene_context.mainCamera,rendererContext.window.getDeltaTime(),Camera::MoveMode::Flying);
 
-        context.renderer.clear(0.5f, 1.0f, 1.0f, 1.0f);
+        rendererContext.rendererSystem.getNativeRenderer()->clear(0.5f, 1.0f, 1.0f, 1.0f);
 
-        viewportManager.updateViewports();
+        rendererContext.viewportManager.updateViewports();
 
-        context.renderer.renderViewports(context.renderBuffer);
+        rendererContext.rendererSystem.renderViewports(frameContext.renderBuffer);
 
 
-        context.window.swapBuffers();
-        context.window.pollEvents();
+        rendererContext.window.swapBuffers();
+        rendererContext.window.pollEvents();
 
         frameTimer.endFrame();
         frameTimer.printFPS();
