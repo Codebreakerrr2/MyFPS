@@ -12,6 +12,7 @@
 #include "engine/SceneContext.h"
 #include "renderer/OpenGLRenderer.h"
 #include "renderer/ViewportManager.h"
+#include "JavaAPI/serverAPI.h"
 
 
 int main() {
@@ -35,7 +36,7 @@ int main() {
 
 
 
-    for (size_t i = 0;i<100000; ++i) {
+    for (size_t i = 0;i<100; ++i) {
         EntityID cube = scene_context.rg.createEntity();
         scene_context.rg.add<MeshComponent>(cube,MeshComponent::Init{meshId,&assetContext.meshManger});
         scene_context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&assetContext.shaderManger});
@@ -61,7 +62,8 @@ rendererContext.rendererSystem.addViewport(
 );
 
     Profiling::FrameTimer frameTimer;
-
+    serverAPI server;
+    server.start();
 
 
 
@@ -93,6 +95,7 @@ rendererContext.rendererSystem.addViewport(
 
     }
     thr.join();
+    server.stop();
 
     return 0;
 }

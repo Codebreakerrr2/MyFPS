@@ -18,7 +18,7 @@ namespace Profiling {
             frameTime = std::chrono::duration<double, std::milli>(endTime- startTime).count();
         }
         double getFrameTime() const { return frameTime; }
-        void printFPS() const { std::cout<<"FPS: " <<1000/frameTime << std::endl; } // geschätzt auf einen frame
+        void printFPS() const { } // geschätzt auf einen frame
 
 
     };
