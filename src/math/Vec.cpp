@@ -1,5 +1,6 @@
 #include <cmath>
 #include "math/Vec.h"
+#include <algorithm>
 namespace Math {
     // ===================== Vec2 =====================
     Vec2 operator+(const Vec2 &a, const Vec2 &b) {

@@ -7,10 +7,7 @@
 #include <condition_variable>
 #include <iostream>
 
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-#pragma comment(lib, "ws2_32.lib")
+#include "httplib/httplib.h"
 
 class serverAPI {
 public:
@@ -19,7 +16,8 @@ public:
 
         networkThread = std::thread(&serverAPI::networkLoop, this);
         workerThread  = std::thread(&serverAPI::workerLoop, this);
-        std::cout<<"server started\n";
+
+        std::cout << "server started\n";
     }
 
     void stop() {
@@ -32,52 +30,32 @@ public:
 
 private:
 
-    // =========================
-    // NETWORK THREAD (WIN SOCKET)
-    // =========================
+
     void networkLoop() {
+        httplib::Server svr;
 
-        WSADATA wsaData;
-        WSAStartup(MAKEWORD(2,2), &wsaData);
+        svr.Post("/entity", [this](const httplib::Request& req, httplib::Response& res) {
 
-        SOCKET server_fd = socket(AF_INET, SOCK_STREAM, 0);
+            std::cout << "received: " << req.body << std::endl;
 
-        sockaddr_in address;
-        ZeroMemory(&address, sizeof(address));
-
-        address.sin_family = AF_INET;
-        address.sin_port = htons(8081);
-        address.sin_addr.s_addr = INADDR_ANY;
-
-        bind(server_fd, (sockaddr*)&address, sizeof(address));
-        listen(server_fd, SOMAXCONN);
-
-        while (running) {
-            std::cout<<"waiting for connectin \n";
-            SOCKET client_fd = accept(server_fd, nullptr, nullptr);
-
-            if (client_fd != INVALID_SOCKET) {
-                char buffer[1024] = {0};
-                int bytes = recv(client_fd, buffer, sizeof(buffer), 0);
-                std::cout<<"dara recieved\n";
-                if (bytes > 0) {
-                    std::lock_guard<std::mutex> lock(mtx);
-                    queue.push(std::string(buffer, bytes));
-                    cv.notify_one();
-                    std::cout<<"data in queue\n";
-                }
-
-                closesocket(client_fd);
+            {
+                std::lock_guard<std::mutex> lock(mtx);
+                queue.push(req.body);
             }
-        }
 
-        closesocket(server_fd);
-        WSACleanup();
+            cv.notify_one();
+
+            res.set_content("ok", "text/plain");
+        });
+
+        svr.Get("/ping", [](const httplib::Request&, httplib::Response& res) {
+            res.set_content("pong", "text/plain");
+        });
+
+        svr.listen("0.0.0.0", 8081);
     }
 
-    // =========================
-    // WORKER THREAD
-    // =========================
+
     void workerLoop() {
         while (running) {
             std::unique_lock<std::mutex> lock(mtx);
@@ -94,18 +72,15 @@ private:
             lock.unlock();
 
             std::cout << "Processing: " << msg << std::endl;
+
+
         }
     }
 
-    // =========================
-    // THREADS
-    // =========================
     std::thread networkThread;
     std::thread workerThread;
 
-    // =========================
-    // SHARED QUEUE
-    // =========================
+
     std::queue<std::string> queue;
     std::mutex mtx;
     std::condition_variable cv;

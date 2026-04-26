@@ -33,6 +33,14 @@ target_include_directories(glad PUBLIC
 )
 
 
+#-------------------
+#-----httplib------
+#-----------------
+
+target_include_directories(glad PUBLIC
+        external_libraries/include
+)
+
 # -----------------------------
 # GLFW
 # -----------------------------
@@ -120,6 +128,7 @@ add_library(Engine
 )
 target_include_directories(Engine PUBLIC 
         ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external_libraries/include
 )
 target_link_libraries(Engine PUBLIC
         glad
