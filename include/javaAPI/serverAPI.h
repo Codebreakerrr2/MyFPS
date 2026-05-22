@@ -32,27 +32,7 @@ private:
 
 
     void networkLoop() {
-        httplib::Server svr;
 
-        svr.Post("/entity", [this](const httplib::Request& req, httplib::Response& res) {
-
-            std::cout << "received: " << req.body << std::endl;
-
-            {
-                std::lock_guard<std::mutex> lock(mtx);
-                queue.push(req.body);
-            }
-
-            cv.notify_one();
-
-            res.set_content("ok", "text/plain");
-        });
-
-        svr.Get("/ping", [](const httplib::Request&, httplib::Response& res) {
-            res.set_content("pong", "text/plain");
-        });
-
-        svr.listen("0.0.0.0", 8081);
     }
 
 

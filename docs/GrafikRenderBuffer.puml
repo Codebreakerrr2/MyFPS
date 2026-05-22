@@ -1,0 +1,37 @@
+@startuml
+skinparam backgroundColor transparent
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+
+box "Thread 1: Simulation" #E1F5FE
+participant "Registry/Sim" as Sim
+end box
+
+participant "RenderBuffer (Shared)" as RB
+
+box "Thread 2: Rendering" #FFF9C4
+participant "OpenGL Renderer" as Render
+end box
+
+== Snapshot erstellen ==
+Sim -> Sim : Sammelt Daten in stagingArea\n(OHNE Lock)
+Sim -> Sim : **std::sort** (Shader & Material)\n(OHNE Lock)
+
+Sim -> RB : Lock Mutex
+RB <-> Sim : writeBuffer->swap(stagingArea)
+RB -> RB : newSnapshot = true (Release)
+Sim -> RB : Unlock Mutex
+
+== Snapshot konsumieren ==
+Render -> RB : getBuffer()
+RB -> RB : newSnapshot.load (Acquire)
+alt falls true
+    RB -> RB : Lock Mutex
+    RB <-> RB : **std::swap**(readBuffer, writeBuffer)
+    RB -> RB : newSnapshot = false
+    RB -> RB : Unlock Mutex
+end
+RB -> Render : const std::vector<drawCommand>*
+
+Render -> Render : Zeichne sortierte Objekte\n(Max. Performance)
+@enduml

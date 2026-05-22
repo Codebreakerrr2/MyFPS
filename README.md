@@ -1,57 +1,136 @@
-# MyFPS Engine 🚀
+# MyFPS Engine
 
-Eine hochperformante, von Grund auf in C++ entwickelte Game Engine mit Fokus auf datenorientiertem Design (ECS) und moderner Rendering-Architektur.
+MyFPS is a custom C++ OpenGL engine prototype. The project focuses on engine architecture rather than a finished game: ECS-style component storage, asset management, render command buffering, viewport rendering, camera/input handling, profiling utilities, and early networking experiments.
 
----
-
-## 📽️ Showcase
-
-| Feature                                | Vorschau |
-|:---------------------------------------| :--- |
-| **Rendering Pipeline and hot loading** | ![Renderer Demo](assets/demos/render_hot_load.gif) |
+The current demo renders a scene through an OpenGL backend and uses a `RenderBuffer` to turn scene data into sorted draw commands.
 
 ---
 
-## 🌟 Kern-Features
+## Showcase
 
-### ⚡ Data-Oriented ECS (Entity Component System)
-Das Herzstück der Engine ist eine maßgeschneiderte ECS-Architektur:
-- **Sparse Sets:** Blitzschneller O(1) Zugriff auf Komponenten bei gleichzeitig dichter Speicherung für maximale Cache-Lokalität.
-- **Cache-Optimiert:** Minimale Cache-Misses beim Iterieren über 100.000+ Entities.
-- **Typ-Sicherheit:** Modere C++ Template-Metaprogrammierung für typsicheren Komponentenzugriff.
-
-### 🎨 Moderne Rendering-Pipeline
-- **Frontend/Backend Entkopplung:** Ein dedizierter `RenderBuffer` mit Double-Buffering trennt Spiellogik vom Rendering-Thread.
-- **State Sorting:** Automatische Sortierung von Draw-Calls nach Shader und Material, um OpenGL-State-Changes zu minimieren.
-- **Viewport Management:** Flexibles System für mehrere Viewports (z.B. für Editor-Overlays oder Splitscreen).
-
-### 🛠️ Weitere Systeme
-- **Custom Math Library:** Eigene Implementierung von `Vec3`, `Mat4`, `Quaternions` und Kollisionsgeometrie.
-- **Input System:** Abstrahiertes Keyboard- und Mouse-Handling.
-- **Camera System:** Flexibler Fly-Camera Controller mit Perspektiv- und Orthogonal-Projektion.
+| Feature | Preview |
+|:--------|:--------|
+| **Rendering pipeline and hot loading** | ![Renderer Demo](assets/demos/render_hot_load.gif) |
 
 ---
 
-## 🏗️ Architektur-Überblick
+## Core Features
 
+### Data-Oriented ECS
+
+The engine uses a small custom registry with sparse-set component pools:
+
+- **Dense component storage:** Components are stored in compact vectors for cache-friendly iteration.
+- **Entity lookup:** Sparse arrays map entity IDs to component indices.
+- **Component masks:** Entities track which components they own through bit flags.
+- **Typed access:** Components are added and queried through templated registry functions.
+
+Currently supported render-relevant components:
+
+- `TransformComponent`
+- `MeshComponent`
+- `MaterialComponent`
+
+### Rendering Pipeline
+
+Rendering is split into a few clear stages:
+
+1. Scene data lives in the registry.
+2. `RenderBuffer` collects entities with mesh, material, and transform data.
+3. Render commands are sorted by shader, material, and mesh.
+4. `RendererSystem` renders one or more viewports.
+5. `OpenGLRenderer` submits the final draw calls.
+
+This keeps the renderer focused on draw commands instead of directly walking gameplay data.
+
+### Viewport System
+
+The renderer already supports multiple viewports through `ViewportManager` and `RendererSystem`. This is intended for features such as editor views, split screen, debug overlays, or a minimap camera.
+
+### Assets
+
+Assets are managed through typed managers using numeric IDs and names. Components reference mesh and shader assets through asset handlers instead of owning the assets directly.
+
+Current asset types:
+
+- Shader assets via `AssetManager::Manager<SHADER::IShader>`
+- Mesh assets via `AssetManager::Manager<MESH::IMeshPair>`
+
+### Camera and Input
+
+The project includes a fly-style camera controller using keyboard movement and mouse rotation. The camera exposes view/projection matrices for the renderer.
+
+### Profiling and Logging
+
+The profiling system includes a frame timer and a logger manager with console, file, and UI logger hooks. Logging macros are compiled out unless `ENGINE_DEBUG` is enabled.
+
+### Networking Experiments
+
+There is an early UDP networking layer for player state packets and a separate experimental server API stub. These systems are not yet part of a polished gameplay loop.
 
 ---
 
-## 🚀 Tech Stack
-- **Sprache:** C++20
-- **Grafik-API:** OpenGL 4.x
-- **Windowing:** GLFW & GLAD
-- **Build-System:** CMake
+## Architecture Overview
+
+High-level runtime flow:
+
+```text
+main.cpp
+  -> RendererContext
+       -> GLFWWindow
+       -> ViewportManager
+       -> RendererSystem
+            -> IRenderer
+            -> OpenGLRenderer
+
+  -> SceneContext
+       -> Camera
+       -> CameraController
+       -> InputKeyboard / InputMouse
+       -> Registery
+            -> Pool<TransformComponent>
+            -> Pool<MeshComponent>
+            -> Pool<MaterialComponent>
+
+  -> AssetContext
+       -> Shader manager
+       -> Mesh manager
+
+  -> FrameContext
+       -> RenderBuffer
+            -> sorted drawCommand list
+```
+
+Important rendering path:
+
+```text
+Registry -> RenderBuffer -> RendererSystem -> OpenGLRenderer -> OpenGL
+```
 
 ---
 
-## 🛠️ Installation & Build
+## Tech Stack
 
-### Voraussetzungen
-- CMake (3.20+)
-- Ein C++20 fähiger Compiler (MinGW, MSVC, Clang)
+- **Language:** C++17
+- **Graphics API:** OpenGL
+- **Windowing:** GLFW
+- **OpenGL loading:** GLAD
+- **Build system:** CMake
+- **Tests:** GoogleTest
+- **Platform focus:** Windows
 
-### Build-Vorgang
+---
+
+## Build
+
+### Requirements
+
+- CMake 3.20+
+- A C++17-capable compiler
+- OpenGL-capable graphics driver
+
+### Build Game
+
 ```powershell
 mkdir build
 cd build
@@ -59,21 +138,38 @@ cmake ..
 cmake --build . --target Game
 ```
 
----
+### Build Tests
 
-## 📈 Roadmap (WIP)
-- [ ] **Physics Engine:** Integration von AABB und OBB Kollisionsabfragen.
-- [ ] **OpenGL Instancing:** Performance-Boost für massenhaft identische Objekte.
-- [ ] **PBR Rendering:** Physically Based Rendering für realistische Materialien.
-- [ ] **Editor Integration:** ImGui-basiertes Tooling zur Manipulation von Entities in Echtzeit.
-
+```powershell
+cmake --build . --target EngineTests
+ctest
+```
 
 ---
 
-## 📝 Lizenz
+## Current Limitations
 
+- The demo scene is still mostly created in code.
+- Threading rules around scene mutation and render-buffer updates need to be formalized.
+- Some systems are prototypes or stubs, especially editor/API/networking pieces.
+- Materials are still minimal.
+- The renderer is OpenGL-only for now, although an `IRenderer` abstraction exists.
 
 ---
-*Entwickelt mit Fokus auf Performance und technischem Tiefgang.*
 
+## Roadmap
 
+- [ ] Material color and shader parameter controls
+- [ ] Minimap using a second camera and viewport
+- [ ] Small ImGui-based debug inspector
+- [ ] Scene creation cleanup outside of `main.cpp`
+- [ ] Stronger tests for ECS removal, asset lifetime, and render-buffer snapshots
+- [ ] OpenGL instancing
+- [ ] Basic physics/collision experiments
+- [ ] Scene save/load
+
+---
+
+## Status
+
+This is a learning-focused engine prototype. The goal is to build and understand the core systems behind a small game engine while keeping the codebase small enough to iterate on.
