@@ -195,7 +195,7 @@ struct MeshComponent{
 
 //________________________________________REDNER COMMAND ADN ETC_________________________________________________________//
 
-
+// this shit part has to be changed in order to add new components annoying wish i had a clear view back then
 //_________________________________________ functions for ComponentType and Components________________________________//
 
 template<typename T>
