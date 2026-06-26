@@ -15,9 +15,14 @@
     
 
     Algos:
+    
+    // im prinzip erzeugung von AABB durch calcAABB aus mesh
     calcAABB(Mesh) -> AABB
+
     TransformAABB(AABB,Transform) -> AABB
+
     intersect(AABB,AABB) -> bool
+
     intersect(AABB,Ray) -> bool
 
 # AABB_System
