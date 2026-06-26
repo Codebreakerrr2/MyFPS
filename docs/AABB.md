@@ -52,6 +52,11 @@ RaycastHit
      getKollisions(AABBS-Snapshot?) -> List of collision Pair oder collision event
      find nearRayIntersect(Ray,all the AABB or Entity?)  -> one Enitty or one AABB 
     
+Invariante:
+min <= max
+dirty = false dann worldaabb muss neu berechnet werden also konsistent bleioben
+dirty wird von regsitry gesetzt. 
+
 
 betrifft Module:
 Types.h ComponentToType must get a case for AABB
