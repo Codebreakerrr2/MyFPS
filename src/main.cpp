@@ -36,7 +36,7 @@ int main() {
 
 
 
-    for (size_t i = 0;i<100; ++i) {
+    for (size_t i = 0;i<10000; ++i) {
         EntityID cube = scene_context.rg.createEntity();
         scene_context.rg.add<MeshComponent>(cube,MeshComponent::Init{meshId,&assetContext.meshManger});
         scene_context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&assetContext.shaderManger});

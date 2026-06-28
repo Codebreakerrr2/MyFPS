@@ -1,6 +1,9 @@
 #include <cmath>
 #include "math/Vec.h"
 #include <algorithm>
+#include <cassert>
+#include <stdexcept>
+
 namespace Math {
     // ===================== Vec2 =====================
     Vec2 operator+(const Vec2 &a, const Vec2 &b) {
@@ -100,6 +103,29 @@ namespace Math {
         if (len == 0.0f) return Vec3(0.0f);
         return Vec3(v.x / len, v.y / len, v.z / len);
     }
+
+    float & Vec3::operator[](std::size_t index) {
+        assert(index < 3);
+        switch (index) {
+            case 0: return x;
+            case 1: return y;
+            case 2: return z;
+            default:
+                throw std::out_of_range("Vec3 index must be 0, 1 or 2"); ;
+        }
+    }
+
+    const float & Vec3::operator[](std::size_t index) const {
+        assert(index < 3);
+        switch (index) {
+            case 0: return x;
+            case 1: return y;
+            case 2: return z;
+            default:
+                throw std::out_of_range("Vec3 index must be 0, 1 or 2"); ;
+        }
+    }
+
 
     // ===================== Vec4 =====================
     Vec4 operator+(const Vec4 &a, const Vec4 &b) {

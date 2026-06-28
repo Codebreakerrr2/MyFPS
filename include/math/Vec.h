@@ -22,6 +22,8 @@ namespace Math {
 
         bool operator==(const Vec3& vec3a) const;
         bool operator!=(const Vec3& vec3a) const;
+        float& operator[](size_t index);
+        const float& operator[](size_t index) const;
     };
 
 

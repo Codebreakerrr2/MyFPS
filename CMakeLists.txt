@@ -63,7 +63,12 @@ FetchContent_MakeAvailable(glfw)
 #--ENGINE LIBRARY---
 #--------------------
 
-add_library(Engine 
+add_library(Engine
+        #------------------
+        #AABB
+        #-----------------------
+        src/AABB/AABB_ADT.cpp
+        src/AABB/AABBSystem.cpp
 
         #------------------
         #Shader src files
