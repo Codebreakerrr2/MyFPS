@@ -3,10 +3,15 @@
 #include <functional>
 
 #include "Manager.h"
+
 #include "mesh/IMeshGpu.h"
 
 
 // actually only pool stuff here otherwise it can get Very BIG
+
+namespace Physics::AABBSystem {
+    struct AABBComponent;
+}
 
 namespace SHADER {
     class IShader;
@@ -203,6 +208,7 @@ constexpr ComponentType ComponentToType(){
    if constexpr (std::is_same_v<T, TransformComponent>) return ComponentType::TRANSFORM;
     else if constexpr (std::is_same_v<T, MeshComponent>) return ComponentType::MESH;
     else if constexpr (std::is_same_v<T, MaterialComponent>) return ComponentType::MATERIAL;
+    else if constexpr (std::is_same_v<T,Physics::AABBSystem::AABBComponent>) return ComponentType::AABB;
     else static_assert(!std::is_same_v<T, T>, "Unsupported component in conversion to componentType");
 
 }
@@ -213,6 +219,7 @@ template<typename T>
    if constexpr (std::is_same_v<T, TransformComponent>) return "ComponentType::TRANSFORM";
     else if constexpr (std::is_same_v<T, MeshComponent>) return "ComponentType::MESH";
     else if constexpr (std::is_same_v<T, MaterialComponent>) return "ComponentType::MATERIAL";
+    else if constexpr (std::is_same_v<T, Physics::AABBSystem::AABBComponent>) return "ComponentType::AABB";
     else static_assert(!std::is_same_v<T, T>, "Unsupported component in conversion to componentTypeName");
    return "";
 }

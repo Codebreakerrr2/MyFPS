@@ -6,6 +6,8 @@
 #include "profiling/LoggerManager.h"
 #include <utility>
 
+#include "physics/AABB/AABBSystem.h"
+
 constexpr size_t INVALID_INDEX = size_t(-1);
 
 using namespace Asset::Types;
@@ -20,6 +22,9 @@ std::string getPoolName() {
             return "transformsPool";
         } else if constexpr (std::is_same_v<T, MaterialComponent>) {
             return "materialsPool";
+        }
+        else if constexpr (std::is_same_v<T,Physics::AABBSystem::AABBComponent>){
+            return "AABBsPool";
         } else {
             static_assert(!std::is_same_v<T, T>, "Unsupported component type to get name");
             return ""; // nur um den Compiler zufriedenzustellen

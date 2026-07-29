@@ -42,6 +42,7 @@ int main() {
         scene_context.rg.add<MaterialComponent>(cube,MaterialComponent::Init{shaderId,&assetContext.shaderManger});
         TransformComponent::Init tc{{dist(gen),dist(gen),dist(gen)},{dist(gen),dist(gen),dist(gen)},{0.3f}};
         scene_context.rg.add<TransformComponent>(cube,tc);
+        scene_context.rg.add<Physics::AABBSystem::AABBComponent>(cube, Physics::AABBSystem::AABBComponent{*assetContext.meshManger.get(meshId)->getMesh()});
         if (i%50 == 0) {
             LOG_DEBUG(std::to_string(i));
             frameContext.updateReadBuffer();

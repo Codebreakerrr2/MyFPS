@@ -16,6 +16,7 @@ namespace Engine {
         Asset::Pool<MeshComponent> meshes;
         Asset::Pool<TransformComponent> transforms;
         Asset::Pool<MaterialComponent> materials;
+        Asset::Pool<Physics::AABBSystem::AABBComponent> aabbs;
         std::vector<ComponentMask> masks;
         EntityID nextEntity = 1;
 
@@ -34,6 +35,9 @@ namespace Engine {
         }
         else if constexpr (std::is_same_v<T, MaterialComponent>){
             return materials;
+        }
+        else if constexpr (std::is_same_v<T, Physics::AABBSystem::AABBComponent>) {
+            return aabbs;
         }
         else{static_assert(!std::is_same_v<T, T>, "Unsupported component type in Registry::getPool");}
     // more pools can be added must be added here
